@@ -1,0 +1,22 @@
+
+
+.footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    
+    span {
+        &:first-child{
+            font-weight: bold;
+        }
+        
+        &:last-child {
+            font-size: 0.8rem;
+        }
+
+        &:hover {
+            background: rgb(214, 68, 68);
+        }
+    }
+}
