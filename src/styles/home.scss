@@ -6,7 +6,6 @@
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(180px, auto);
 
-
     .box {
         padding: 20px;
         border-radius: 10px;
@@ -30,5 +29,32 @@
         grid-column: span 2;
         grid-row: span 2;
 
+    }
+    @media (max-width: 768px ) {
+        .home {
+            grid-template-columns: repeat(1, 1fr);
+            grid-auto-rows: minmax(100px, auto); // Adjust row height if needed
+        }
+        
+        .box1, .box4, .box7 {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+    }
+
+    
+}
+
+
+// Media query for screen widths less than 768px
+@media (max-width: 768px) {
+    .home {
+        grid-template-columns: repeat(1, 1fr);
+        grid-auto-rows: minmax(100px, auto); // Adjust row height if needed
+    }
+    
+    .box1, .box4, .box7 {
+        grid-column: span 1;
+        grid-row: span 1;
     }
 }
