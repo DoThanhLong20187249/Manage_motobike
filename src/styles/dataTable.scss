@@ -1,0 +1,18 @@
+.data-table-container {
+
+    .data-table {
+      background: white;
+      padding: 20px;
+
+      .MuiDataGrid-toolbarContainer {
+        flex-direction: row-reverse;
+      }
+
+      .img-avatar{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+}
