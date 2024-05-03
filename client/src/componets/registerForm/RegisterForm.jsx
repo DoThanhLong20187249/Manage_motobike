@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./registerFrom.scss";
 import { useState } from "react";
 
@@ -9,6 +9,8 @@ const RegisterForm = () => {
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
+    const navigate = useNavigate();
+
 
 
     const handleSubmit = (e) => {
@@ -20,6 +22,8 @@ const RegisterForm = () => {
             phoneNumber: phoneNumber,
             address: address
         }
+        
+        navigate('/login');
     }
 
 
@@ -27,7 +31,7 @@ const RegisterForm = () => {
     <div className="register-form-container">
       <div className="card-register">
         <h1>ĐĂNG KÝ</h1>
-        <form action={handleSubmit}>
+        <form >
           <div className="form-group">
             <input
               type="text"
@@ -89,7 +93,7 @@ const RegisterForm = () => {
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>
-          <button className="button" type="submit">
+          <button onClick={handleSubmit} className="button" type="submit">
             Đăng ký
           </button>
           <div className="register">
