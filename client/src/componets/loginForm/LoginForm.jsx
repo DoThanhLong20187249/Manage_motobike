@@ -1,6 +1,8 @@
 import '../../styles/LoginForm.css'
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
+
 
 const LoginForm = () => {
   return (
@@ -17,7 +19,7 @@ const LoginForm = () => {
         </div>
         <div className="remember-forgot">
           <label>
-            <input type="checkbox" />
+            <input type="checkbox"  />
             Ghi nhớ
           </label>
           <a href="#">Quên mật khẩu?</a>
@@ -25,7 +27,7 @@ const LoginForm = () => {
         <button id='btn-login'>Login</button>
         <div className="register-link">
           <p>
-            Bạn chưa có tài khoản? <a href="/">Đăng ký</a>
+            Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
           </p>
         </div>
       </div>

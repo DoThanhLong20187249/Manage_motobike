@@ -8,6 +8,7 @@ import Home from "./page/Home.jsx";
 import Products from "./page/Products.jsx";
 import Users from "./page/Users.jsx";
 import LoginForm from "./componets/loginForm/LoginForm.jsx";
+import RegisterForm from "./componets/registerForm/RegisterForm.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,7 +31,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginForm />,
-  }
+  },
+  {
+    path: "/register",  
+    element: <RegisterForm  />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

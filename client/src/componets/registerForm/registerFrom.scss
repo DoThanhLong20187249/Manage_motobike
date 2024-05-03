@@ -1,0 +1,136 @@
+.register-form-container {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+
+  .card-register {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px 35px;
+    background-image: linear-gradient(#ebebf9, rgb(245, 253, 255));
+    border-radius: 20px;
+    box-shadow: 0 0 20px #00000056;
+    z-index: 1;
+
+    h1 {
+      color: #000000;
+      font-weight: bold;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+  form {
+    width: 100%;
+    .form-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      margin: 10px 0;
+
+      label {
+        color: #000000de;
+        margin-bottom: 10px;
+      }
+    }
+
+    .form-field {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      background-color: #ffffff;
+      color: #000000de;
+      font-size: 12pt;
+      box-shadow: 0 0 10px #00000056;
+      box-sizing: border-box;
+      outline: none;
+
+      ::placeholder {
+        color: #f0ffff94;
+      }
+    }
+
+    // select.form-field {
+    //   appearance: none;
+    //   /* Remove default appearance */
+    //   background-position: right 15px center;
+    //   /* Adjust arrow position */
+    //   background-size: 12px;
+    //   /* Adjust arrow size */
+    //   padding-right: 30px;
+    //   /* Make space for the arrow */
+
+    //   option[disabled] {
+    //     color: #999999; // Add a different color for the placeholder option
+    //   }
+    // }
+
+    // .form-error {
+    //   display: block;
+    //   color: #fff;
+    //   font-size: 0.8em;
+    // }
+
+    .button {
+      width: 100%;
+      padding: 16px 0px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+      text-transform: uppercase;
+      font-weight: bolder;
+      letter-spacing: 3px;
+      cursor: pointer;
+      margin-top: 15px;
+      background: #a2d9f9;
+      color: rgb(255, 255, 255);
+    }
+
+    .register {
+      margin-top: 10px;
+      color: black;
+      .text {
+        color: rgb(55, 120, 224);
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
+    .errorMsg {
+      color: red;
+      font-size: small;
+    }
+
+    @media (max-width: 950px) {
+      .card-register {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .body {
+        flex-direction: column;
+      }
+
+      .left-login {
+        width: 100%;
+        height: auto;
+      }
+
+      .register-form {
+        width: 100%;
+        height: auto;
+
+        .card-register {
+          width: 90%;
+        }
+      }
+    }
+  }
+}
