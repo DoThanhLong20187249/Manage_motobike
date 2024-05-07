@@ -3,11 +3,14 @@ import "../../styles/LoginForm.css";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
+import { LoginUser } from "../../redux/apiRequest";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -16,7 +19,7 @@ const LoginForm = () => {
       password: password,
     };
 
-    navigate("/home");
+    LoginUser(user, dispatch, navigate);
   };
   return (
     <div className="login-form">

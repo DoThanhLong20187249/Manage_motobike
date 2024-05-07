@@ -2,100 +2,72 @@
 // import { FaHouseUser } from "react-icons/fsrc/assets/a";
 
 
+
+
 export const menuData = [
   {
     id: 1,
-    title: "main",
+    title: "",
     listItems: [
       {
         id: 1,
-        title: "HomePage",
-        url: "/home",
+        title: "Trang chủ",
+        url: "/",
         icon: "src/assets/home.svg",
       },
       {
         id: 2,
-        title: "Profile",
-        url: "/users/1",
-        icon: "src/assets/user.svg",
+        title: "Hồ sơ cửa hàng",
+        url: "/home/profile",
+        icon: "src/assets/shop.svg",
       },
     ],
   },
   {
     id: 2,
-    title: "lists",
+    title: "Mục Quản lí",
     listItems: [
       {
         id: 1,
-        title: "Users",
+        title: "Quản lí tài khoản",
         url: "/users",
         icon: "src/assets/user.svg",
       },
       {
-        id: 2,
-        title: "Products",
+        id: 1,
+        title: "Danh mục sản phẩm",
+        url: "/product-list",
+        icon: "src/assets/product-list.svg",
+      },
+      {
+        id: 3,
+        title: "Sản Phẩm",
         url: "/products",
         icon: "src/assets/product.svg",
       },
       {
-        id: 3,
-        title: "Orders",
+        id: 4,
+        title: "Hóa đơn",
         url: "/orders",
         icon: "src/assets/order.svg",
       },
       {
-        id: 4,
-        title: "Posts",
+        id: 5,
+        title: "Xe máy",
         url: "/posts",
-        icon: "src/assets/post2.svg",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "general",
-    listItems: [
-      {
-        id: 1,
-        title: "Elements",
-        url: "/",
-        icon: "src/assets/element.svg",
+        icon: "src/assets/motobike.svg",
       },
       {
-        id: 2,
-        title: "Notes",
-        url: "/",
-        icon: "src/assets/note.svg",
+        id: 6,
+        title: "Khách hàng",
+        url: "/users",
+        icon: "src/assets/motorcycle.svg",
       },
       {
-        id: 3,
-        title: "Forms",
-        url: "/",
-        icon: "src/assets/form.svg",
-      },
-      {
-        id: 4,
-        title: "Calendar",
-        url: "/",
-        icon: "src/assets/calendar.svg",
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: "Maintenance",
-    listItems: [
-      {
-        id: 1,
-        title: "Settings",
-        url: "/",
-        icon: "src/assets/setting.svg",
-      },
-      {
-        id: 2,
-        title: "Backups",
-        url: "/",
-        icon: "src/assets/backup.svg",
+        id: 7,
+        title: "Nhân viên",
+        url: "/users",
+        icon: "src/assets/employee.svg",
       },
     ],
   },

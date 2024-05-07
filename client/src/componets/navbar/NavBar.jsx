@@ -2,8 +2,11 @@ import logo from "../../assets/logo.png";
 import avatar from "../../assets/avatar.jpg";
 import "../../styles/navbar.scss";
 import { IoIosSearch, IoIosNotificationsOutline,IoIosSettings  } from "react-icons/io";
+import { useState } from "react";
 
 const NavBar = () => {
+  const [name, setName] = useState()
+
   return (
     <div className="navbar">
       <div className="logo-content">
@@ -17,7 +20,7 @@ const NavBar = () => {
         </div>
         <div className="user">
             <img src={avatar} alt="Avatar-user" />
-            <span>Thành Long</span>
+            <span>{name}</span>
         </div>
         <IoIosSettings className="icon" /> 
       </div>
