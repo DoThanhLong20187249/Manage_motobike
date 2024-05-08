@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "../componets/dataTable/DataTable";
 import { userRows } from "../componets/menu/MenuData";
 import AddForm from "../componets/addForm/AddForm";
 import '../styles/users.scss'
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsers } from "../redux/apiRequest";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -60,6 +62,13 @@ const columns = [
 
 const Users = () => {
   const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getAllUsers(user.accessToken, dispatch)
+  },[])
+  const dataAccount = useSelector((state) => state.account.allAccounts);
+  
   return (
     <div className="users-container">
       <div className="infor">

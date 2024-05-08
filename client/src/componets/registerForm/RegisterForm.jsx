@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./registerFrom.scss";
 import { useState } from "react";
+import { RegisterUser } from "../../redux/apiRequest";
+import { useDispatch } from "react-redux";
 
 const RegisterForm = () => {
 
@@ -10,20 +12,21 @@ const RegisterForm = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newCustomer = {
-            email: email,
-            password: password,
-            fullName: fullName,
-            phoneNumber: phoneNumber,
-            address: address
+          name: fullName,
+          phone: phoneNumber,
+          address: address,
+          email: email,
+          password: password
         }
         
-        navigate('/login');
+        RegisterUser(newCustomer, dispatch, navigate);
     }
 
 

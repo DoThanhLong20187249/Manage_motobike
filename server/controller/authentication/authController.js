@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 // Register
 const registerUser = async (req, res) => {
   const { name, phone, address, email, password } = req.body;
-  const role = "employee";
+  const role = "customer";
 
   try {
     const exitingUser = await pool.query(
@@ -33,11 +33,13 @@ const registerUser = async (req, res) => {
         "INSERT INTO Customer (name, phone, address,user_id) VALUES ($1, $2, $3, $4)",
         [name, phone, address, userId]
       );
-      // } else if (role === "employee") {
-      //   await pool.query(
-      //     "INSERT INTO Employee (name, phone, address,position, user_id) VALUES ($1, $2, $3, $4)",
-      //     [name, phone, address, userId]
-      //   );
+      } else if (role === "employee") {
+        const position = "employee"
+        await pool.query(
+          "INSERT INTO Employee (name, phone, address,position, user_id) VALUES ($1, $2, $3, $4)",
+          [name, phone, address, position,userId]
+        );
+
     }
 
     res.status(201).json({

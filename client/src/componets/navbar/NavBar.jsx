@@ -2,10 +2,10 @@ import logo from "../../assets/logo.png";
 import avatar from "../../assets/avatar.jpg";
 import "../../styles/navbar.scss";
 import { IoIosSearch, IoIosNotificationsOutline,IoIosSettings  } from "react-icons/io";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
-  const [name, setName] = useState()
+  const nameUser = useSelector((state) => state.auth.login?.currentUser);
 
   return (
     <div className="navbar">
@@ -20,7 +20,7 @@ const NavBar = () => {
         </div>
         <div className="user">
             <img src={avatar} alt="Avatar-user" />
-            <span>{name}</span>
+            <span>{nameUser.info.name}</span>
         </div>
         <IoIosSettings className="icon" /> 
       </div>

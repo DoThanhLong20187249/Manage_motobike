@@ -11,16 +11,16 @@ import { Outlet } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <NavBar/>
+      <NavBar />
       <div className="app-container">
-         <div className="menu-container">
-          <Menu/>
-         </div>
-         <div className="main-container">
-          <Outlet/>
-         </div>
+        <div className="menu-container">
+          <Menu />
+        </div>
+        <div className="main-container">
+          <Outlet />
+        </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
     // <>
     //   <HomeClient />
