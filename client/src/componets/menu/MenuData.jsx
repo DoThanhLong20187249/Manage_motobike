@@ -1,5 +1,4 @@
 
-// import { FaHouseUser } from "react-icons/fsrc/assets/a";
 
 
 
@@ -30,7 +29,7 @@ export const menuData = [
       {
         id: 1,
         title: "Quản lí tài khoản",
-        url: "/users",
+        url: "/account",
         icon: "src/assets/user.svg",
       },
       {

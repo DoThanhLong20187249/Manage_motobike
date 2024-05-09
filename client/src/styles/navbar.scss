@@ -19,6 +19,7 @@
     .icons {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 20px;
         .icon {
             height: 25px;
@@ -34,6 +35,10 @@
                 border-radius: 50%;
                 object-fit: cover;
             }
+        }
+        .logout:hover{
+            cursor: pointer;
+            text-decoration: underline;
         }
     }
 }

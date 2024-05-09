@@ -10,7 +10,7 @@ const registerUser = async (req, res) => {
 
   try {
     const exitingUser = await pool.query(
-      "SELECT * FROM Users WHERE email = $1",
+      "SELECT * FROM Account WHERE email = $1",
       [email]
     );
     if (exitingUser.rows.length > 0) {
@@ -22,33 +22,39 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await pool.query(
-      "INSERT INTO Users (email, password, role) VALUES ($1, $2, $3) RETURNING id",
-      [email, hashedPassword, role]
-    );
-
-    const userId = newUser.rows[0].id;
     if (role === "customer") {
-      await pool.query(
-        "INSERT INTO Customer (name, phone, address,user_id) VALUES ($1, $2, $3, $4)",
-        [name, phone, address, userId]
+      const newCustomer = await pool.query(
+        "INSERT INTO Customer (name, phone, address) VALUES ($1, $2, $3) RETURNING id",
+        [name, phone, address]
       );
-      } else if (role === "employee") {
-        const position = "employee"
-        await pool.query(
-          "INSERT INTO Employee (name, phone, address,position, user_id) VALUES ($1, $2, $3, $4)",
-          [name, phone, address, position,userId]
-        );
-
+      const customer_id = newCustomer?.rows[0].id;
+      await pool.query(
+        "INSERT INTO Account (email, password,customer_id, role) VALUES ($1, $2, $3, $4)",
+        [email, hashedPassword, customer_id, role]
+      );
+      return res.status(201).json({
+        status: "success",
+        message: "User has been registered",
+      });
+    } else if (role === "employee") {
+      const position = null;
+      const avatar_url = "src/assets/avatar.jpg";
+      const newEmployee = await pool.query(
+        "INSERT INTO Employee (name, phone, address,position, avatar_url) VALUES ($1, $2, $3, $4,$5) RETURNING id",
+        [name, phone, address, position, avatar_url]
+      );
+      const employee_id = newEmployee?.rows[0].id;
+      await pool.query(
+        "INSERT INTO Account (email, password,employee_id, role) VALUES ($1, $2, $3 , $4)",
+        [email, hashedPassword, employee_id, role]
+      );
+      return res.status(201).json({
+        status: "success",
+        message: "User has been registered",
+      });
     }
-
-    res.status(201).json({
-      status: "success",
-      message: "User has been registered",
-      data: newUser.rows,
-    });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "failed",
       message: err.message,
     });
@@ -80,17 +86,26 @@ const generateRefreshToken = (user) => {
 // Login
 const loginUser = async (req, res) => {
   try {
-    const user = await pool.query("SELECT * FROM Users WHERE email = $1", [
+    const user = await pool.query("SELECT * FROM Account WHERE email = $1", [
       req.body.email,
     ]);
     if (user.rows[0].role === "customer") {
-      const infoUser = await pool.query("SELECT * FROM Customer WHERE user_id = $1", [user.rows[0].id]);
+      const infoUser = await pool.query(
+        "SELECT * FROM Customer WHERE id = $1",
+        [user.rows[0].customer_id]
+      );
       user.rows[0].info = infoUser.rows[0];
     } else if (user.rows[0].role === "employee") {
-      const infoUser = await pool.query("SELECT * FROM Employee WHERE user_id = $1", [user.rows[0].id]);
+      const infoUser = await pool.query(
+        "SELECT * FROM Employee WHERE id = $1",
+        [user.rows[0].employee_id]
+      );
       user.rows[0].info = infoUser.rows[0];
     } else if (user.rows[0].role === "admin") {
-      const infoUser = await pool.query("SELECT * FROM Employee WHERE user_id = $1", [user.rows[0].id]);
+      const infoUser = await pool.query(
+        "SELECT * FROM Employee WHERE id = $1",
+        [user.rows[0].employee_id]
+      );
       user.rows[0].info = infoUser.rows[0];
     }
 
@@ -122,8 +137,7 @@ const loginUser = async (req, res) => {
         path: "/",
         sameSite: "strict",
       });
-      res.status(200).json({ ...data, token }
-      );
+      res.status(200).json({ ...data, token });
     }
   } catch (error) {
     res.status(400).json({
@@ -150,7 +164,8 @@ const requestRefreshToken = async (req, res) => {
     }
     const newACcessToken = generateAccessToken(user); // create new access token
     const newRefreshToken = generateRefreshToken(user); // create new refresh token
-    res.cookie("refreshToken", newRefreshToken, { // set new refresh token
+    res.cookie("refreshToken", newRefreshToken, {
+      // set new refresh token
       httpOnly: true,
       secure: false,
       path: "/",
@@ -174,11 +189,11 @@ const userLogout = async (req, res) => {
     status: "success",
     message: "User has been logged out",
   });
-}
+};
 
 module.exports = {
   registerUser,
   loginUser,
   requestRefreshToken,
-  userLogout
+  userLogout,
 };

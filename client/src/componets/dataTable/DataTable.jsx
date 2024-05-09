@@ -33,7 +33,7 @@ const DataTable = (props) => {
       <Box sx={{ height: "100%", width: "100%" }}>
         <DataGrid
           className="data-table"
-          rows={props.rows}
+          rows={props.rows}   
           columns={[...props.columns, actionColum]}
           initialState={{
             pagination: {
