@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       phone_employee: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       address_employee: {
         type: Sequelize.STRING

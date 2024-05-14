@@ -119,6 +119,7 @@ const AddForm = () => {
                   
                   onChange={(e) => setPosition_employee(e.target.value)}
                 >
+                  <option value="">lựa chọn</option>
                   <option value="receptionist">Lễ tân</option>
                   <option value="staff">Thợ sợ chữa</option>
                 </select>
@@ -170,6 +171,7 @@ const AddForm = () => {
               
                   onChange={(e) => setGender(e.target.value)}
                 >
+                  <option value="">lựa chọn</option>
                   <option value="Nam">Nam</option>
                   <option value="Nữ">Nữ</option>
                 </select>

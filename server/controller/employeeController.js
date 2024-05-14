@@ -1,5 +1,9 @@
 const pool = require("../db").pool;
 const bcrypt = require("bcrypt");
+const db = require("../models/index");
+const dbEmployee = db.Employee;
+const dbAccount = db.Account;
+const dbShop = db.Shop;
 
 const getAllEmployee = async (req, res) => {
   const getAllEmployee = await pool.query('SELECT * from "Employees"');
@@ -11,7 +15,35 @@ const getAllEmployee = async (req, res) => {
 };
 
 const getEmployeeById = async (req, res) => {
-  
+  try {
+    dbAccount.hasOne(dbEmployee, { foreignKey: "account_id" });
+    dbEmployee.belongsTo(dbAccount, { foreignKey: "account_id" });
+    dbEmployee.belongsTo(dbShop, { foreignKey: "shop_id" });
+    dbShop.hasMany(dbEmployee, { foreignKey: "shop_id" });
+
+    const id = req.params.id;
+    const singleEmployee = await dbEmployee.findOne({
+      where: { id: id },
+      include:  [
+      { model: dbAccount, attributes:["email", "role_account","password_account"] },
+      { model: dbShop, attributes: ["shop_name"] }
+      ],
+      attributes: { exclude: ["shop_id","account_id","createdAt", "updatedAt"] },
+    });
+
+    console.log(singleEmployee);
+
+    return res.status(200).json({
+      status: "success",
+      message: "Get 1 Employee",
+      data: singleEmployee,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
 };
 
 const addEmployee = async (req, res) => {

@@ -5,8 +5,6 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
-import AccountSingle from "../accountSingle/AccountSingle";
-
 
 const DataTable = (props) => {
   const [openEdit, setOpenEdit] = useState(false);
@@ -18,15 +16,13 @@ const DataTable = (props) => {
     renderCell: (params) => {
       return (
         <div className="action-container">
-          {/* <Link to={`/${props.slug}/${params.row.id}`}> */}
-          <div>
+          <Link to={`/${props.slug}/${params.row.id}`}>
             <img
               onClick={() => handleShowDetail(params.row.id)}
               src="src/assets/view.svg"
               alt="svg-icon"
             />
-          </div>
-          {/* </Link> */}
+          </Link>
           <div className="delete" onClick={() => handleDelete(params.row.id)}>
             <img src="src/assets/delete.svg" alt="delete-icon" />
           </div>
@@ -40,7 +36,6 @@ const DataTable = (props) => {
 
     console.log(id + "has been clicked");
   }
-
 
   function handleDelete(id) {
     console.log(id + "has been deleted");
@@ -79,13 +74,6 @@ const DataTable = (props) => {
           disableDensitySelector
         />
       </Box>
-      {/* {singleAcountInfo ? (
-        <>{openEdit && <AccountSingle setOpenEdit={setOpenEdit} />}</>
-      ) : (
-        <>
-          <div>loading...</div>
-        </>
-      )} */}
     </div>
   );
 };

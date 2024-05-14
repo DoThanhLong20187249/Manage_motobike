@@ -10,9 +10,9 @@ import Users from "./page/Users.jsx";
 import LoginForm from "./componets/loginForm/LoginForm.jsx";
 import RegisterForm from "./componets/registerForm/RegisterForm.jsx";
 import {  store } from "./redux/store.js";
-import AccountSingle from "./componets/accountSingle/AccountSingle.jsx";
 import Profile from "./page/Profile/Profile.jsx";
 import AddForm from "./componets/addForm/AddForm.jsx";
+import SingleEmployee from "./componets/SinglePage/singleEmployee/SingleEmployee.jsx";
 
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
@@ -32,10 +32,10 @@ const router = createBrowserRouter([
         path: "/employee",
         element: <Users />,
       },
-      // {
-      //   path: "/account/:id",
-      //   element: <AccountSingle />,
-      // },
+      {
+        path: "/employee/:id",
+        element: <SingleEmployee/>,
+      },
       {
         path:"profile",
         element: <Profile/>
