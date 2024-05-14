@@ -11,3 +11,7 @@ const pool = new Pool({
 
 
 exports.pool = pool;
+
+
+
+// connect to database and export the connection sequelize

@@ -25,7 +25,7 @@ const middlewareController = {
 
   verifyTokenAdmin :( req, res, next) => {
     middlewareController.verifyToken(req, res, () => {
-      if (req.user.role === "admin") {
+      if (req.user.role === "manager") {
         next();
       } else {
         return res.status(403).json({

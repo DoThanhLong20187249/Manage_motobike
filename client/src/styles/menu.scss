@@ -1,6 +1,9 @@
 @import "../varibales.scss";
 
 .menu {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   .item {
     display: flex;
@@ -13,7 +16,6 @@
       font-weight: 200;
       color: $soft-color;
       text-transform: uppercase;
-
     }
 
     .listItem {
@@ -23,11 +25,18 @@
       padding: 10px;
       border-radius: 5px;
 
-      
-
       &:hover {
         background-color: $soft-bg;
       }
     }
+
+
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: $main-color;
+    border-radius: 5px;
   }
 }

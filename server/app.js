@@ -3,7 +3,7 @@ const moragn = require('morgan');
 const app = express();
 const customerRouter = require('./router/customerRouter')
 const authRouter = require('./router/authRouter')
-const accountRouter = require('./router/accountRouter')
+const employeeRouter = require('./router/employeeRouter')
 const cors = require('cors')
 
 
@@ -14,7 +14,7 @@ app.use(moragn('dev'))
 
 app.use('/api/v1/customer', customerRouter);
 app.use('/auth', authRouter)
-app.use('/account',accountRouter)
+app.use('/employee',employeeRouter)
 
 
 

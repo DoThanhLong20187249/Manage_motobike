@@ -11,6 +11,7 @@ const RegisterForm = () => {
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
+    const [shopName, setShopName] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -19,9 +20,10 @@ const RegisterForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const newCustomer = {
-          name: fullName,
-          phone: phoneNumber,
-          address: address,
+          shop_owner_name: fullName,
+          shop_name: shopName,
+          hotline: phoneNumber,
+          shop_address: address,
           email: email,
           password: password
         }
@@ -53,27 +55,28 @@ const RegisterForm = () => {
               id="inputCreatePost"
               placeholder="Mật khẩu"
               className="form-field"
+              onChange={(e) => setPassword(e.target.value)}
             />
             {/* <span className="errorMsg">Mật khẩu không được để trống</span> */}
           </div>
           <div className="form-group">
             <input
               name="confirmPass"
-              type="password"
+              type="text"
               id="inputCreatePost"
-              placeholder="Nhập lại mật khẩu"
+              placeholder="Họ và tên "
               className="form-field"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setFullName(e.target.value)}
             />
-            {/* <span className="errorMsg">Nhập lại chính xác mật khẩu</span> */}
+            {/* <span className="errorMsg"></span> */}
           </div>
           <div className="form-group">
             <input
               name="fullName"
               id="inputCreatePost"
-              placeholder="Họ và tên"
+              placeholder="Tên xưởng xe máy của bạn"
               className="form-field"
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => setShopName(e.target.value)}
             />
             {/* <span className="errorMsg">Họ và tên không được để trống</span> */}
           </div>

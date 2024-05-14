@@ -6,7 +6,10 @@ import {chartBoxUser , chartBoxRevenue, chartBoxConversion, chartBoxProduct
 import BarChatBox from '../componets/barChatBox/BarChatBox';
 import PieChartBox from '../componets/pieChartBox/PieChartBox';
 import BigChartBox from '../componets/bigChartBox.jsx/BigChartBox';
+
 const Home = () => {
+
+
     return (
         <div className="home">
             <div className='box box1'>

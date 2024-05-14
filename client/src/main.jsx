@@ -9,8 +9,12 @@ import Products from "./page/Products.jsx";
 import Users from "./page/Users.jsx";
 import LoginForm from "./componets/loginForm/LoginForm.jsx";
 import RegisterForm from "./componets/registerForm/RegisterForm.jsx";
-import { persistor, store } from "./redux/store.js";
-import { PersistGate } from "redux-persist/integration/react";
+import {  store } from "./redux/store.js";
+import AccountSingle from "./componets/accountSingle/AccountSingle.jsx";
+import Profile from "./page/Profile/Profile.jsx";
+import AddForm from "./componets/addForm/AddForm.jsx";
+
+// import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,9 +29,21 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
-        path: "/account",
+        path: "/employee",
         element: <Users />,
       },
+      // {
+      //   path: "/account/:id",
+      //   element: <AccountSingle />,
+      // },
+      {
+        path:"profile",
+        element: <Profile/>
+      },
+      {
+        path:"employee/add",
+        element: <AddForm/>
+      }
     ],
   },
   {
@@ -42,8 +58,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+    {/* <PersistGate loading={null} persistor={persistor}> */}
       <RouterProvider router={router} />
-    </PersistGate>
+    {/* </PersistGate> */}
   </Provider>
 );

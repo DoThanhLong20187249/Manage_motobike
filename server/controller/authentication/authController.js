@@ -1,59 +1,73 @@
 const pool = require("../../db").pool;
 const bcrypt = require("bcrypt");
-const e = require("express");
 const jwt = require("jsonwebtoken");
+const db = require("../../models/index")
+
+const dbAccount = db.Account;
+
 
 // Register
 const registerUser = async (req, res) => {
-  const { name, phone, address, email, password } = req.body;
-  const role = "customer";
+  const { shop_owner_name, shop_name, hotline, shop_address, email, password } =
+    req.body;
+
+    console.log(req.body)
+  const is_admin = false;
+  const role_account = "manager";
 
   try {
     const exitingUser = await pool.query(
-      "SELECT * FROM Account WHERE email = $1",
+      'SELECT * FROM "Accounts" WHERE email = $1',
       [email]
     );
+
     if (exitingUser.rows.length > 0) {
       return res.status(400).json({
         status: "failed",
-        message: "User already exists",
+        message: "Tài khoản đã tồn tại",
       });
     }
+
+    const exitingShop = await pool.query(
+      'SELECT * FROM "Shops" WHERE shop_name = $1',
+      [shop_name]
+    );
+
+    if (exitingShop.rows.length > 0) {
+      return res.status(400).json({
+        status: "failed",
+        message: "Tên xưởng đã tồn tại",
+      });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    if (role === "customer") {
-      const newCustomer = await pool.query(
-        "INSERT INTO Customer (name, phone, address) VALUES ($1, $2, $3) RETURNING id",
-        [name, phone, address]
+    if (exitingShop.rows.length === 0 && exitingUser.rows.length === 0) {
+      const newAccount = await pool.query(
+        'INSERT INTO "Accounts" (email, password_account, role_account, is_admin,"createdAt","updatedAt") VALUES ($1, $2, $3, $4, $5,$6) RETURNING id',
+        [email, hashedPassword, role_account, is_admin, new Date(), new Date()]
       );
-      const customer_id = newCustomer?.rows[0].id;
+
       await pool.query(
-        "INSERT INTO Account (email, password,customer_id, role) VALUES ($1, $2, $3, $4)",
-        [email, hashedPassword, customer_id, role]
+        'INSERT INTO "Shops" (shop_name, hotline, shop_address, shop_owner_name, account_id,"createdAt","updatedAt") VALUES ($1, $2, $3, $4, $5 , $6, $7)',
+        [
+          shop_name,
+          hotline,
+          shop_address,
+          shop_owner_name,
+          newAccount.rows[0].id,
+          new Date(),
+          new Date(),
+        ]
       );
-      return res.status(201).json({
+      return res.status(200).json({
         status: "success",
-        message: "User has been registered",
-      });
-    } else if (role === "employee") {
-      const position = null;
-      const avatar_url = "src/assets/avatar.jpg";
-      const newEmployee = await pool.query(
-        "INSERT INTO Employee (name, phone, address,position, avatar_url) VALUES ($1, $2, $3, $4,$5) RETURNING id",
-        [name, phone, address, position, avatar_url]
-      );
-      const employee_id = newEmployee?.rows[0].id;
-      await pool.query(
-        "INSERT INTO Account (email, password,employee_id, role) VALUES ($1, $2, $3 , $4)",
-        [email, hashedPassword, employee_id, role]
-      );
-      return res.status(201).json({
-        status: "success",
-        message: "User has been registered",
+        message: "Tạo tài khoản thành công",
       });
     }
   } catch (err) {
+    console.log(err)
     return res.status(400).json({
       status: "failed",
       message: err.message,
@@ -65,7 +79,8 @@ const generateAccessToken = (user) => {
   return jwt.sign(
     {
       id: user.rows[0].id,
-      role: user.rows[0].role,
+      role: user.rows[0].role_account,
+      admin: user.rows[0].is_admin,
     },
     process.env.JWT_ACCESS_KEY,
     { expiresIn: "1h" }
@@ -76,7 +91,8 @@ const generateRefreshToken = (user) => {
   return jwt.sign(
     {
       id: user.rows[0].id,
-      role: user.rows[0].role,
+      role: user.rows[0].role_account,
+      admin: user.rows[0].is_admin,
     },
     process.env.JWT_REFRESH_KEY,
     { expiresIn: "365d" }
@@ -86,45 +102,54 @@ const generateRefreshToken = (user) => {
 // Login
 const loginUser = async (req, res) => {
   try {
-    const user = await pool.query("SELECT * FROM Account WHERE email = $1", [
+    const user = await pool.query('SELECT * FROM "Accounts" WHERE email = $1', [
       req.body.email,
     ]);
-    if (user.rows[0].role === "customer") {
-      const infoUser = await pool.query(
-        "SELECT * FROM Customer WHERE id = $1",
-        [user.rows[0].customer_id]
-      );
-      user.rows[0].info = infoUser.rows[0];
-    } else if (user.rows[0].role === "employee") {
-      const infoUser = await pool.query(
-        "SELECT * FROM Employee WHERE id = $1",
-        [user.rows[0].employee_id]
-      );
-      user.rows[0].info = infoUser.rows[0];
-    } else if (user.rows[0].role === "admin") {
-      const infoUser = await pool.query(
-        "SELECT * FROM Employee WHERE id = $1",
-        [user.rows[0].employee_id]
-      );
-      user.rows[0].info = infoUser.rows[0];
-    }
-
-    console.log(user.rows[0]);
-
     if (user.rows.length === 0) {
       return res.status(400).json({
         status: "failed",
-        message: "User not found",
+        message: "Sai tên tài khoản hoặc mật khẩu",
       });
     }
+  
+
     const validPassword = await bcrypt.compare(
       req.body.password,
-      user.rows[0].password
+      user.rows[0].password_account
     );
     if (!validPassword) {
       return res.status(400).json({
         status: "failed",
         message: "Invalid password",
+      });
+    }
+
+    
+  
+
+
+    if (
+      user.rows[0].role_account === "receptionist" ||
+      user.rows[0].role_account === "staff"
+    ) {
+      const infoUser = await pool.query(
+        'SELECT * FROM "Employees" WHERE account_id = $1',
+        [user.rows[0].id]
+      );
+      user.rows[0].info = infoUser.rows[0];
+    } else if (user.rows[0].role_account === "manager") {
+      const infoUser = await pool.query(
+        'SELECT * FROM "Shops" WHERE  account_id = $1',
+        [user.rows[0].id]
+      );
+      user.rows[0].info = infoUser.rows[0];
+    }
+
+
+    if (user.rows.length === 0) {
+      return res.status(400).json({
+        status: "failed",
+        message: "User not found",
       });
     }
     if (user && validPassword) {
@@ -140,11 +165,12 @@ const loginUser = async (req, res) => {
       res.status(200).json({ ...data, token });
     }
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "failed",
       message: error.message,
     });
   }
+
 };
 
 const requestRefreshToken = async (req, res) => {

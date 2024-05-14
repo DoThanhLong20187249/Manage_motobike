@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import DataTable from "../componets/dataTable/DataTable";
-import { userRows } from "../componets/menu/MenuData";
+
 import AddForm from "../componets/addForm/AddForm";
+
 import "../styles/users.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "../redux/apiRequest";
-import { useNavigate } from "react-router-dom";
+
+import { getAllEmployee } from "../redux/apiRequest";
+import { Link } from "react-router-dom";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
   // {
-  //   field: "img",
+  //   field: "",
   //   headerName: "Avatar",
   //   width: 100,
   //   renderCell: (params) => {
@@ -24,73 +26,75 @@ const columns = [
   //   },
   // },
   {
-    field: "name",
+    field: "name_employee",
     headerName: "Tên người dùng",
-    width: 200,
-    type: "string",
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    width: 200,
-    type: "string",
-  },
-  {
-    field: "password",
-    headerName: "Mật khẩu",
     width: 150,
     type: "string",
   },
   {
-    field: "role",
-    headerName: "Quyền",
+    field: "phone_employee",
+    headerName: "Số điện thoại",
     width: 150,
     type: "string",
   },
   {
-    field: "to_char",
-    headerName: "Ngày tạo",
+    field: "address_employee",
+    headerName: "Địa chỉ",
+    width: 150,
+    type: "string",
+  },
+  {
+    field: "position_employee",
+    headerName: "Chức vụ",
+    width: 150,
+    type: "string",
+  },
+  {
+    field: "shop_name",
+    headerName: "Xưởng",
     width: 200,
     type: "string",
   },
 ];
 
 const Users = () => {
+  const [open, setOpen] = useState(false);
+
   const user = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    getAllUsers(user?.token, dispatch);
+    getAllEmployee(user?.token, dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [open, setOpen] = useState(false);
-  // const nagative = useNavigate();
-
-
-
-  const dataAccount = useSelector(
-    (state) => state.account.accounts.allAccounts
+  const dataEmployee = useSelector(
+    (state) => state.employee.employees.allEmployees
   );
-
-  const newData = dataAccount.data.map((item) => {
-    return { ...item ,id: item.user_id};
+  const data = dataEmployee?.data.map((item) => {
+    return { ...item, shop_name: user?.info.shop_name };
   });
-
-  // console.log(newData);
 
   return (
     <div className="users-container">
       <div className="infor">
-        <h1>Danh sách tài khoản</h1>
-        <button
-          className="btn"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          Add New User
-        </button>
+        <h1>Danh sách Nhân viên</h1>
+        {user?.role_account === "manager" && (
+          <>
+            {" "}
+            <button>
+              <Link to={"/employee/add"}>Thêm mới nhân viên</Link>
+            </button>
+          </>
+        )}
       </div>
-      <DataTable slug={"users"} columns={columns} rows={newData} />
-      {open && <AddForm slug={"users"} columns={columns} setOpen={setOpen} />}
+      {data && (
+        <DataTable
+          slug={"employee"}
+          columns={columns}
+          rows={data}
+          accessToken={user?.token}
+          dispatch={dispatch}
+        />
+      )}
     </div>
   );
 };

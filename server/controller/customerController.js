@@ -2,7 +2,7 @@ const pool = require("../db").pool;
 
 
 const getAllCustomer = (req, res) => {
-  pool.query("SELECT * FROM Customer", (err, result) => {
+  pool.query('SELECT * FROM Customers', (err, result) => {
     if (err) {
       res.status(400).json({
         status: "failed",

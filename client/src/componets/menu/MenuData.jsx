@@ -17,7 +17,7 @@ export const menuData = [
       {
         id: 2,
         title: "Hồ sơ cửa hàng",
-        url: "/home/profile",
+        url: "/profile",
         icon: "src/assets/shop.svg",
       },
     ],
@@ -28,8 +28,8 @@ export const menuData = [
     listItems: [
       {
         id: 1,
-        title: "Quản lí tài khoản",
-        url: "/account",
+        title: "Nhân viên",
+        url: "/employee",
         icon: "src/assets/user.svg",
       },
       {
@@ -61,12 +61,6 @@ export const menuData = [
         title: "Khách hàng",
         url: "/users",
         icon: "src/assets/motorcycle.svg",
-      },
-      {
-        id: 7,
-        title: "Nhân viên",
-        url: "/users",
-        icon: "src/assets/employee.svg",
       },
     ],
   },

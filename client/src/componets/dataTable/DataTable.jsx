@@ -1,27 +1,45 @@
 import "../../styles/dataTable.scss";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
+import { useState } from "react";
+import AccountSingle from "../accountSingle/AccountSingle";
+
+
 const DataTable = (props) => {
-  const actionColum = 
-    {
-      field: "edit",
-      headerName: "Edit",
-      width: 150, 
-      renderCell: (params) => {
-        return (
-          <div className="action-container">
-            <Link to={`/${props.slug}/${params.row.id}`}>
-              <img src="src/assets/view.svg" alt="svg-icon" />
-            </Link>
-            <div className="delete" onClick={ () => handleDelete(params.row.id)}>
-              <img src="src/assets/delete.svg" alt="delete-icon" />
-            </div>
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const actionColum = {
+    field: "edit",
+    headerName: "Edit",
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <div className="action-container">
+          {/* <Link to={`/${props.slug}/${params.row.id}`}> */}
+          <div>
+            <img
+              onClick={() => handleShowDetail(params.row.id)}
+              src="src/assets/view.svg"
+              alt="svg-icon"
+            />
           </div>
-        );
-      },
-    };
+          {/* </Link> */}
+          <div className="delete" onClick={() => handleDelete(params.row.id)}>
+            <img src="src/assets/delete.svg" alt="delete-icon" />
+          </div>
+        </div>
+      );
+    },
+  };
+
+  function handleShowDetail(id) {
+    setOpenEdit(true);
+
+    console.log(id + "has been clicked");
+  }
 
 
   function handleDelete(id) {
@@ -30,15 +48,15 @@ const DataTable = (props) => {
 
   return (
     <div className="data-table-container">
-      <Box sx={{ height: "100%", width: "100%" }}>
+      <Box sx={{ height: "50%", width: "100%" }}>
         <DataGrid
           className="data-table"
-          rows={props.rows}   
+          rows={props.rows}
           columns={[...props.columns, actionColum]}
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10,
+                pageSize: 7,
               },
             },
           }}
@@ -61,6 +79,13 @@ const DataTable = (props) => {
           disableDensitySelector
         />
       </Box>
+      {/* {singleAcountInfo ? (
+        <>{openEdit && <AccountSingle setOpenEdit={setOpenEdit} />}</>
+      ) : (
+        <>
+          <div>loading...</div>
+        </>
+      )} */}
     </div>
   );
 };
