@@ -18,11 +18,15 @@ const getAllEmployee = async (req, res) => {
       where: { shop_id: shop.id },
       attributes: { exclude: ["shop_id", "createdAt", "updatedAt"] },
     });
-    return res.status(200).json({
-      status: "success",
-      message: "Get All Employee",
-      data: employee,
-    })
+    const newEmmployee = employee.map((item) => {
+      return {
+        ...item.toJSON(),
+        shop_name: shop.shop_name,
+      };
+    });
+    return res.status(200).json(
+      newEmmployee
+    )
   }catch (error) {
     return res.status(400).json({
       status: "fail",
@@ -172,12 +176,12 @@ const updateEmployeeById = async (req, res) => {
 }
 
 const deleteEmployeeById = async (req, res) => {
-  dbAccount.hasOne(dbEmployee, { foreignKey: "account_id" });
-  dbEmployee.belongsTo(dbAccount, { foreignKey: "account_id" });
+  dbAcountEmployee.belongsTo(dbEmployee, { foreignKey: "employee_id" });
+  dbEmployee.hasOne(dbAcountEmployee, { foreignKey: "employee_id" });
   try {
     const id = req.params.id;
     const employee = await dbEmployee.findOne({ where: { id: id } });
-    await dbAccount.destroy({ where: { id: employee.account_id } });
+    await dbAcountEmployee.destroy({ where: { employee_id: employee.id } });
     await dbEmployee.destroy({ where: { id: id } });
     return res.status(200).json({
       status: "success",

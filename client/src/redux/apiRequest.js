@@ -21,6 +21,9 @@ import {
   updateSingleEmployeeStart,
   updateSingleEmployeeSuccess,
   updateSingleEmployeeFailure,
+  deleteEmployeeStart,
+  deleteEmployeeSuccess,
+  deleteEmployeeFailure,
 } from "./employeeSlice";
 
 export const LoginUser = async (user, dispatch, navigate) => {
@@ -103,6 +106,20 @@ export const updateEmployee = async (id, employee, accessToken, dispatch, naviga
     navigate("/employee");
   } catch (error) {
     dispatch(updateSingleEmployeeFailure(error.response.message));
+  }
+}
+
+export const deleteEmployee = async (id, accessToken, dispatch) => {
+  dispatch(deleteEmployeeStart());
+  try {
+    await axios.delete(`http://localhost:3000/employee/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(deleteEmployeeSuccess(id));
+  } catch (error) {
+    dispatch(deleteEmployeeFailure());
   }
 }
 

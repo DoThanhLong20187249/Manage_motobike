@@ -76,6 +76,21 @@ const employeeSlice = createSlice({
       state.singleEmployee.error = true;
       state.singleEmployee.message = action.payload;
     },
+    deleteEmployeeStart: (state) => {
+      state.employees.isFetching = true;
+      state.employees.error = false;
+    },
+    deleteEmployeeSuccess: (state, action) => {
+      state.employees.isFetching = false;
+      state.employees.allEmployees = state.employees.allEmployees.filter(
+        (item) => item.id !== action.payload
+      );
+      state.employees.error = false;
+    },
+    deleteEmployeeFailure: (state) => {
+      state.employees.isFetching = false;
+      state.employees.error = true;
+    },
 
   },
 });
@@ -93,5 +108,8 @@ export const {
   updateSingleEmployeeStart,
   updateSingleEmployeeSuccess,
   updateSingleEmployeeFailure,
+  deleteEmployeeStart,
+  deleteEmployeeSuccess,
+  deleteEmployeeFailure,
 } = employeeSlice.actions;
 export default employeeSlice.reducer;

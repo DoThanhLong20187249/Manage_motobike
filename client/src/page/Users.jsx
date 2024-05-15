@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import DataTable from "../componets/dataTable/DataTable";
 
-import AddForm from "../componets/addForm/AddForm";
 
 import "../styles/users.scss";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getAllEmployee } from "../redux/apiRequest";
 import { Link } from "react-router-dom";
-import { sortingStateInitializer } from "@mui/x-data-grid/internals";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -62,6 +60,7 @@ const Users = () => {
   const [open, setOpen] = useState(false);
 
   const user = useSelector((state) => state.auth.login?.currentUser);
+  const [newData, setNewData] = useState([]);
   const dispatch = useDispatch();
 
   console.log(user?.id)
@@ -72,9 +71,10 @@ const Users = () => {
   const dataEmployee = useSelector(
     (state) => state.employee.employees.allEmployees
   );
-  const data = dataEmployee?.data.map((item) => {
-    return { ...item, shop_name: user?.shop_name };
-  });
+  useEffect(() => {
+
+    setNewData(dataEmployee);
+  },[dataEmployee])
 
   return (
     <div className="users-container">
@@ -89,11 +89,11 @@ const Users = () => {
           </>
         )}
       </div>
-      {data && (
+      {newData && (
         <DataTable
           slug={"employee"}
           columns={columns}
-          rows={data}
+          rows={newData}
           accessToken={user?.token}
           dispatch={dispatch}
         />

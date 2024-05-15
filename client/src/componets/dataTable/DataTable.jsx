@@ -5,12 +5,16 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
-import { getEmployeeById } from "../../redux/apiRequest";
+import { deleteEmployee, getEmployeeById } from "../../redux/apiRequest";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteEmployeeSuccess } from "../../redux/employeeSlice";
 
 const DataTable = (props) => {
   const [openEdit, setOpenEdit] = useState(false);
   const user = useSelector((state) => state.auth.login?.currentUser);
+  const dataEmployee = useSelector(
+    (state) => state.employee.employees.allEmployees
+  );
   const dispatch = useDispatch();
 
   const actionColum = {
@@ -44,6 +48,7 @@ const DataTable = (props) => {
 
   function handleDelete(id) {
     if (props.slug === "employee") {
+      deleteEmployee(id, user?.token, dispatch);
       console.log(id);
     }
   }
