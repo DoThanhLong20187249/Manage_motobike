@@ -31,7 +31,7 @@ const AddForm = () => {
         password: password,
         position_employee: "Lễ tân",
         role_account: "receptionist",
-        shop_id: user.info.id,
+        shop_id: user.shop_id,
       };
       console.log(newEmployee);
       addEmployee(newEmployee, user?.token, dispatch, navigate);
@@ -46,7 +46,7 @@ const AddForm = () => {
         password: password,
         position_employee: "Thợ sửa chữa",
         role_account: "staff",
-        shop_id: user.info.id,
+        shop_id: user.shop_id,
       };
       console.log(newEmployee);
       addEmployee(newEmployee, user?.token, dispatch, navigate);

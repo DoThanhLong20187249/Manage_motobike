@@ -17,8 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       Shop.hasOne(models.Account, {
         foreignKey: "shop_id",
       });
-      Shop.belongsToMany(models.Customer, {
-        through: models.ShopCustomer,
+      Shop.hasMany(models.ShopCustomer, {
         foreignKey: "shop_id",
       });
     }

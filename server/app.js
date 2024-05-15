@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(moragn('dev'))
 
 
-app.use('/api/v1/customer', customerRouter);
+app.use('/customer', customerRouter);
 app.use('/auth', authRouter)
 app.use('/employee',employeeRouter)
 

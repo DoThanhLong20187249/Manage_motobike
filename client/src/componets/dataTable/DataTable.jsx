@@ -4,17 +4,13 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
-import { useState } from "react";
+
 import { deleteEmployee, getEmployeeById } from "../../redux/apiRequest";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployeeSuccess } from "../../redux/employeeSlice";
+
 
 const DataTable = (props) => {
-  const [openEdit, setOpenEdit] = useState(false);
   const user = useSelector((state) => state.auth.login?.currentUser);
-  const dataEmployee = useSelector(
-    (state) => state.employee.employees.allEmployees
-  );
   const dispatch = useDispatch();
 
   const actionColum = {
@@ -41,7 +37,6 @@ const DataTable = (props) => {
 
   function handleShowDetail(id) {
     if (props.slug === "employee") {
-      setOpenEdit(true);
       getEmployeeById(id, user?.token, dispatch);
     }
   }
