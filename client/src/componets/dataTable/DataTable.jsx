@@ -5,9 +5,13 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
+import { getEmployeeById } from "../../redux/apiRequest";
+import { useDispatch, useSelector } from "react-redux";
 
 const DataTable = (props) => {
   const [openEdit, setOpenEdit] = useState(false);
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const dispatch = useDispatch();
 
   const actionColum = {
     field: "edit",
@@ -32,13 +36,16 @@ const DataTable = (props) => {
   };
 
   function handleShowDetail(id) {
-    setOpenEdit(true);
-
-    console.log(id + "has been clicked");
+    if (props.slug === "employee") {
+      setOpenEdit(true);
+      getEmployeeById(id, user?.token, dispatch);
+    }
   }
 
   function handleDelete(id) {
-    console.log(id + "has been deleted");
+    if (props.slug === "employee") {
+      console.log(id);
+    }
   }
 
   return (
@@ -66,6 +73,7 @@ const DataTable = (props) => {
               },
             },
           }}
+          sortModel={[{ field: "id", sort: "asc" }]}
           pageSizeOptions={[5]}
           checkboxSelection
           disableRowSelectionOnClick

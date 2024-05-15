@@ -1,9 +1,15 @@
 const pool = require("../../db").pool;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const db = require("../../models/index")
+const db = require("../../models/index");
+const e = require("express");
+const employee = require("../../models/employee");
 
 const dbAccount = db.Account;
+const dbShop = db.Shop;
+const dbEmployee = db.Employee;
+const dbAcountEmployee = db.AccountEmployee;
+
 
 
 // Register
@@ -11,9 +17,8 @@ const registerUser = async (req, res) => {
   const { shop_owner_name, shop_name, hotline, shop_address, email, password } =
     req.body;
 
-    console.log(req.body)
+  console.log(req.body);
   const is_admin = false;
-  const role_account = "manager";
 
   try {
     const exitingUser = await pool.query(
@@ -44,30 +49,23 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     if (exitingShop.rows.length === 0 && exitingUser.rows.length === 0) {
-      const newAccount = await pool.query(
-        'INSERT INTO "Accounts" (email, password_account, role_account, is_admin,"createdAt","updatedAt") VALUES ($1, $2, $3, $4, $5,$6) RETURNING id',
-        [email, hashedPassword, role_account, is_admin, new Date(), new Date()]
+      const newShop = await pool.query(
+        'INSERT INTO "Shops" (shop_name, hotline, shop_address, shop_owner_name) VALUES ($1, $2, $3, $4) RETURNING id',
+        [shop_name, hotline, shop_address, shop_owner_name]
       );
 
       await pool.query(
-        'INSERT INTO "Shops" (shop_name, hotline, shop_address, shop_owner_name, account_id,"createdAt","updatedAt") VALUES ($1, $2, $3, $4, $5 , $6, $7)',
-        [
-          shop_name,
-          hotline,
-          shop_address,
-          shop_owner_name,
-          newAccount.rows[0].id,
-          new Date(),
-          new Date(),
-        ]
+        'INSERT INTO "Accounts" (email, password_account, is_admin, shop_id) VALUES ($1, $2, $3, $4)',
+        [email, hashedPassword, is_admin, newShop.rows[0].id]
       );
+
       return res.status(200).json({
         status: "success",
         message: "Tạo tài khoản thành công",
       });
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(400).json({
       status: "failed",
       message: err.message,
@@ -75,24 +73,22 @@ const registerUser = async (req, res) => {
   }
 };
 // Generate token
-const generateAccessToken = (user) => {
+const generateAccessToken = (user, role_account) => {
   return jwt.sign(
     {
-      id: user.rows[0].id,
-      role: user.rows[0].role_account,
-      admin: user.rows[0].is_admin,
+      id: user.id,
+      role: role_account,
     },
     process.env.JWT_ACCESS_KEY,
     { expiresIn: "1h" }
   );
 };
 
-const generateRefreshToken = (user) => {
+const generateRefreshToken = (user, role_account) => {
   return jwt.sign(
     {
-      id: user.rows[0].id,
-      role: user.rows[0].role_account,
-      admin: user.rows[0].is_admin,
+      id: user.id,
+      role: role_account,
     },
     process.env.JWT_REFRESH_KEY,
     { expiresIn: "365d" }
@@ -102,75 +98,116 @@ const generateRefreshToken = (user) => {
 // Login
 const loginUser = async (req, res) => {
   try {
-    const user = await pool.query('SELECT * FROM "Accounts" WHERE email = $1', [
-      req.body.email,
-    ]);
-    if (user.rows.length === 0) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Sai tên tài khoản hoặc mật khẩu",
+    const isEmployee = req.body.isEmployee;
+    if (isEmployee) {
+      dbEmployee.hasOne(dbAcountEmployee, { foreignKey: "employee_id" });
+      dbAcountEmployee.belongsTo(dbEmployee, { foreignKey: "employee_id" });
+      const employee = await dbAcountEmployee.findOne({
+        where: { email_employee: req.body.email },
+        include: [
+          {
+            model: dbEmployee,
+            attributes: { exclude: ["id","createdAt","updatedAt"] },
+          },
+        ],
+        attributes: { exclude: ["createdAt","updatedAt"] },
       });
-    }
-  
-
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      user.rows[0].password_account
-    );
-    if (!validPassword) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Invalid password",
-      });
-    }
-
-    
-  
-
-
-    if (
-      user.rows[0].role_account === "receptionist" ||
-      user.rows[0].role_account === "staff"
-    ) {
-      const infoUser = await pool.query(
-        'SELECT * FROM "Employees" WHERE account_id = $1',
-        [user.rows[0].id]
+      const employeeData = employee.toJSON();
+      const newEmmployee = {...employeeData ,...employeeData.Employee};
+      delete newEmmployee.Employee;
+      if (!employee) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Sai tên tài khoản hoặc mật khẩu",
+        });
+      }
+      const validPassword = await bcrypt.compare(
+        req.body.password,
+        employee.password_employee
       );
-      user.rows[0].info = infoUser.rows[0];
-    } else if (user.rows[0].role_account === "manager") {
-      const infoUser = await pool.query(
-        'SELECT * FROM "Shops" WHERE  account_id = $1',
-        [user.rows[0].id]
+      if (!validPassword) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Invalid password",
+        });
+      }
+
+
+      if (employee && validPassword) {
+        const token = generateAccessToken(employee, employee.role_account);
+        const refreshToken = generateRefreshToken(employee, employee.role_account);
+        const {password_employee, ...data } = newEmmployee;
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: false,
+          path: "/",
+          sameSite: "strict",
+        });
+        return res.status(200).json({
+          ...data,token
+        });
+      }
+    } else {
+      dbAccount.belongsTo(dbShop, { foreignKey: "shop_id" });
+      dbShop.hasOne(dbAccount, { foreignKey: "shop_id" });
+
+      const user = await dbAccount.findOne({
+        where: { email: req.body.email },
+        include: [
+          {
+            model: dbShop ,
+            attributes: { exclude: ["id","createdAt","updatedAt"]}
+          },
+
+        ],
+        attributes: { exclude: ["createdAt","updatedAt"] },
+      })
+
+      if (!user) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Sai tên tài khoản hoặc mật khẩu",
+        });
+      }
+      const userData = user.toJSON();
+
+      const validPassword = await bcrypt.compare(
+        req.body.password,
+        userData.password_account
       );
-      user.rows[0].info = infoUser.rows[0];
-    }
+      if (!validPassword) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Invalid password",
+        });
+      }
 
+      if (user && validPassword) {
+        userData.role_account = "manager";
+        const newUser = {...userData, ...userData.Shop};
+        delete newUser.Shop;
+        const {password_account, ...data} = newUser;
 
-    if (user.rows.length === 0) {
-      return res.status(400).json({
-        status: "failed",
-        message: "User not found",
-      });
-    }
-    if (user && validPassword) {
-      const { password, ...data } = user.rows[0];
-      const token = generateAccessToken(user);
-      const refreshToken = generateRefreshToken(user);
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: false,
-        path: "/",
-        sameSite: "strict",
-      });
-      res.status(200).json({ ...data, token });
+        const token = generateAccessToken(newUser, newUser.role_account);
+        const refreshToken = generateRefreshToken(newUser, newUser.role_account);
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: false,
+          path: "/",
+          sameSite: "strict",
+        });
+        return res.status(200).json({
+          ...newUser,token
+        });
+      }
     }
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       status: "failed",
       message: error.message,
     });
   }
-
 };
 
 const requestRefreshToken = async (req, res) => {
@@ -200,7 +237,7 @@ const requestRefreshToken = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Token has been refreshed",
-      data: {
+      newUser: {
         accessToken: newACcessToken,
       },
     });

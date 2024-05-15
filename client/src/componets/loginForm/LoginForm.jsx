@@ -9,18 +9,23 @@ import { useDispatch } from "react-redux";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isEmployee, setIsEmployee] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  console.log(isEmployee)
   const handleLogin = (e) => {
     e.preventDefault();
     const user = {
       email: email,
       password: password,
+      isEmployee: isEmployee,
     };
 
     LoginUser(user, dispatch, navigate);
   };
+
+
   return (
     <div className="login-form">
       <div className="form-content">
@@ -47,8 +52,8 @@ const LoginForm = () => {
         </div>
         <div className="remember-forgot">
           <label>
-            <input type="checkbox" />
-            Ghi nhớ
+            <input type="checkbox" name="isEmployee" onChange={(e) => setIsEmployee(e.target.checked)}/>
+            Tôi là nhân viên 
           </label>
           <a href="#">Quên mật khẩu?</a>
         </div>

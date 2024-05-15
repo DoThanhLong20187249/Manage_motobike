@@ -11,30 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Shop.belongsTo(models.Account, {
-        foreignKey: 'account_id'
-      });
       Shop.hasMany(models.Employee, {
-        foreignKey: 'shop_id'
+        foreignKey: "shop_id",
       });
-      Shop.hasMany(models.Customer, {
-        foreignKey: 'shop_id'
+      Shop.hasOne(models.Account, {
+        foreignKey: "shop_id",
       });
       Shop.belongsToMany(models.Customer, {
-        through: 'ShopGroups',
-        foreignKey: 'shop_id'
-      
-      })
+        through: models.ShopCustomer,
+        foreignKey: "shop_id",
+      });
     }
   }
   Shop.init({
     shop_name: DataTypes.STRING,
-    hotline: DataTypes.INTEGER,
+    hotline: DataTypes.STRING,
     shop_address: DataTypes.STRING,
     shop_description: DataTypes.STRING,
     shop_avatar_url: DataTypes.STRING,
     shop_owner_name: DataTypes.STRING,
-    account_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Shop',

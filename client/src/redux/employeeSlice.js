@@ -13,6 +13,12 @@ const employeeSlice = createSlice({
       error: false,
       message: null,
     },
+    singleEmployee: {
+      isFetching: false,
+      error: false,
+      data: null,
+      message: null,
+    }
   },
   reducers: {
     getEmployeesStart: (state) => {
@@ -42,6 +48,35 @@ const employeeSlice = createSlice({
       state.addEmployee.error = true;
       state.addEmployee.message = action.payload;
     },
+    getSingleEmployeeStart: (state) => {
+      state.singleEmployee.isFetching = true;
+      state.singleEmployee.error = false;
+    },
+    getSingleEmployeeSuccess: (state, action) => {
+      state.singleEmployee.isFetching = false;
+      state.singleEmployee.data = action.payload;
+      state.singleEmployee.error = false;
+    },
+    getSingleEmployeeFailure: (state, action) => {
+      state.singleEmployee.isFetching = false;
+      state.singleEmployee.error = true;
+      state.singleEmployee.message = action.payload;
+    },
+    updateSingleEmployeeStart: (state) => {
+      state.singleEmployee.isFetching = true;
+      state.singleEmployee.error = false;
+    },
+    updateSingleEmployeeSuccess: (state, action) => {
+      state.singleEmployee.isFetching = false;
+      state.singleEmployee.data = action.payload;
+      state.singleEmployee.error = false;
+    },
+    updateSingleEmployeeFailure: (state, action) => {
+      state.singleEmployee.isFetching = false;
+      state.singleEmployee.error = true;
+      state.singleEmployee.message = action.payload;
+    },
+
   },
 });
 
@@ -52,5 +87,11 @@ export const {
   addEmployeeStart,
   addEmployeeSuccess,
   addEmployeeFailure,
+  getSingleEmployeeStart,
+  getSingleEmployeeSuccess,
+  getSingleEmployeeFailure,
+  updateSingleEmployeeStart,
+  updateSingleEmployeeSuccess,
+  updateSingleEmployeeFailure,
 } = employeeSlice.actions;
 export default employeeSlice.reducer;

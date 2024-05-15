@@ -43,6 +43,8 @@ db.Account = require('./account')(sequelize, Sequelize);
 db.Customer = require('./customer')(sequelize, Sequelize);
 db.Employee = require('./employee')(sequelize, Sequelize);
 db.Shop = require('./shop')(sequelize, Sequelize);
+db.ShopCustomer = require('./shopcustomer')(sequelize, Sequelize);
+db.AccountEmployee = require('./accountemployee')(sequelize, Sequelize);
 
 
 

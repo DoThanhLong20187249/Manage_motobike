@@ -28,8 +28,8 @@ const NavBar = () => {
           <img src={avatar} alt="Avatar-user" />
           <span>
             {nameUser.role_account === "manager"
-              ? nameUser.info.shop_owner_name
-              : nameUser.info.name || "unknown"}
+              ? (nameUser.shop_owner_name || "unknown")
+              : (nameUser.name_employee || "unknown")}
           </span>
         </div>
         <span onClick={() => handleLogOut()} className="logout">

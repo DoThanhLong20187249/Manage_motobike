@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getAllEmployee } from "../redux/apiRequest";
 import { Link } from "react-router-dom";
+import { sortingStateInitializer } from "@mui/x-data-grid/internals";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -62,15 +63,17 @@ const Users = () => {
 
   const user = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch();
+
+  console.log(user?.id)
   useEffect(() => {
-    getAllEmployee(user?.token, dispatch);
+    getAllEmployee(user?.id, user?.token, dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const dataEmployee = useSelector(
     (state) => state.employee.employees.allEmployees
   );
   const data = dataEmployee?.data.map((item) => {
-    return { ...item, shop_name: user?.info.shop_name };
+    return { ...item, shop_name: user?.shop_name };
   });
 
   return (

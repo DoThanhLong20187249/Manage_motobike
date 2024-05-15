@@ -2,36 +2,41 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Accounts', {
+    await queryInterface.createTable('AccountEmployees', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
+      email_employee: {
         type: Sequelize.STRING
       },
-      password_account: {
+      password_employee: {
         type: Sequelize.STRING
       },
       role_account: {
         type: Sequelize.STRING
       },
-      is_admin: {
-        type: Sequelize.BOOLEAN
+      employee_id: {
+        type: Sequelize.INTEGER,
+        unique: true,
+        references: {
+          model: 'Employees',
+          key: 'id'
+        }
       },
       createdAt: {
-        allowNull: false,
-        type: new Date()
+        type: Sequelize.DATE,
+        value: new Date()
       },
       updatedAt: {
-        allowNull: false,
-        type: new Date()
+        type: Sequelize.DATE,
+        value: new Date()
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Accounts');
+    await queryInterface.dropTable('AccountEmployees');
   }
 };

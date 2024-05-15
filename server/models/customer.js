@@ -12,17 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Customer.belongsToMany(models.Shop, {
-        through: 'ShopGroups',
-        foreignKey: 'customer_id'
+        through: models.ShopCustomer,
+        foreignKey: "customer_id",
       });
     }
   }
   Customer.init({
     customer_name: DataTypes.STRING,
-    customer_phone: DataTypes.INTEGER,
+    customer_phone: DataTypes.STRING,
     customer_address: DataTypes.STRING,
     customer_gender: DataTypes.STRING,
-    customer_age: DataTypes.INTEGER
+    customer_email: DataTypes.STRING,
+    customer_age: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Customer',

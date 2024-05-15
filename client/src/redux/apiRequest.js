@@ -15,6 +15,12 @@ import {
   addEmployeeStart,
   addEmployeeSuccess,
   addEmployeeFailure,
+  getSingleEmployeeStart,
+  getSingleEmployeeSuccess,
+  getSingleEmployeeFailure,
+  updateSingleEmployeeStart,
+  updateSingleEmployeeSuccess,
+  updateSingleEmployeeFailure,
 } from "./employeeSlice";
 
 export const LoginUser = async (user, dispatch, navigate) => {
@@ -25,6 +31,7 @@ export const LoginUser = async (user, dispatch, navigate) => {
     dispatch(loginSuccess(res.data));
     navigate("/");
   } catch (error) {
+    console.log(error);
     dispatch(loginFailure());
   }
 };
@@ -40,10 +47,10 @@ export const RegisterUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const getAllEmployee = async (accessToken, dispatch) => {
+export const getAllEmployee = async (shopId,accessToken, dispatch) => {
   dispatch(getEmployeesStart());
   try {
-    const res = await axios.get("http://localhost:3000/employee", {
+    const res = await axios.get(`http://127.0.0.1:3000/employee?shop_id=${shopId}`,{
       headers: {
         token: `Bearer ${accessToken}`,
       },
@@ -66,6 +73,36 @@ export const addEmployee = async (employee, accessToken, dispatch, navigate) => 
     navigate("/employee");
   } catch (error) {
     dispatch(addEmployeeFailure(error.response.message));
+  }
+}
+
+export const getEmployeeById = async (id, accessToken, dispatch,) => {
+  dispatch(getSingleEmployeeStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/employee/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleEmployeeSuccess(res.data));
+  } catch (error) {
+    dispatch(getSingleEmployeeFailure(error.response.message));
+  }
+
+}
+
+export const updateEmployee = async (id, employee, accessToken, dispatch, navigate) => {
+  dispatch(updateSingleEmployeeStart());
+  try {
+    const res = await axios.put(`http://localhost:3000/employee/${id}`, employee, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(updateSingleEmployeeSuccess(res.data));
+    navigate("/employee");
+  } catch (error) {
+    dispatch(updateSingleEmployeeFailure(error.response.message));
   }
 }
 

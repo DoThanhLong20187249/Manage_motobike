@@ -2,50 +2,42 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Shops', {
+    await queryInterface.createTable('Customers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      shop_name: {
+      customer_name: {
         type: Sequelize.STRING
       },
-      hotline: {
+      customer_phone: {
+        type: Sequelize.STRING
+      },
+      customer_address: {
+        type: Sequelize.STRING
+      },
+      customer_gender: {
+        type: Sequelize.STRING
+      },
+      customer_email: {
+        type: Sequelize.STRING
+      },
+      customer_age: {
         type: Sequelize.INTEGER
       },
-      shop_address: {
-        type: Sequelize.STRING
-      },
-      shop_description: {
-        type: Sequelize.STRING
-      },
-      shop_avatar_url: {
-        type: Sequelize.STRING
-      },
-      shop_owner_name: {
-        type: Sequelize.STRING
-      },
-      account_id: {
-        type: Sequelize.INTEGER,
-        unique: true,
-        references: {
-          model: 'Accounts',
-          key: 'id'
-        }
-      },
       createdAt: {
-        allowNull: false,
-        type: new Date()
+        type: Sequelize.DATE,
+        value: new Date()
       },
       updatedAt: {
-        allowNull: false,
-        type: new Date()
+        type: Sequelize.DATE,
+        value: new Date()
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Shops');
+    await queryInterface.dropTable('Customers');
   }
 };

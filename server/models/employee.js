@@ -12,22 +12,21 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Employee.belongsTo(models.Shop, {
-        foreignKey: 'shop_id'
+        foreignKey: "shop_id",
       });
-      Employee.belongsTo(models.Account, {
-        foreignKey: 'account_id'
+      Employee.hasOne(models.AccountEmployee, {
+        foreignKey: "employee_id",
       });
     }
   }
   Employee.init({
     name_employee: DataTypes.STRING,
-    phone_employee: DataTypes.INTEGER,
+    phone_employee: DataTypes.STRING,
     address_employee: DataTypes.STRING,
     position_employee: DataTypes.STRING,
     gender_employee: DataTypes.STRING,
     age_employee: DataTypes.INTEGER,
-    shop_id: DataTypes.INTEGER,
-    account_id: DataTypes.INTEGER
+    shop_id: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Employee',
