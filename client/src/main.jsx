@@ -13,6 +13,10 @@ import {  store } from "./redux/store.js";
 import Profile from "./page/Profile/Profile.jsx";
 import AddForm from "./componets/addForm/AddForm.jsx";
 import SingleEmployee from "./componets/SinglePage/singleEmployee/SingleEmployee.jsx";
+import Customer from "./page/Customer/Customer.jsx";
+import SingleCustomer from "./componets/SinglePage/singleCustomer/SingleCustomer.jsx";
+import Loading from "./componets/Loading/Loading.jsx";
+import CustomerForm from "./componets/addForm/customerForm/CustomerForm.jsx";
 
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
@@ -37,12 +41,24 @@ const router = createBrowserRouter([
         element: <SingleEmployee/>,
       },
       {
-        path:"profile",
+        path:"/profile",
         element: <Profile/>
       },
       {
-        path:"employee/add",
+        path:"/employee/add",
         element: <AddForm/>
+      },
+      {
+        path:"/customer",
+        element: <Customer/>
+      },
+      {
+        path:"/customer/:id",
+        element: <SingleCustomer/>
+      },
+      {
+        path:"/customer/add",
+        element: <CustomerForm/>
       }
     ],
   },

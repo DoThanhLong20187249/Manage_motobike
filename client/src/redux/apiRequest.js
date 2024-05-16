@@ -26,6 +26,24 @@ import {
   deleteEmployeeFailure,
 } from "./employeeSlice";
 
+import {
+  getCustomersStart,
+  getCustomersSuccess,
+  getCustomersFailure,
+  getSingleCustomerStart,
+  getSingleCustomerSuccess,
+  getSingleCustomerFailure,
+  updateSingleCustomerStart,
+  updateSingleCustomerSuccess,
+  updateSingleCustomerFailure,
+  deleteCustomerStart,
+  deleteCustomerSuccess,
+  deleteCustomerFailure,
+  addCustomerStart,
+  addCustomerSuccess,
+  addCustomerFailure,
+} from "./customerSlice";
+
 export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
@@ -122,4 +140,78 @@ export const deleteEmployee = async (id, accessToken, dispatch) => {
     dispatch(deleteEmployeeFailure());
   }
 }
+
+export const getAllCustomers = async (shopId, accessToken, dispatch) => {
+  dispatch(getCustomersStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/customer?shop_id=${shopId}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getCustomersSuccess(res.data));
+  } catch (error) {
+    dispatch(getCustomersFailure());
+  }
+}
+
+export const getCustomerById = async (id, accessToken, dispatch) => {
+  dispatch(getSingleCustomerStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/customer/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleCustomerSuccess(res.data));
+  } catch (error) {
+    console.log(error);
+    dispatch(getSingleCustomerFailure());
+  }
+}
+
+export const updateCustomer = async (id, customer, accessToken, dispatch, navigate) => {
+  dispatch(updateSingleCustomerStart());
+  try {
+    await axios.put(`http://localhost:3000/customer/${id}`, customer, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(updateSingleCustomerSuccess());
+    navigate("/customer");
+  } catch (error) {
+    dispatch(updateSingleCustomerFailure());
+  }
+}
+
+export const deleteCustomer = async (id, accessToken, dispatch) => {
+  dispatch(deleteCustomerStart());
+  try {
+    await axios.delete(`http://localhost:3000/customer/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(deleteCustomerSuccess(id));
+  } catch (error) {
+    dispatch(deleteCustomerFailure());
+  }
+}
+
+export const addCustomer = async (customer, accessToken, dispatch, navigate) => {
+  dispatch(addCustomerStart());
+  try {
+    const res = await axios.post("http://localhost:3000/customer/add", customer, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(addCustomerSuccess(res.data));
+    navigate("/customer");
+  } catch (error) {
+    dispatch(addCustomerFailure());
+  }
+}
+
 

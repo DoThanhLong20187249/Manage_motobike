@@ -5,14 +5,11 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
 
-import { deleteEmployee, getEmployeeById } from "../../redux/apiRequest";
-import { useDispatch, useSelector } from "react-redux";
+import { deleteCustomer, deleteEmployee, getCustomerById, getEmployeeById } from "../../redux/apiRequest";
+
 
 
 const DataTable = (props) => {
-  const user = useSelector((state) => state.auth.login?.currentUser);
-  const dispatch = useDispatch();
-
   const actionColum = {
     field: "edit",
     headerName: "Edit",
@@ -37,15 +34,19 @@ const DataTable = (props) => {
 
   function handleShowDetail(id) {
     if (props.slug === "employee") {
-      getEmployeeById(id, user?.token, dispatch);
+      getEmployeeById(id, props.accessToken, props.dispatch);
+    }else if(props.slug === "customer") {
+      getCustomerById(id, props.accessToken, props.dispatch);
     }
   }
 
   function handleDelete(id) {
     if (props.slug === "employee") {
-      deleteEmployee(id, user?.token, dispatch);
-      console.log(id);
-    }
+      deleteEmployee(id, props.accessToken, props.dispatch);
+      
+    }else if(props.slug === "customer") {
+      deleteCustomer(id, props.accessToken, props.dispatch);
+    }     
   }
 
   return (

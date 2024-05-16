@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import DataTable from "../componets/dataTable/DataTable";
 
-
 import "../styles/users.scss";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -57,13 +56,11 @@ const columns = [
 ];
 
 const Users = () => {
-  const [open, setOpen] = useState(false);
-
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [newData, setNewData] = useState([]);
   const dispatch = useDispatch();
 
-  console.log(user?.id)
+  console.log(user?.id);
   useEffect(() => {
     getAllEmployee(user?.id, user?.token, dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,9 +69,8 @@ const Users = () => {
     (state) => state.employee.employees.allEmployees
   );
   useEffect(() => {
-
     setNewData(dataEmployee);
-  },[dataEmployee])
+  }, [dataEmployee]);
 
   return (
     <div className="users-container">

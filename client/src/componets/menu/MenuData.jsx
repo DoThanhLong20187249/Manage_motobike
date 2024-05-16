@@ -59,7 +59,7 @@ export const menuData = [
       {
         id: 6,
         title: "Khách hàng",
-        url: "/users",
+        url: "/customer",
         icon: "src/assets/motorcycle.svg",
       },
     ],

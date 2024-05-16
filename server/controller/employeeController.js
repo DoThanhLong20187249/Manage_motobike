@@ -54,7 +54,7 @@ const getEmployeeById = async (req, res) => {
     const newSingleEmployee = singleEmployee.toJSON();
     newSingleEmployee.shop_name = singleEmployee.Shop.shop_name;
     delete newSingleEmployee.Shop;
-    const account = await dbAcountEmployee.findOne({ where: { id: singleEmployee.id } });
+    const account = await dbAcountEmployee.findOne({ where: { employee_id: newSingleEmployee.id } });
     const newAccount = account.toJSON();
 
 
@@ -63,9 +63,10 @@ const getEmployeeById = async (req, res) => {
     return res.status(200).json({
       status: "success",
       message: "Get 1 Employee",
-      data: {...newSingleEmployee, ...newAccount},
+      data: {...newSingleEmployee,...newAccount},
     });
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       status: "fail",
       message: error.message,
@@ -123,6 +124,7 @@ const addEmployee = async (req, res) => {
 const updateEmployeeById = async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id);
     const {
       name_employee,
       phone_employee,

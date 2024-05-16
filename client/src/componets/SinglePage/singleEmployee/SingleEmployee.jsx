@@ -29,7 +29,7 @@ const SingleEmployee = () => {
   useEffect(() => {
     if (singleEmployeeData && singleEmployeeData.data)  {
       setEmployee({
-        id: singleEmployeeData?.data.id || "",
+        id: singleEmployeeData?.data.employee_id || "",
         name_employee: singleEmployeeData?.data.name_employee   || "",
         phone_employee: singleEmployeeData?.data.phone_employee || "",
         address_employee: singleEmployeeData?.data.address_employee || "",
