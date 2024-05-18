@@ -19,37 +19,67 @@
             flex-direction: column;
             gap: 10px;
             margin-left: 20px;
-            .form-body{
+            .form-body {
                 display: flex;
-                flex-direction: column;
-                
-                .form-group{
+                justify-content: space-around;
+                .form-left {
+                  display: flex;
+                  flex-direction: column;
+                  width: 60%;
+                  .form-group {
                     display: flex;
                     flex-direction: column;
                     gap: 5px;
-                    label{
-                        margin-top: 5px;
-                        color: $main-color;
-                        font-size: 1.2rem;
-                        margin-bottom: 5px;
+                    label {
+                      margin-top: 5px;
+                      color: $main-color;
+                      font-size: 1.2rem;
+                      margin-bottom: 5px;
                     }
                     .input-field {
-                        width: 90%;
-                        padding: 10px;
-                        background-color: transparent;
-                        border: 1px solid $main-color;
-                        outline: none;
-                        border-radius: 5px;
-                        color: white;
-                        option {
-                          color: black;
-                        }
-                      
+                      width: 90%;
+                      padding: 10px;
+                      background-color: transparent;
+                      border: 1px solid $main-color;
+                      outline: none;
+                      border-radius: 5px;
+                      color: white;
+                      option {
+                        color: black;
+                      }
                     }
+                  }
                 }
-                
-
-            }
+        
+                .form-right {
+                  display: flex;
+                  flex-direction: column;
+                  width: 60%;
+                  .form-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                    label {
+                      margin-top: 5px;
+                      color: $main-color;
+                      font-size: 1.2rem;
+                      margin-bottom: 5px;
+                    }
+                    .input-field {
+                      width: 90%;
+                      padding: 10px;
+                      background-color: transparent;
+                      border: 1px solid $main-color;
+                      outline: none;
+                      border-radius: 5px;
+                      color: white;
+                      option {
+                        color: black;
+                      }
+                    }
+                  }
+                }
+              }
             .button-group {
                 .btn-submit {
                     padding: 10px 20px;
@@ -61,7 +91,6 @@
                     font-size: 1rem;
                     font-weight: 500;
                     display: flex;
-                    align-items: center;
                     gap: 5px;
                     &:hover {
                         background-color: rgb(0, 255, 0);

@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       Shop.hasMany(models.ShopCustomer, {
         foreignKey: "shop_id",
       });
+      Shop.hasMany(models.ShopMotocycle, {
+        foreignKey: "shop_id",
+      });
     }
   }
   Shop.init({

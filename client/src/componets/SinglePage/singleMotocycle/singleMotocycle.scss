@@ -1,0 +1,119 @@
+@import "../../../varibales.scss";
+
+.customer-registration-main {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  width: 100%;
+  gap: 5px;
+  padding: 20px;
+  .form-customer-registration {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+
+    .form-body {
+      display: flex;
+      .form-left {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          label {
+            margin-top: 5px;
+            color: $main-color;
+            font-size: 1rem;
+            margin-bottom: 5px;
+          }
+          .input-field {
+            width: 90%;
+            padding: 10px;
+            background-color: transparent;
+            border: 1px solid $main-color;
+            outline: none;
+            border-radius: 5px;
+            color: white;
+            option {
+              color: black;
+            }
+          }
+        }
+      }
+
+      .form-right {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          label {
+            margin-top: 5px;
+            color: $main-color;
+            font-size: 1rem;
+            margin-bottom: 5px;
+          }
+          .input-field {
+            width: 90%;
+            padding: 10px;
+            background-color: transparent;
+            border: 1px solid $main-color;
+            outline: none;
+            border-radius: 5px;
+            color: white;
+            option {
+              color: black;
+            }
+          }
+        }
+      }
+    }
+    .button-group {
+        display: flex;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        gap: 10px;
+        .btn-submit {
+            padding: 10px 20px;
+            background-color:rgb(112, 223, 112);
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            align-items: center;
+            gap: 5px;
+            .icon {
+            font-size: 1.2rem;
+            }
+        }
+        .btn-submit:hover {
+            background-color: rgb(7, 164, 75);
+            color: black
+        }
+        .btn-cancer {
+            padding: 10px 20px;
+            background-color: rgb(224, 70, 70);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            .icon {
+            font-size: 1.2rem;
+            }
+        
+        }
+    }
+  }
+}

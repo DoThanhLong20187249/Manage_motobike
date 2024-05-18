@@ -2,11 +2,21 @@ const db = require("../models/index");
 const dbCustomer = db.Customer;
 const dbShop = db.Shop;
 const dbShopCustomer = db.ShopCustomer;
+const dbMotocycle = db.Motocycle;
+const dbShopMotocycle = db.ShopMotocycle;
 
 dbShop.hasMany(dbShopCustomer, { foreignKey: "shop_id" });
 dbCustomer.hasMany(dbShopCustomer, { foreignKey: "customer_id" });
 dbShopCustomer.belongsTo(dbShop, { foreignKey: "shop_id" });
 dbShopCustomer.belongsTo(dbCustomer, { foreignKey: "customer_id" });
+dbMotocycle.belongsTo(dbCustomer, { foreignKey: "customer_id" });
+dbCustomer.hasMany(dbMotocycle, { foreignKey: "customer_id" });
+dbShopMotocycle.belongsTo(dbShop, { foreignKey: "shop_id" });
+dbShopMotocycle.belongsTo(dbMotocycle, { foreignKey: "motocycle_id" });
+dbShop.hasMany(dbShopMotocycle, { foreignKey: "shop_id" });
+dbMotocycle.hasMany(dbShopMotocycle, { foreignKey: "motocycle_id" });
+
+
 
 const getAllCustomer = async (req, res) => {
   const id = req.query.shop_id;
@@ -72,6 +82,11 @@ const addCustomer = async (req, res) => {
     customer_gender,
     customer_email,
     customer_age,
+    motocycle_name,
+    motocycle_brand,
+    motocycle_color,
+    motocycle_year,
+    motocycle_number,
   } = req.body;
 
   const newCustomer = await dbCustomer.create({
@@ -86,6 +101,23 @@ const addCustomer = async (req, res) => {
     shop_id:shop_id,
     customer_id: newCustomer.id,
   });
+
+  // new motocycle 
+  const newMotocycle =await dbMotocycle.create({
+    motocycle_name,
+    motocycle_brand,
+    motocycle_color,
+    motocycle_year,
+    motocycle_number,
+    customer_id: newCustomer.id,
+  
+  });
+
+  await dbShopMotocycle.create({
+    shop_id: shop_id,
+    motocycle_id: newMotocycle.id,
+  })
+
   return res.status(201).json(newCustomer);
 };
 
@@ -124,6 +156,7 @@ const deleteCustomer = async (req, res) => {
     const id = req.params.id;
     await dbShopCustomer.destroy({ where: { customer_id: id } });
     await dbCustomer.destroy({ where: { id: id } });
+    await dbMotocycle.destroy({ where: { customer_id: id } });
     return res.status(200).json({ message: "Delete success" });
   } catch (error) {
     return res.status(400).json({ message: error.message });

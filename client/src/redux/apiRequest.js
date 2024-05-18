@@ -44,6 +44,16 @@ import {
   addCustomerFailure,
 } from "./customerSlice";
 
+import {
+  getMotocyclesStart,
+  getMotocyclesSuccess,
+  getMotocyclesFailure,
+  getSingleMotocycleStart,
+  getSingleMotocycleSuccess,
+  getSingleMotocycleFailure
+}
+from "./motocycleSlice";
+//login
 export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
@@ -56,7 +66,7 @@ export const LoginUser = async (user, dispatch, navigate) => {
     dispatch(loginFailure());
   }
 };
-
+//register
 export const RegisterUser = async (user, dispatch, navigate) => {
   dispatch(registerStart());
   try {
@@ -68,6 +78,7 @@ export const RegisterUser = async (user, dispatch, navigate) => {
   }
 };
 
+// API employee
 export const getAllEmployee = async (shopId,accessToken, dispatch) => {
   dispatch(getEmployeesStart());
   try {
@@ -141,6 +152,8 @@ export const deleteEmployee = async (id, accessToken, dispatch) => {
   }
 }
 
+
+// API customer
 export const getAllCustomers = async (shopId, accessToken, dispatch) => {
   dispatch(getCustomersStart());
   try {
@@ -211,6 +224,37 @@ export const addCustomer = async (customer, accessToken, dispatch, navigate) => 
     navigate("/customer");
   } catch (error) {
     dispatch(addCustomerFailure());
+  }
+}
+
+// API motocycle
+
+export const getAllMotocycles = async (shopId, accessToken, dispatch) => {
+  dispatch(getMotocyclesStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/motocycle?shop_id=${shopId}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getMotocyclesSuccess(res.data));
+  } catch (error) {
+    dispatch(getMotocyclesFailure());
+  }
+}
+
+
+export const getMotocycleById = async (id, accessToken, dispatch) => {
+  dispatch(getSingleMotocycleStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/motocycle/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleMotocycleSuccess(res.data));
+  } catch (error) {
+    dispatch(getSingleMotocycleFailure());
   }
 }
 

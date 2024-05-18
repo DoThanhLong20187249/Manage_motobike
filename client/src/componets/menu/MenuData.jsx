@@ -53,7 +53,7 @@ export const menuData = [
       {
         id: 5,
         title: "Xe máy",
-        url: "/posts",
+        url: "/motocycle",
         icon: "src/assets/motobike.svg",
       },
       {

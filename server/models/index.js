@@ -45,7 +45,8 @@ db.Employee = require('./employee')(sequelize, Sequelize);
 db.Shop = require('./shop')(sequelize, Sequelize);
 db.ShopCustomer = require('./shopcustomer')(sequelize, Sequelize);
 db.AccountEmployee = require('./accountemployee')(sequelize, Sequelize);
-
+db.Motocycle = require('./motocycle')(sequelize, Sequelize);
+db.ShopMotocycle = require('./shopmotocycle')(sequelize, Sequelize);
 
 
 module.exports = db;

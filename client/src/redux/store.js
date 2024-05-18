@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import employeeReducer from "./employeeSlice";
 import customerReducer from "./customerSlice";
+import motocycleReducer from "./motocycleSlice";
 // import {
 //   persistStore,
 //   persistReducer,
@@ -43,5 +44,6 @@ export const store = configureStore({
     auth: authReducer,
     employee: employeeReducer,
     customer: customerReducer,
+    motocycle: motocycleReducer,
   },
 });

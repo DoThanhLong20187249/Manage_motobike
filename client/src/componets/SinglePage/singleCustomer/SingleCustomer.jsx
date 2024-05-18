@@ -58,8 +58,8 @@ const SingleCustomer = () => {
         <>
           <div className="single-customer-container">
             <div className="single-customer-main">
-              <h1>Thông tin nhân viên</h1>
-              <h2>xưởng BKV</h2>
+              <h1>Thông tin Khách Hàng</h1>
+              <h2>{user?.shop_name}</h2>
               <form action="" className="form-single-customer">
                 <div className="form-body">
                   <div className="form-left">
