@@ -154,11 +154,14 @@ const updateCustomer = async (req, res) => {
 const deleteCustomer = async (req, res) => {
   try {
     const id = req.params.id;
+    const motocycle = await dbMotocycle.findOne({ where: { customer_id: id } });
+    await dbShopMotocycle.destroy({ where: { motocycle_id: motocycle.id } });
+    await dbMotocycle.destroy({ where: { customer_id: id } });
     await dbShopCustomer.destroy({ where: { customer_id: id } });
     await dbCustomer.destroy({ where: { id: id } });
-    await dbMotocycle.destroy({ where: { customer_id: id } });
     return res.status(200).json({ message: "Delete success" });
   } catch (error) {
+    console.log(error);
     return res.status(400).json({ message: error.message });
   }
 }

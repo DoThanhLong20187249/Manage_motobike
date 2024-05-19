@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import "./singleMotocycle.scss";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../Loading/Loading";
+import { updateCustomer, updateMotocycle } from "../../../redux/apiRequest";
+
 
 const SingleMotocycle = () => {
+  const user = useSelector((state) => state.auth.login?.currentUser);
   const [newData, setNewData] = useState({});
   const dataInStore = useSelector(
     (state) => state.motocycle.singleMotocycle?.data
   );
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (dataInStore) {
@@ -23,11 +28,12 @@ const SingleMotocycle = () => {
       ...newData,
       [e.target.name]: e.target.value,
     });
-  };
+  };  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(newData)
+    console.log(newData);
+    updateMotocycle(newData.id, newData, user?.token, dispatch, navigate);
   };
 
   return (

@@ -77,6 +77,7 @@ const generateAccessToken = (user, role_account) => {
   return jwt.sign(
     {
       id: user.id,
+      shop_id: user.shop_id,
       role: role_account,
     },
     process.env.JWT_ACCESS_KEY,
@@ -88,6 +89,7 @@ const generateRefreshToken = (user, role_account) => {
   return jwt.sign(
     {
       id: user.id,
+      shop_id: user.shop_id,
       role: role_account,
     },
     process.env.JWT_REFRESH_KEY,

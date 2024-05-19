@@ -48,12 +48,27 @@ const motocycleSlice = createSlice({
     },
     updateMotocycleSuccess: (state, action) => {
       state.singleMotocycle.isFetching = false;
-      state.singleMotocycle.data = action.payload;
+      state.singleMotocycle.message = action.payload;
       state.singleMotocycle.error = false;
     },
     updateMotocycleFailure: (state) => {
       state.singleMotocycle.isFetching = false;
       state.singleMotocycle.error = true;
+    },
+    deleteMotocycleStart: (state) => {
+      state.motocycles.isFetching = true;
+      state.motocycles.error = false;
+    },
+    deleteMotocycleSuccess: (state, action) => {
+      state.motocycles.isFetching = false;
+      state.motocycles.allMotocycles = state.motocycles.allMotocycles.filter(
+        (item) => item.id !== action.payload
+      );
+      state.motocycles.error = false;
+    },
+    deleteMotocycleFailure: (state) => {
+      state.motocycles.isFetching = false;
+      state.motocycles.error = true;
     },
   },
 });
@@ -68,6 +83,9 @@ export const {
   updateMotocycleStart,
   updateMotocycleSuccess,
   updateMotocycleFailure,
+  deleteMotocycleStart,
+  deleteMotocycleSuccess,
+  deleteMotocycleFailure,
 } = motocycleSlice.actions;
 
 export default motocycleSlice.reducer;

@@ -8,6 +8,7 @@ const dbShop = db.Shop;
 const dbAcountEmployee = db.AccountEmployee;
 
 const getAllEmployee = async (req, res) => {
+  console.log(req.user);
   try {
     const id = req.query.shop_id;
     dbShop.hasMany(dbEmployee, { foreignKey: "shop_id" });

@@ -3,6 +3,7 @@ const dbMotocycle = db.Motocycle;
 const dbShopMotocycle = db.ShopMotocycle;
 const dbShop = db.Shop;
 const dbCustomer = db.Customer;
+const dbShopCustomer = db.ShopCustomer;
 
 dbShop.hasMany(dbShopMotocycle, { foreignKey: "shop_id" });
 dbMotocycle.hasMany(dbShopMotocycle, { foreignKey: "motocycle_id" });
@@ -10,8 +11,10 @@ dbShopMotocycle.belongsTo(dbShop, { foreignKey: "shop_id" });
 dbShopMotocycle.belongsTo(dbMotocycle, { foreignKey: "motocycle_id" });
 dbCustomer.hasMany(dbMotocycle, { foreignKey: "customer_id" });
 dbMotocycle.belongsTo(dbCustomer, { foreignKey: "customer_id" });
+dbCustomer.hasMany(dbShopCustomer, { foreignKey: "customer_id" });
+dbShopCustomer.belongsTo(dbCustomer, { foreignKey: "customer_id" });
+dbShop.hasMany(dbShopCustomer, { foreignKey: "shop_id" });
 
-const addMotocycle = async (req, res) => {};
 
 const getAllMotocycle = async (req, res) => {
   // get all motocycle data when shop id is created
@@ -98,29 +101,76 @@ const updateMotocycleById = async (req, res) => {
     customer_gender,
     customer_age,
     customer_email,
+    customer_id,
   } = req.body;
 
-  const motocycle = await dbShopMotocycle.findOne({
-    where: {
-      [Op.and]: [{ shop_id: shop_id }, { motocycle_id: id }],
-    },
-    include: [
+  try {
+    await dbMotocycle.update(
       {
-        model: dbMotocycle,
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-        include: [
-          {
-            model: dbCustomer,
-            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-          },
-        ],
+        motocycle_name: motocycle_name,
+        motocycle_brand: motocycle_brand,
+        motocycle_color: motocycle_color,
+        motocycle_year: motocycle_year,
+        motocycle_number: motocycle_number,
       },
-    ], 
-  });
+      {
+        where: { id: id },
+      }
+    );
+    await dbCustomer.update(
+      {
+        customer_name: customer_name,
+        customer_phone: customer_phone,
+        customer_address: customer_address,
+        customer_gender: customer_gender,
+        customer_age: customer_age,
+        customer_email: customer_email,
+      },
+      {
+        where: { id: customer_id },
+      }
+    );
+    return res.status(200).json({ message: "Motocycle updated successfully" });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+const deleteMotocycle = async (req, res) => {
+  const id = req.params.id;
+  const shop_id = req.user.shop_id;
+  try {
+    const motocycle = await dbMotocycle.findOne({
+      where: { id: id },
+    });
+    await dbShopMotocycle.destroy({
+      where: {
+        motocycle_id: id,
+        shop_id: shop_id,
+      },
+    });
+    await dbMotocycle.destroy({
+      where: { id: id },
+    });
+    console.log(motocycle);
+    await dbShopCustomer.destroy({
+      where: {
+        customer_id: motocycle.customer_id,
+        shop_id: shop_id,
+      },
+    });
+    await dbCustomer.destroy({
+      where: { id: motocycle.customer_id },
+    });
+
+    return res.status(200).json({ message: "Motocycle deleted successfully" });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {
-  addMotocycle,
   getAllMotocycle,
   getMotocycleById,
+  updateMotocycleById,
+  deleteMotocycle,
 };

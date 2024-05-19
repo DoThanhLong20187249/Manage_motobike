@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
 
-import { deleteCustomer, deleteEmployee, getCustomerById, getEmployeeById, getMotocycleById } from "../../redux/apiRequest";
+import { deleteCustomer, deleteEmployee, deleteMotocycle, getCustomerById, getEmployeeById, getMotocycleById } from "../../redux/apiRequest";
 
 
 
@@ -49,7 +49,7 @@ const DataTable = (props) => {
     }else if(props.slug === "customer") {
       deleteCustomer(id, props.accessToken, props.dispatch);
     }else if(props.slug === "motocycle") {
-      console.log("motocycle");
+      deleteMotocycle(id, props.accessToken, props.dispatch);
     }
   }
 

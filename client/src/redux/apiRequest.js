@@ -50,7 +50,13 @@ import {
   getMotocyclesFailure,
   getSingleMotocycleStart,
   getSingleMotocycleSuccess,
-  getSingleMotocycleFailure
+  getSingleMotocycleFailure,
+  updateMotocycleStart,
+  updateMotocycleSuccess,
+  updateMotocycleFailure,
+  deleteMotocycleStart,
+  deleteMotocycleSuccess,
+  deleteMotocycleFailure,
 }
 from "./motocycleSlice";
 //login
@@ -258,4 +264,33 @@ export const getMotocycleById = async (id, accessToken, dispatch) => {
   }
 }
 
+ export const updateMotocycle = async (id, motocycle, accessToken, dispatch, navigate) => {
+  dispatch(updateMotocycleStart());
+  try {
+    const res = await axios.put(`http://localhost:3000/motocycle/${id}`, motocycle, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(updateMotocycleSuccess(res.data));
+    navigate("/motocycle");
+  } catch (error) {
+    console.log(error);
+    dispatch(updateMotocycleFailure());
+  }
+ }
+
+export const deleteMotocycle = async (id, accessToken, dispatch) => {
+  dispatch(deleteMotocycleStart());
+  try {
+    await axios.delete(`http://localhost:3000/motocycle/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(deleteMotocycleSuccess(id));
+  } catch (error) {
+    dispatch(deleteMotocycleFailure());
+  }
+}
 
