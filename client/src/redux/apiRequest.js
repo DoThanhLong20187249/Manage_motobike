@@ -59,6 +59,9 @@ import {
   deleteMotocycleFailure,
 }
 from "./motocycleSlice";
+
+
+import { getCategoryProductsStart,getCategoryProductsSuccess, getCategoryProductsFailure} from "./categoryProductSlice"
 //login
 export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
@@ -291,6 +294,22 @@ export const deleteMotocycle = async (id, accessToken, dispatch) => {
     dispatch(deleteMotocycleSuccess(id));
   } catch (error) {
     dispatch(deleteMotocycleFailure());
+  }
+}
+
+// API categoryProduct
+
+export const getAllCategoryProduct = async (shopId, accessToken, dispatch) => {
+  dispatch(getCategoryProductsStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/categoryProduct?shop_id=${shopId}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getCategoryProductsSuccess(res.data));
+  } catch (error) {
+    dispatch(getCategoryProductsFailure());
   }
 }
 

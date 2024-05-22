@@ -5,6 +5,7 @@ const customerRouter = require('./router/customerRouter')
 const authRouter = require('./router/authRouter')
 const employeeRouter = require('./router/employeeRouter')
 const motocycleRouter = require('./router/motocycleRouter')
+const categoryProdcutRouter = require('./router/categoryProductRouter')
 const cors = require('cors')
 
 
@@ -17,7 +18,7 @@ app.use('/customer', customerRouter);
 app.use('/auth', authRouter)
 app.use('/employee',employeeRouter)
 app.use('/motocycle', motocycleRouter)
-
+app.use('/categoryProduct', categoryProdcutRouter)
 
 
 

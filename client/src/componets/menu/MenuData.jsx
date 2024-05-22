@@ -35,7 +35,7 @@ export const menuData = [
       {
         id: 1,
         title: "Danh mục sản phẩm",
-        url: "/product-list",
+        url: "/CategoryProduct",
         icon: "src/assets/product-list.svg",
       },
       {
