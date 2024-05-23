@@ -21,6 +21,7 @@ import Motocycle from "./page/Motocycle/Motocycle.jsx";
 import SingleMotocycle from "./componets/SinglePage/singleMotocycle/SingleMotocycle.jsx";
 import CategoryProduct from "./page/CategoryProduct/CategoryProduct.jsx";
 import CategoryProductForm from "./componets/addForm/categoryProductForm/CategoryProductForm.jsx";
+import SingleCategoryProduct from "./componets/SinglePage/singleCategoryProduct/SingleCategoryProduct.jsx";
 
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
@@ -79,7 +80,12 @@ const router = createBrowserRouter([
       {
         path:"/CategoryProduct/add",
         element: <CategoryProductForm/>
+      },
+      {
+        path:"/CategoryProduct/:id",
+        element: <SingleCategoryProduct/>
       }
+
     ],
   },
   {

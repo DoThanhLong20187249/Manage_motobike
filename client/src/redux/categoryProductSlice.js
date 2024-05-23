@@ -8,6 +8,11 @@ const categoryProductSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    singleCategoryProduct: {
+      data: {},
+      isFetching: false,
+      error: false,
+    }
   },
   reducers: {
     getCategoryProductsStart: (state) => {
@@ -23,6 +28,19 @@ const categoryProductSlice = createSlice({
       state.categoryProducts.isFetching = false;
       state.categoryProducts.error = true;
     },
+    getSingleCategoryProductStart: (state) => {
+      state.singleCategoryProduct.isFetching = true;
+      state.singleCategoryProduct.error = false;
+    },
+    getSingleCategoryProductSuccess: (state, action) => {
+      state.singleCategoryProduct.isFetching = false;
+      state.singleCategoryProduct.data = action.payload;
+      state.singleCategoryProduct.error = false;
+    },
+    getSingleCategoryProductFailure: (state) => {
+      state.singleCategoryProduct.isFetching = false;
+      state.singleCategoryProduct.error = true;
+    },
   },
 });
 
@@ -30,6 +48,9 @@ export const {
   getCategoryProductsStart,
   getCategoryProductsSuccess,
   getCategoryProductsFailure,
+  getSingleCategoryProductStart,
+  getSingleCategoryProductSuccess,
+  getSingleCategoryProductFailure,
 } = categoryProductSlice.actions;
 
 export default categoryProductSlice.reducer;

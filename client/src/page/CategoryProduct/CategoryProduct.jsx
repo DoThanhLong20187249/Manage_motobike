@@ -66,7 +66,7 @@ const CategoryProduct = () => {
       {isDataLoaded ? (
         <>
           <DataTable
-            slug={"customer"}
+            slug={"CategoryProduct"}
             columns={columns}
             rows={categoryProduct}
             accessToken={user?.token}

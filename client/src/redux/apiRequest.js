@@ -57,11 +57,16 @@ import {
   deleteMotocycleStart,
   deleteMotocycleSuccess,
   deleteMotocycleFailure,
-}
-from "./motocycleSlice";
+} from "./motocycleSlice";
 
-
-import { getCategoryProductsStart,getCategoryProductsSuccess, getCategoryProductsFailure} from "./categoryProductSlice"
+import {
+  getCategoryProductsStart,
+  getCategoryProductsSuccess,
+  getCategoryProductsFailure,
+  getSingleCategoryProductStart,
+  getSingleCategoryProductSuccess,
+  getSingleCategoryProductFailure,
+} from "./categoryProductSlice";
 //login
 export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
@@ -88,36 +93,48 @@ export const RegisterUser = async (user, dispatch, navigate) => {
 };
 
 // API employee
-export const getAllEmployee = async (shopId,accessToken, dispatch) => {
+export const getAllEmployee = async (shopId, accessToken, dispatch) => {
   dispatch(getEmployeesStart());
   try {
-    const res = await axios.get(`http://127.0.0.1:3000/employee?shop_id=${shopId}`,{
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.get(
+      `http://127.0.0.1:3000/employee?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(getEmployeesSuccess(res.data));
   } catch (error) {
     dispatch(getEmployeesFailure());
   }
 };
 
-export const addEmployee = async (employee, accessToken, dispatch, navigate) => {
+export const addEmployee = async (
+  employee,
+  accessToken,
+  dispatch,
+  navigate
+) => {
   dispatch(addEmployeeStart());
   try {
-    const res = await axios.post("http://localhost:3000/employee/add", employee, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.post(
+      "http://localhost:3000/employee/add",
+      employee,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(addEmployeeSuccess(res.data));
     navigate("/employee");
   } catch (error) {
     dispatch(addEmployeeFailure(error.response.message));
   }
-}
+};
 
-export const getEmployeeById = async (id, accessToken, dispatch,) => {
+export const getEmployeeById = async (id, accessToken, dispatch) => {
   dispatch(getSingleEmployeeStart());
   try {
     const res = await axios.get(`http://localhost:3000/employee/${id}`, {
@@ -129,23 +146,32 @@ export const getEmployeeById = async (id, accessToken, dispatch,) => {
   } catch (error) {
     dispatch(getSingleEmployeeFailure(error.response.message));
   }
+};
 
-}
-
-export const updateEmployee = async (id, employee, accessToken, dispatch, navigate) => {
+export const updateEmployee = async (
+  id,
+  employee,
+  accessToken,
+  dispatch,
+  navigate
+) => {
   dispatch(updateSingleEmployeeStart());
   try {
-    const res = await axios.put(`http://localhost:3000/employee/${id}`, employee, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.put(
+      `http://localhost:3000/employee/${id}`,
+      employee,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(updateSingleEmployeeSuccess(res.data));
     navigate("/employee");
   } catch (error) {
     dispatch(updateSingleEmployeeFailure(error.response.message));
   }
-}
+};
 
 export const deleteEmployee = async (id, accessToken, dispatch) => {
   dispatch(deleteEmployeeStart());
@@ -159,23 +185,25 @@ export const deleteEmployee = async (id, accessToken, dispatch) => {
   } catch (error) {
     dispatch(deleteEmployeeFailure());
   }
-}
-
+};
 
 // API customer
 export const getAllCustomers = async (shopId, accessToken, dispatch) => {
   dispatch(getCustomersStart());
   try {
-    const res = await axios.get(`http://localhost:3000/customer?shop_id=${shopId}`, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.get(
+      `http://localhost:3000/customer?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(getCustomersSuccess(res.data));
   } catch (error) {
     dispatch(getCustomersFailure());
   }
-}
+};
 
 export const getCustomerById = async (id, accessToken, dispatch) => {
   dispatch(getSingleCustomerStart());
@@ -190,9 +218,15 @@ export const getCustomerById = async (id, accessToken, dispatch) => {
     console.log(error);
     dispatch(getSingleCustomerFailure());
   }
-}
+};
 
-export const updateCustomer = async (id, customer, accessToken, dispatch, navigate) => {
+export const updateCustomer = async (
+  id,
+  customer,
+  accessToken,
+  dispatch,
+  navigate
+) => {
   dispatch(updateSingleCustomerStart());
   try {
     await axios.put(`http://localhost:3000/customer/${id}`, customer, {
@@ -205,7 +239,7 @@ export const updateCustomer = async (id, customer, accessToken, dispatch, naviga
   } catch (error) {
     dispatch(updateSingleCustomerFailure());
   }
-}
+};
 
 export const deleteCustomer = async (id, accessToken, dispatch) => {
   dispatch(deleteCustomerStart());
@@ -219,39 +253,50 @@ export const deleteCustomer = async (id, accessToken, dispatch) => {
   } catch (error) {
     dispatch(deleteCustomerFailure());
   }
-}
+};
 
-export const addCustomer = async (customer, accessToken, dispatch, navigate) => {
+export const addCustomer = async (
+  customer,
+  accessToken,
+  dispatch,
+  navigate
+) => {
   dispatch(addCustomerStart());
   try {
-    const res = await axios.post("http://localhost:3000/customer/add", customer, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.post(
+      "http://localhost:3000/customer/add",
+      customer,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(addCustomerSuccess(res.data));
     navigate("/customer");
   } catch (error) {
     dispatch(addCustomerFailure());
   }
-}
+};
 
 // API motocycle
 
 export const getAllMotocycles = async (shopId, accessToken, dispatch) => {
   dispatch(getMotocyclesStart());
   try {
-    const res = await axios.get(`http://localhost:3000/motocycle?shop_id=${shopId}`, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.get(
+      `http://localhost:3000/motocycle?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(getMotocyclesSuccess(res.data));
   } catch (error) {
     dispatch(getMotocyclesFailure());
   }
-}
-
+};
 
 export const getMotocycleById = async (id, accessToken, dispatch) => {
   dispatch(getSingleMotocycleStart());
@@ -265,23 +310,33 @@ export const getMotocycleById = async (id, accessToken, dispatch) => {
   } catch (error) {
     dispatch(getSingleMotocycleFailure());
   }
-}
+};
 
- export const updateMotocycle = async (id, motocycle, accessToken, dispatch, navigate) => {
+export const updateMotocycle = async (
+  id,
+  motocycle,
+  accessToken,
+  dispatch,
+  navigate
+) => {
   dispatch(updateMotocycleStart());
   try {
-    const res = await axios.put(`http://localhost:3000/motocycle/${id}`, motocycle, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.put(
+      `http://localhost:3000/motocycle/${id}`,
+      motocycle,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(updateMotocycleSuccess(res.data));
     navigate("/motocycle");
   } catch (error) {
     console.log(error);
     dispatch(updateMotocycleFailure());
   }
- }
+};
 
 export const deleteMotocycle = async (id, accessToken, dispatch) => {
   dispatch(deleteMotocycleStart());
@@ -295,21 +350,60 @@ export const deleteMotocycle = async (id, accessToken, dispatch) => {
   } catch (error) {
     dispatch(deleteMotocycleFailure());
   }
-}
+};
 
 // API categoryProduct
 
 export const getAllCategoryProduct = async (shopId, accessToken, dispatch) => {
   dispatch(getCategoryProductsStart());
   try {
-    const res = await axios.get(`http://localhost:3000/categoryProduct?shop_id=${shopId}`, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await axios.get(
+      `http://localhost:3000/categoryProduct?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     dispatch(getCategoryProductsSuccess(res.data));
   } catch (error) {
     dispatch(getCategoryProductsFailure());
   }
-}
+};
 
+export const getCategoryProductById = async (id, accessToken, dispatch) => {
+  dispatch(getSingleCategoryProductStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/categoryProduct/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleCategoryProductSuccess(res.data));
+  } catch (error) {
+    console.log(error);
+    dispatch(getSingleCategoryProductFailure());
+  }
+};
+
+export const updateCategoryProduct = async (
+  id,
+  accessToken,
+  categoryProduct,
+  navigate
+) => {
+  try {
+    await axios.put(
+      `http://localhost:3000/categoryProduct/${id}`,
+      categoryProduct,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    navigate("/CategoryProduct");
+  } catch (error) {
+    console.log(error);
+  }
+};

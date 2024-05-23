@@ -18,7 +18,7 @@ app.use('/customer', customerRouter);
 app.use('/auth', authRouter)
 app.use('/employee',employeeRouter)
 app.use('/motocycle', motocycleRouter)
-app.use('/categoryProduct', categoryProdcutRouter)
+app.use('/CategoryProduct', categoryProdcutRouter)
 
 
 
