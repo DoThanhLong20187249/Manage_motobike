@@ -11,7 +11,11 @@ router.get(
   categoryProductController.getAllCategoryProduct
 );
 
-router.post("/add", categoryProductController.addCategoryProduct);
+router.post(
+  "/add",
+  uploadCloud.single("image"),
+  categoryProductController.addCategoryProduct
+);
 router
   .route("/:id")
   .get(categoryProductController.getCategoryProductById)

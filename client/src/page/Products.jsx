@@ -1,72 +1,102 @@
-
-
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import DataTable from "../componets/dataTable/DataTable";
-import AddForm from "../componets/addForm/AddForm";
-import { products } from "../componets/menu/MenuData";
-import  '../styles/products.scss';
+import "../styles/products.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProduct } from "../redux/apiRequest";
+import { Link } from "react-router-dom";
 
+const columns = [
+  { field: "id", headerName: "ID", width: 90 },
+  {
+    field: "img",
+    headerName: "Hình ảnh",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <img
+          className="img-avatar"
+          src={params.row.product_image_url || "src/assets/avatar.jpg"}
+          alt="avatar.png"
+        />
+      );
+    },
+  },
+  {
+    field: "code",
+    headerName: "Code",
+    width: 100,
+    type: "string",
+  },
+  {
+    field: "product_name",
+    headerName: "Tên Sản phẩm",
+    width: 200,
+    type: "string",
+  },
+  {
+    field: "product_price",
+    headerName: "Giá tiền",
+    width: 150,
+    type: "string",
+  },
+  {
+    field: "product_brand",
+    headerName: "Hãng Sản xuất",
+    width: 150,
+    type: "string",
+  },
+  {
+    field: "product_quantity",
+    headerName: "Số lượng",
+    width: 100,
+    type: "integer",
+  },
+  {
+    field: "category_name",
+    headerName: "Danh mục sản phẩm",
+    width: 170,
+    type: "string",
+  },
+];
 
 const Products = () => {
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const [dataProduct, setDataProduct] = useState([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const dispatch = useDispatch();
 
-    const columns = [
-        { field: "id", headerName: "ID", width: 90 },
-        {
-          field: "img",
-          headerName: "Product Image",
-          width: 150,
-          renderCell: (params) => {
-            return (
-              <img
-                className="img-avatar"
-                src={params.row.img || "src/assets/avatar.jpg"}
-                alt="avatar.png"
-              />
-            );
-          },
-        },
-        {
-          field: "title",
-          headerName: "Title",
-          width: 200,
-          type: "string",
-        },
-        {
-          field: "price",
-          headerName: "Price",
-          width: 150,
-          type: "string",
-        },
-        {
-          field: "producer",
-          headerName: "Producer",
-          width: 100,
-          type: "string",
-        },
-        {
-          field: "createdAt",
-          headerName: "Create At",
-          width: 100,
-          type: "string",
-        },
-        {
-          field: "inStock",
-          headerName: "Verified",
-          width: 150,
-          type: "boolean",
-        },
-      ];
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="products-container">
-        <div className="infor">
-          <h1>Products</h1>
-          <button className="btn" onClick={() =>{setOpen(true)}}>Add New Product</button>
-        </div>
-        <DataTable slug={"products"} columns={columns} rows={products} />
-        {open && <AddForm slug={'products'} columns={columns} setOpen={setOpen}/>}
+  useEffect(() => {
+    if (user) {
+      getAllProduct(user.shop_id, user?.token, dispatch);
+    }
+  }, []);
+
+  const products = useSelector((state) => state.product.products.data);
+  useEffect(() => {
+    if (products) {
+      setDataProduct(products);
+      setIsDataLoaded(true);
+    }
+  }, [products]);
+  return (
+    <div className="products-container">
+      <div className="infor">
+        <h1>Products</h1>
+        <button className="btn">
+          <Link to="/products/add">Thêm sản phẩm mới</Link>
+        </button>
       </div>
-    );
+      {isDataLoaded && (
+        <DataTable
+          slug={"products"}
+          rows={dataProduct}
+          columns={columns}
+          accessToken={user.token}
+          dispatch={dispatch}
+        />
+      )}
+    </div>
+  );
 };
 
 export default Products;

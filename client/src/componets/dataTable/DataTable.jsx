@@ -4,10 +4,19 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
+import {
+  deleteCustomer,
+  deleteEmployee,
+  deleteMotocycle,
+  deleteProductById,
+  getCategoryProductById,
+  getCustomerById,
+  getEmployeeById,
+  getMotocycleById,
+  getProductById,
+} from "../../redux/apiRequest";
 
-import { deleteCustomer, deleteEmployee, deleteMotocycle, getCategoryProductById, getCustomerById, getEmployeeById, getMotocycleById } from "../../redux/apiRequest";
-
-
+import { toast } from "react-toastify";
 
 const DataTable = (props) => {
   const actionColum = {
@@ -35,23 +44,26 @@ const DataTable = (props) => {
   function handleShowDetail(id) {
     if (props.slug === "employee") {
       getEmployeeById(id, props.accessToken, props.dispatch);
-    }else if(props.slug === "customer") {
+    } else if (props.slug === "customer") {
       getCustomerById(id, props.accessToken, props.dispatch);
-    }else if(props.slug === "motocycle") {
+    } else if (props.slug === "motocycle") {
       getMotocycleById(id, props.accessToken, props.dispatch);
-    }else if(props.slug === "CategoryProduct") {
-      getCategoryProductById(id, props.accessToken, props.dispatch)
+    } else if (props.slug === "CategoryProduct") {
+      getCategoryProductById(id, props.accessToken, props.dispatch);
+    } else if (props.slug === "products") {
+      getProductById(id, props.accessToken, props.dispatch);
     }
   }
 
   function handleDelete(id) {
     if (props.slug === "employee") {
       deleteEmployee(id, props.accessToken, props.dispatch);
-      
-    }else if(props.slug === "customer") {
+    } else if (props.slug === "customer") {
       deleteCustomer(id, props.accessToken, props.dispatch);
-    }else if(props.slug === "motocycle") {
+    } else if (props.slug === "motocycle") {
       deleteMotocycle(id, props.accessToken, props.dispatch);
+    } else if (props.slug === "products") {
+      deleteProductById(id, props.accessToken, props.dispatch, toast);
     }
   }
 

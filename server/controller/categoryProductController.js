@@ -1,10 +1,9 @@
 const db = require("../models/index");
-const uploadCloud = require('../middleware/uploadImage')
-const cloudinary = require('cloudinary').v2;
+const uploadCloud = require("../middleware/uploadImage");
+const cloudinary = require("cloudinary").v2;
 const CategoryProduct = db.CategoryProduct;
 const Shop = db.Shop;
 const ShopCategoryProduct = db.ShopCategoryProduct;
-
 
 ShopCategoryProduct.belongsTo(Shop, { foreignKey: "shop_id" });
 ShopCategoryProduct.belongsTo(CategoryProduct, {
@@ -15,7 +14,40 @@ CategoryProduct.hasMany(ShopCategoryProduct, {
 });
 Shop.hasMany(ShopCategoryProduct, { foreignKey: "shop_id" });
 
-const addCategoryProduct = async (req, res) => {};
+const addCategoryProduct = async (req, res) => {
+  try {
+    const { category_name, category_description, shop_id } = req.body;
+    const image = req.body.image;
+    const fileName = req.body.fileName.split(".")[0];
+    const url_image = await cloudinary.uploader.upload(image, {
+      folder: "motocycle_image",
+      public_id: fileName,
+    });
+    const categoryProduct = await CategoryProduct.create({
+      category_name: category_name,
+      category_description: category_description,
+      category_image_url: url_image.url,
+    });
+    await ShopCategoryProduct.create(
+      {
+        shop_id: shop_id,
+        category_product_id: categoryProduct.id,
+      },
+      {
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      }
+    );
+    return res.status(200).json({
+      status: "success",
+      message: "Add category product successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+};
 
 const getAllCategoryProduct = async (req, res) => {
   const shop_id = req.query.shop_id;
@@ -51,25 +83,37 @@ const getAllCategoryProduct = async (req, res) => {
 
 const updateCategoryProduct = async (req, res) => {
   try {
-
-    const image_url = req.body.image
-    const fileName = req.body.fileName.split('.')[0]
-    const url_image = await cloudinary.uploader.upload(image_url, {
-      folder: "motocycle_image",
-      public_id: fileName,
-    });
     const id = req.params.id;
-    const { category_name, category_description} = req.body
-
-    await CategoryProduct.update( {
-      category_name: category_name,
-      category_description: category_description,
-      category_image_url: url_image.url
-    }, {
-      where: {
-        id: id,
+    const { category_name, category_description } = req.body;
+    if (req.body.image) {
+      const image_url = req.body.image;
+      const fileName = req.body.fileName.split(".")[0];
+      const url_image = await cloudinary.uploader.upload(image_url, {
+        folder: "motocycle_image",
+        public_id: fileName,
+      });
+      await CategoryProduct.update(
+        {
+          category_image_url: url_image.url,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+    }
+    await CategoryProduct.update(
+      {
+        category_name: category_name,
+        category_description: category_description,
       },
-    })
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
 
     return res.status(200).json({
       status: "success",
@@ -79,26 +123,25 @@ const updateCategoryProduct = async (req, res) => {
     console.log(error);
     return res.status(400).json(error);
   }
-}
+};
 
 const getCategoryProductById = async (req, res) => {
   const id = req.params.id;
   try {
-    const categoryProduct = await CategoryProduct.findByPk(id,{
+    const categoryProduct = await CategoryProduct.findByPk(id, {
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
-    
-    })
-    return res.status(200).json(categoryProduct)
+    });
+    return res.status(200).json(categoryProduct);
   } catch (error) {
-    return res.status(400).json(error)
+    return res.status(400).json(error);
   }
-}
+};
 
 module.exports = {
   addCategoryProduct,
   getAllCategoryProduct,
   updateCategoryProduct,
-  getCategoryProductById
+  getCategoryProductById,
 };

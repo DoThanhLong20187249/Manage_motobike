@@ -66,7 +66,24 @@ import {
   getSingleCategoryProductStart,
   getSingleCategoryProductSuccess,
   getSingleCategoryProductFailure,
+  addNewCategoryProductStart,
+  addNewCategoryProductSuccess,
+  addNewCategoryProductFailure,
 } from "./categoryProductSlice";
+
+import {
+  getAllProductsStart,
+  getAllProductsSuccess,
+  getAllProductsFailure,
+  addNewProductStart,
+  addNewProductSuccess,
+  addNewProductFailure,
+  getSingleProductStart,
+  getSingleProductSuccess,
+  getSingleProductFailure,
+  deleteProductSuccess,
+} from "./productSlice";
+
 //login
 export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
@@ -390,7 +407,9 @@ export const updateCategoryProduct = async (
   id,
   accessToken,
   categoryProduct,
-  navigate
+  navigate,
+  toast,
+  setIsLoading
 ) => {
   try {
     await axios.put(
@@ -402,7 +421,128 @@ export const updateCategoryProduct = async (
         },
       }
     );
+    toast.success("Cập nhật danh mục sản phẩm thành công");
+    setIsLoading(false);
     navigate("/CategoryProduct");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addNewCategoryProduct = async (
+  data,
+  accessToken,
+  dispatch,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  dispatch(addNewCategoryProductStart());
+  try {
+    await axios.post("http://localhost:3000/categoryProduct/add", data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(addNewCategoryProductSuccess());
+    toast.success("Tạo danh mục sản phẩm thành công");
+    setIsLoading(false);
+    navigate("/CategoryProduct");
+  } catch (error) {
+    dispatch(addNewCategoryProductFailure());
+  }
+};
+
+// Product CRUD
+
+export const getAllProduct = async (shopId, accessToken, dispatch) => {
+  dispatch(getAllProductsStart());
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/products?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    dispatch(getAllProductsSuccess(res.data));
+  } catch (error) {
+    console.log(error);
+    dispatch(getAllProductsFailure());
+  }
+};
+
+export const addNewProduct = async (
+  data,
+  accessToken,
+  dispatch,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  dispatch(addNewProductStart());
+  try {
+    await axios.post("http://localhost:3000/products/add", data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(addNewProductSuccess());
+    navigate("/products");
+    toast.success("Tạo sản phẩm thành công");
+    setIsLoading(false);
+  } catch (error) {
+    dispatch(addNewProductFailure());
+  }
+};
+
+export const getProductById = async (id, accessToken, dispatch) => {
+  dispatch(getSingleProductStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/products/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleProductSuccess(res.data));
+  } catch (error) {
+    dispatch(getSingleProductFailure());
+  }
+};
+
+export const updateProductById = async (
+  id,
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  try {
+    console.log(id);
+    await axios.post(`http://localhost:3000/products/${id}`, data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Cập nhật sản phẩm thành công");
+    setIsLoading(false);
+    navigate("/products");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteProductById = async (id, accessToken, dispatch, toast) => {
+  try {
+    await axios.delete(`http://localhost:3000/products/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Xóa sản phẩm thành công");
+    dispatch(deleteProductSuccess(id));
   } catch (error) {
     console.log(error);
   }

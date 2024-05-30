@@ -1,0 +1,110 @@
+@import "../../../varibales.scss";
+
+.product-form-container {
+  width: 100%;
+  height: 100%;
+  .product-form-main {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 70%;
+    .product-form-header {
+      h1 {
+        font-size: 24px;
+        font-weight: 500;
+        color: $main-color;
+      }
+      img {
+        width: 15%;
+        height: 15%;
+      }
+    }
+
+    .product-form-body {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      .product-form-body-group-1 {
+        display: flex;
+        gap: 30px;
+      }
+      .product-form-body-group-2 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-grow: 1;
+
+        text label {
+          font-size: 18px;
+          font-weight: 500;
+        }
+        .input-field {
+          width: 100%;
+          padding: 10px;
+          background-color: transparent;
+          border: 1px solid $main-color;
+          outline: none;
+          border-radius: 5px;
+          color: white;
+          option {
+            color: black;
+          }
+        }
+        .error-msg{
+          color: red;
+          font-size: 0.7rem;
+        
+        }
+      }
+      .button-group {
+        display: flex;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        gap: 10px;
+        .btn-submit {
+          padding: 10px 20px;
+          background-color: rgb(112, 223, 112);
+          color: rgb(255, 255, 255);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .icon {
+            font-size: 1.2rem;
+          }
+        }
+        .btn-submit:hover {
+          background-color: rgb(7, 164, 75);
+          color: black;
+        }
+        .btn-cancer {
+          padding: 10px 20px;
+          background-color: rgb(224, 70, 70);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .icon {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+}
