@@ -57,11 +57,11 @@ const DataTable = (props) => {
 
   function handleDelete(id) {
     if (props.slug === "employee") {
-      deleteEmployee(id, props.accessToken, props.dispatch);
+      deleteEmployee(id, props.accessToken, props.dispatch,toast);
     } else if (props.slug === "customer") {
-      deleteCustomer(id, props.accessToken, props.dispatch);
+      deleteCustomer(id, props.accessToken, props.dispatch,toast);
     } else if (props.slug === "motocycle") {
-      deleteMotocycle(id, props.accessToken, props.dispatch);
+      deleteMotocycle(id, props.accessToken, props.dispatch,toast);
     } else if (props.slug === "products") {
       deleteProductById(id, props.accessToken, props.dispatch, toast);
     }

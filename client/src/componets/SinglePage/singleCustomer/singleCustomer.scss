@@ -97,6 +97,10 @@
                 color: black;
               }
             }
+            .error-msg {
+              color: red;
+              font-size: 0.8rem;
+            }
           }
         }
         .form-right {
@@ -141,6 +145,10 @@
               option {
                 color: black;
               }
+            }
+            .error-msg {
+              color: red;
+              font-size: 0.8rem;
             }
           }
         }

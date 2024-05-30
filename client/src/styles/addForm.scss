@@ -86,7 +86,7 @@
       .form-left {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
         width: 50%;
 
         .form-group {
@@ -109,6 +109,11 @@
             option {
               color: black;
             }
+          }
+          .error-msg{
+            color: red;
+            font-size: 0.7rem;
+          
           }
         }
       }
@@ -116,7 +121,7 @@
       .form-right {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
         width: 50%;
 
         .form-group {
@@ -139,6 +144,11 @@
             option {
               color: black;
             }
+          }
+          .error-msg{
+            color: red;
+            font-size: 0.7rem;
+          
           }
         }
       }

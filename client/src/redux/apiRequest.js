@@ -83,6 +83,7 @@ import {
   getSingleProductFailure,
   deleteProductSuccess,
 } from "./productSlice";
+import { toast } from "react-toastify";
 
 //login
 export const LoginUser = async (user, dispatch, navigate) => {
@@ -131,7 +132,9 @@ export const addEmployee = async (
   employee,
   accessToken,
   dispatch,
-  navigate
+  navigate,
+  toast,
+  setIsLoading
 ) => {
   dispatch(addEmployeeStart());
   try {
@@ -145,6 +148,8 @@ export const addEmployee = async (
       }
     );
     dispatch(addEmployeeSuccess(res.data));
+    toast.success("Tạo nhân viên thành công");
+    setIsLoading(false);
     navigate("/employee");
   } catch (error) {
     dispatch(addEmployeeFailure(error.response.message));
@@ -170,7 +175,9 @@ export const updateEmployee = async (
   employee,
   accessToken,
   dispatch,
-  navigate
+  navigate,
+  toast,
+  setIsLoading
 ) => {
   dispatch(updateSingleEmployeeStart());
   try {
@@ -184,6 +191,8 @@ export const updateEmployee = async (
       }
     );
     dispatch(updateSingleEmployeeSuccess(res.data));
+    toast.success("Cập nhật nhân viên thành công");
+    setIsLoading(false);
     navigate("/employee");
   } catch (error) {
     dispatch(updateSingleEmployeeFailure(error.response.message));
@@ -199,6 +208,7 @@ export const deleteEmployee = async (id, accessToken, dispatch) => {
       },
     });
     dispatch(deleteEmployeeSuccess(id));
+    toast.success("Xóa nhân viên thành công");
   } catch (error) {
     dispatch(deleteEmployeeFailure());
   }
@@ -242,7 +252,9 @@ export const updateCustomer = async (
   customer,
   accessToken,
   dispatch,
-  navigate
+  navigate,
+  toast,
+  setIsLoading
 ) => {
   dispatch(updateSingleCustomerStart());
   try {
@@ -252,13 +264,15 @@ export const updateCustomer = async (
       },
     });
     dispatch(updateSingleCustomerSuccess());
+    toast.success("Cập nhật khách hàng thành công");
+    setIsLoading(false);
     navigate("/customer");
   } catch (error) {
     dispatch(updateSingleCustomerFailure());
   }
 };
 
-export const deleteCustomer = async (id, accessToken, dispatch) => {
+export const deleteCustomer = async (id, accessToken, dispatch,toast) => {
   dispatch(deleteCustomerStart());
   try {
     await axios.delete(`http://localhost:3000/customer/${id}`, {
@@ -267,6 +281,7 @@ export const deleteCustomer = async (id, accessToken, dispatch) => {
       },
     });
     dispatch(deleteCustomerSuccess(id));
+    toast.success("Xóa khách hàng thành công");
   } catch (error) {
     dispatch(deleteCustomerFailure());
   }
@@ -276,7 +291,9 @@ export const addCustomer = async (
   customer,
   accessToken,
   dispatch,
-  navigate
+  navigate,
+  toast,
+  setIsLoading
 ) => {
   dispatch(addCustomerStart());
   try {
@@ -289,6 +306,8 @@ export const addCustomer = async (
         },
       }
     );
+    toast.success("Tạo khách hàng thành công");
+    setIsLoading(false);
     dispatch(addCustomerSuccess(res.data));
     navigate("/customer");
   } catch (error) {
@@ -334,7 +353,9 @@ export const updateMotocycle = async (
   motocycle,
   accessToken,
   dispatch,
-  navigate
+  navigate,
+  toast,
+  setIsLoading
 ) => {
   dispatch(updateMotocycleStart());
   try {
@@ -348,6 +369,8 @@ export const updateMotocycle = async (
       }
     );
     dispatch(updateMotocycleSuccess(res.data));
+    toast.success("Cập nhật xe máy thành công");
+    setIsLoading(false);
     navigate("/motocycle");
   } catch (error) {
     console.log(error);
@@ -363,6 +386,7 @@ export const deleteMotocycle = async (id, accessToken, dispatch) => {
         token: `Bearer ${accessToken}`,
       },
     });
+    toast.success("Xóa xe máy thành công");
     dispatch(deleteMotocycleSuccess(id));
   } catch (error) {
     dispatch(deleteMotocycleFailure());
@@ -521,7 +545,7 @@ export const updateProductById = async (
 ) => {
   try {
     console.log(id);
-    await axios.post(`http://localhost:3000/products/${id}`, data, {
+    await axios.put(`http://localhost:3000/products/${id}`, data, {
       headers: {
         token: `Bearer ${accessToken}`,
       },

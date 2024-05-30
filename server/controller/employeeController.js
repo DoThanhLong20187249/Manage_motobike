@@ -13,7 +13,7 @@ const getAllEmployee = async (req, res) => {
     const id = req.query.shop_id;
     dbShop.hasMany(dbEmployee, { foreignKey: "shop_id" });
     dbEmployee.belongsTo(dbShop, { foreignKey: "shop_id" });
-    
+
     const shop = await dbShop.findOne({ where: { id: id } });
     const employee = await dbEmployee.findAll({
       where: { shop_id: shop.id },
@@ -25,10 +25,8 @@ const getAllEmployee = async (req, res) => {
         shop_name: shop.shop_name,
       };
     });
-    return res.status(200).json(
-      newEmmployee
-    )
-  }catch (error) {
+    return res.status(200).json(newEmmployee);
+  } catch (error) {
     return res.status(400).json({
       status: "fail",
       message: error.message,
@@ -43,28 +41,32 @@ const getEmployeeById = async (req, res) => {
     dbEmployee.belongsTo(dbShop, { foreignKey: "shop_id" });
     dbShop.hasMany(dbEmployee, { foreignKey: "shop_id" });
 
-
     const id = req.params.id;
     const singleEmployee = await dbEmployee.findOne({
       where: { id: id },
-      include:  [
-      { model: dbShop, attributes: ["shop_name"] }
-      ],
-      attributes: { exclude: ["shop_id","account_id","createdAt", "updatedAt"] },
+      include: [{ model: dbShop, attributes: ["shop_name"] }],
+      attributes: {
+        exclude: ["shop_id", "account_id", "createdAt", "updatedAt"],
+      },
     });
     const newSingleEmployee = singleEmployee.toJSON();
     newSingleEmployee.shop_name = singleEmployee.Shop.shop_name;
     delete newSingleEmployee.Shop;
-    const account = await dbAcountEmployee.findOne({ where: { employee_id: newSingleEmployee.id } });
+    if (newSingleEmployee.position_employee === "Lễ Tân") {
+      newSingleEmployee.position_employee = "reseptionist";
+    } else if (newSingleEmployee.position_employee === "Thợ Sửa Chữa") {
+      newSingleEmployee.position_employee = "staff";
+    }
+
+    const account = await dbAcountEmployee.findOne({
+      where: { employee_id: newSingleEmployee.id },
+    });
     const newAccount = account.toJSON();
-
-
-    console.log(singleEmployee);
 
     return res.status(200).json({
       status: "success",
       message: "Get 1 Employee",
-      data: {...newSingleEmployee,...newAccount},
+      data: { ...newSingleEmployee, ...newAccount },
     });
   } catch (error) {
     console.log(error);
@@ -106,9 +108,15 @@ const addEmployee = async (req, res) => {
     );
     await pool.query(
       'INSERT INTO "AccountEmployees" (email_employee, password_employee, role_account,employee_id,"createdAt","updatedAt") VALUES ($1, $2, $3, $4,$5,$6) RETURNING id',
-      [email, hashedPasword, role_account, addEmployee.rows[0].id ,new Date(), new Date()]
+      [
+        email,
+        hashedPasword,
+        role_account,
+        addEmployee.rows[0].id,
+        new Date(),
+        new Date(),
+      ]
     );
-
 
     return res.status(200).json({
       status: "success",
@@ -136,7 +144,7 @@ const updateEmployeeById = async (req, res) => {
       age_employee,
       gender_employee,
     } = req.body;
-    const employee = await dbEmployee.findOne({where: {id: id}});
+    const employee = await dbEmployee.findOne({ where: { id: id } });
 
     await dbEmployee.update(
       {
@@ -145,38 +153,37 @@ const updateEmployeeById = async (req, res) => {
         address_employee: address_employee,
         position_employee: position_employee,
         age_employee: age_employee,
-        gender_employee: gender_employee
+        gender_employee: gender_employee,
       },
       {
         where: {
           id: id,
         },
       }
-    )
+    );
 
-     await dbAcountEmployee.update(
+    await dbAcountEmployee.update(
       {
         email_employee: email_employee,
-        password_employee: password_employee
-
-      },{
+        password_employee: password_employee,
+      },
+      {
         where: {
           employee_id: employee.id,
+        },
       }
-    }
-    )
+    );
     return res.status(200).json({
       status: "success",
       message: "Update 1 Employee",
     });
-
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       message: error.message,
     });
   }
-}
+};
 
 const deleteEmployeeById = async (req, res) => {
   dbAcountEmployee.belongsTo(dbEmployee, { foreignKey: "employee_id" });
@@ -196,7 +203,7 @@ const deleteEmployeeById = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
 
 module.exports = {
   getAllEmployee,

@@ -103,6 +103,8 @@ const updateMotocycleById = async (req, res) => {
     customer_email,
     customer_id,
   } = req.body;
+  
+  console.log(req.body);
 
   try {
     await dbMotocycle.update(

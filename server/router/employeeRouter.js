@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const upload = multer();
 const router = express.Router();
 const employeeController = require("../controller/employeeController");
 const middlewareController = require("../middleware/middlewareController");
@@ -11,11 +13,15 @@ router
   );
 router
   .route("/add")
-  .post(middlewareController.verifyTokenAdmin, employeeController.addEmployee);
+  .post(
+    middlewareController.verifyTokenAdmin,
+    upload.none(),
+    employeeController.addEmployee
+  );
 
 router
   .route("/:id")
   .get(employeeController.getEmployeeById)
-  .put(employeeController.updateEmployeeById)
+  .put(upload.none(), employeeController.updateEmployeeById)
   .delete(employeeController.deleteEmployeeById);
 module.exports = router;

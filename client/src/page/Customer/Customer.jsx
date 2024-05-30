@@ -52,7 +52,7 @@ const Customer = () => {
   const dispatch = useDispatch();
   // call api to get all customers
   useEffect(() => {
-    getAllCustomers(2, user?.token, dispatch);
+    getAllCustomers(user?.shop_id, user?.token, dispatch);
   }, []);
   const customers = useSelector(
     (state) => state.customer.customers?.allCustomers

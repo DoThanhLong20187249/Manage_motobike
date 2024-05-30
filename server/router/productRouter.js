@@ -12,7 +12,7 @@ router
 router
   .route("/:id")
   .get(productController.getProductById)
-  .post(upload.single("image"),productController.updateProductById)
+  .put(upload.single("image"),productController.updateProductById)
   .delete(productController.deleteProductById);
 
 module.exports = router;
