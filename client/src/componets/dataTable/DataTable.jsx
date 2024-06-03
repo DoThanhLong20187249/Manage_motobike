@@ -5,10 +5,12 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 
 import {
+  deleteCategoryIssue,
   deleteCustomer,
   deleteEmployee,
   deleteMotocycle,
   deleteProductById,
+  getCategoryIssueById,
   getCategoryProductById,
   getCustomerById,
   getEmployeeById,
@@ -52,18 +54,22 @@ const DataTable = (props) => {
       getCategoryProductById(id, props.accessToken, props.dispatch);
     } else if (props.slug === "products") {
       getProductById(id, props.accessToken, props.dispatch);
+    } else if (props.slug === "categoryIssue") {
+      getCategoryIssueById(id, props.accessToken, props.dispatch);
     }
   }
 
   function handleDelete(id) {
     if (props.slug === "employee") {
-      deleteEmployee(id, props.accessToken, props.dispatch,toast);
+      deleteEmployee(id, props.accessToken, props.dispatch, toast);
     } else if (props.slug === "customer") {
-      deleteCustomer(id, props.accessToken, props.dispatch,toast);
+      deleteCustomer(id, props.accessToken, props.dispatch, toast);
     } else if (props.slug === "motocycle") {
-      deleteMotocycle(id, props.accessToken, props.dispatch,toast);
+      deleteMotocycle(id, props.accessToken, props.dispatch, toast);
     } else if (props.slug === "products") {
       deleteProductById(id, props.accessToken, props.dispatch, toast);
+    } else if (props.slug === "categoryIssue") {
+      deleteCategoryIssue(id, props.accessToken, props.dispatch, toast);
     }
   }
 

@@ -1,0 +1,115 @@
+@import "../../../varibales.scss";
+.category-issue-form-container {
+  width: 100%;
+  height: 100%;
+  .category-issue-form-main {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    .category-issue-from {
+      display: flex;
+      flex-direction: column;
+      .category-issue-form-body-first {
+        display: flex;
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          width: 47%;
+          label {
+            margin-top: 5px;
+            color: $main-color;
+            font-size: 1rem;
+            margin-bottom: 5px;
+          }
+          .input-field {
+            width: 90%;
+            padding: 10px;
+            background-color: transparent;
+            border: 1px solid $main-color;
+            outline: none;
+            border-radius: 5px;
+            color: white;
+            option {
+              color: black;
+            }
+          }
+          .error-msg {
+            color: red;
+            font-size: 0.7rem;
+          }
+        }
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        label {
+          margin-top: 5px;
+          color: $main-color;
+          font-size: 1rem;
+          margin-bottom: 5px;
+        }
+        .input-field {
+          width: 90%;
+          padding: 10px;
+          background-color: transparent;
+          border: 1px solid $main-color;
+          outline: none;
+          border-radius: 5px;
+          color: white;
+          option {
+            color: black;
+          }
+        }
+        .error-msg {
+          color: red;
+          font-size: 0.7rem;
+        }
+      }
+      .button-group {
+        display: flex;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        gap: 10px;
+        .btn-submit {
+          padding: 10px 20px;
+          background-color: rgb(112, 223, 112);
+          color: rgb(255, 255, 255);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .icon {
+            font-size: 1.2rem;
+          }
+        }
+        .btn-submit:hover {
+          background-color: rgb(7, 164, 75);
+          color: black;
+        }
+        .btn-cancer {
+          padding: 10px 20px;
+          background-color: rgb(224, 70, 70);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .icon {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+}

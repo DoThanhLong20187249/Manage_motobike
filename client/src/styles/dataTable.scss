@@ -20,6 +20,12 @@
     .MuiDataGrid-toolbarContainer {
       flex-direction: row-reverse;
     }
+    .MuiDataGrid-main {
+      .MuiDataGrid-scrollbar {
+        overflow-x: hidden;
+      }
+    }
+    overflow: hidden;
 
     .img-avatar {
       width: 32px;

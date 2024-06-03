@@ -62,6 +62,13 @@ export const menuData = [
         url: "/customer",
         icon: "src/assets/motorcycle.svg",
       },
+      {
+        id: 7,
+        title: "Danh Mục sự cố",
+        url: "/categoryIssue",
+        icon: "src/assets/issue.svg",
+      },
+      
     ],
   },
   {

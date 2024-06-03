@@ -83,6 +83,19 @@ import {
   getSingleProductFailure,
   deleteProductSuccess,
 } from "./productSlice";
+
+import {
+  getAllCategoryIssueStart,
+  getAllCategoryIssueSuccess,
+  getAllCategoryIssueFailure,
+  getSingleCategoryIssueStart,
+  getSingleCategoryIssueSuccess,
+  getSingleCategoryIssueFailure,
+  deleteCategoryIssueStart,
+  deleteCategoryIssueSuccess,
+  deleteCategoryIssueFailure,
+} from "./categoryIssueSlice";
+
 import { toast } from "react-toastify";
 
 //login
@@ -272,7 +285,7 @@ export const updateCustomer = async (
   }
 };
 
-export const deleteCustomer = async (id, accessToken, dispatch,toast) => {
+export const deleteCustomer = async (id, accessToken, dispatch, toast) => {
   dispatch(deleteCustomerStart());
   try {
     await axios.delete(`http://localhost:3000/customer/${id}`, {
@@ -569,5 +582,96 @@ export const deleteProductById = async (id, accessToken, dispatch, toast) => {
     dispatch(deleteProductSuccess(id));
   } catch (error) {
     console.log(error);
+  }
+};
+
+// API categoryIssue
+
+export const getAllCategoryIssue = async (shopId, accessToken, dispatch) => {
+  dispatch(getAllCategoryIssueStart());
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/categoryIssue?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    dispatch(getAllCategoryIssueSuccess(res.data));
+  } catch (error) {
+    dispatch(getAllCategoryIssueFailure());
+  }
+};
+
+export const addNewCategoryIssue = async (
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  try {
+    await axios.post("http://localhost:3000/categoryIssue/add", data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Tạo danh mục sự cố thành công");
+    setIsLoading(false);
+    navigate("/categoryIssue");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCategoryIssueById = async (id, accessToken, dispatch) => {
+  dispatch(getSingleCategoryIssueStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/categoryIssue/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleCategoryIssueSuccess(res.data));
+  } catch (error) {
+    dispatch(getSingleCategoryIssueFailure());
+  }
+};
+
+export const updateCategoryIssue = async (
+  id,
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  try {
+    await axios.put(`http://localhost:3000/categoryIssue/${id}`, data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Cập nhật danh mục sự cố thành công");
+    setIsLoading(false);
+    navigate("/categoryIssue");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteCategoryIssue = async (id, accessToken, dispatch, toast) => {
+  deleteCategoryIssueStart();
+  try {
+    await axios.delete(`http://localhost:3000/categoryIssue/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Xóa danh mục sự cố thành công");
+    dispatch(deleteCategoryIssueSuccess(id));
+  } catch (error) {
+    dispatch(deleteCategoryIssueFailure());
   }
 };

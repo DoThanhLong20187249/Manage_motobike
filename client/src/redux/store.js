@@ -5,6 +5,7 @@ import customerReducer from "./customerSlice";
 import motocycleReducer from "./motocycleSlice";
 import categoryProductReducer from "./categoryProductSlice";
 import productReducer from "./productSlice";
+import categoryIssueReducer from "./categoryIssueSlice";
 // import {
 //   persistStore,
 //   persistReducer,
@@ -49,5 +50,6 @@ export const store = configureStore({
     motocycle: motocycleReducer,
     categoryProduct: categoryProductReducer,
     product: productReducer,
+    categoryIssue: categoryIssueReducer,
   },
 });

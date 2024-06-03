@@ -25,6 +25,9 @@ import SingleCategoryProduct from "./componets/SinglePage/singleCategoryProduct/
 import ProductForm from "./componets/addForm/productFrom/ProductForm.jsx";
 import SingleProductPage from "./componets/SinglePage/singleProduct.jsx/SingleProductPage.jsx";
 import "react-toastify/dist/ReactToastify.css";
+import CategoryIssue from "./page/CategoryIssue/CategoryIssue.jsx";
+import CategoryIssueForm from "./componets/addForm/categoryIssueForm/CategoryIssueForm.jsx";
+import SingleCategoryIssue from "./componets/SinglePage/singleCategoryIssue/SingleCategoryIssue.jsx";
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
   {
@@ -95,6 +98,18 @@ const router = createBrowserRouter([
         path: "/products/:id",
         element: <SingleProductPage />,
       },
+      {
+        path:"/categoryIssue",
+        element:<CategoryIssue/>,
+      },
+      {
+        path:"/categoryIssue/add",
+        element:<CategoryIssueForm/>
+      },
+      {
+        path:"/categoryIssue/:id",
+        element:<SingleCategoryIssue/>
+      }
     ],
   },
   {
