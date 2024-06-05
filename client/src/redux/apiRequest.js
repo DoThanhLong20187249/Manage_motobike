@@ -96,6 +96,18 @@ import {
   deleteCategoryIssueFailure,
 } from "./categoryIssueSlice";
 
+import {
+  getAllReportStart,
+  getAllReportSuccess,
+  getAllReportFailure,
+  getInformationByIDStart,
+  getInformationByIDSuccess,
+  getInformationByIDFailure,
+  deleteCheckIssueStart,
+  deleteCheckIssueSuccess,
+  deleteCheckIssueFailure,
+} from "./checkIssueSlice";
+
 import { toast } from "react-toastify";
 
 //login
@@ -675,3 +687,85 @@ export const deleteCategoryIssue = async (id, accessToken, dispatch, toast) => {
     dispatch(deleteCategoryIssueFailure());
   }
 };
+
+// API checkIssue CRUD
+
+export const getAllReports = async (shopId, accessToken, dispatch) => {
+  dispatch(getAllReportStart());
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/checkIssue?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    dispatch(getAllReportSuccess(res.data));
+  } catch (error) {
+    dispatch(getAllReportFailure());
+  }
+};
+
+export const getInformationByID = async (
+  motocycle_id,
+  employee_id,
+  accessToken,
+  dispatch,
+  setIsSearch
+) => {
+  dispatch(getInformationByIDStart());
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/checkIssue/add?motocycle_id=${motocycle_id}&employee_id=${employee_id}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    setIsSearch(false)
+    dispatch(getInformationByIDSuccess(res.data));
+  } catch (error) {
+    toast.error("Không tìm thấy thông tin");
+    dispatch(getInformationByIDFailure());
+  }
+};
+
+export const addNewReport = async (
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  try {
+    await axios.post("http://localhost:3000/checkIssue/add", data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    console.log(data);
+    toast.success("Tạo biên bản thành công");
+    setIsLoading(false);
+    navigate("/checkIssue");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteCheckIssueById = async (id, accessToken, dispatch, toast) => {
+  dispatch(deleteCheckIssueStart());
+  try {
+    await axios.delete(`http://localhost:3000/checkIssue/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Xóa biên bản thành công");
+    dispatch(deleteCheckIssueSuccess(id));
+  } catch (error) {
+    dispatch(deleteCheckIssueFailure());
+    console.log(error);
+  }
+}

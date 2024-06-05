@@ -28,6 +28,8 @@ import "react-toastify/dist/ReactToastify.css";
 import CategoryIssue from "./page/CategoryIssue/CategoryIssue.jsx";
 import CategoryIssueForm from "./componets/addForm/categoryIssueForm/CategoryIssueForm.jsx";
 import SingleCategoryIssue from "./componets/SinglePage/singleCategoryIssue/SingleCategoryIssue.jsx";
+import IncidentReport from "./page/IncidentReport/IncidentReport.jsx";
+import CheckIssueForm from "./componets/addForm/reportForm/CheckIssueForm.jsx";
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
   {
@@ -109,6 +111,14 @@ const router = createBrowserRouter([
       {
         path:"/categoryIssue/:id",
         element:<SingleCategoryIssue/>
+      },
+      {
+        path: "/checkIssue",
+        element: <IncidentReport/>
+      },
+      {
+        path: "/checkIssue/add",
+        element: <CheckIssueForm/>
       }
     ],
   },

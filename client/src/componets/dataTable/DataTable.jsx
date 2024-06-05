@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import {
   deleteCategoryIssue,
+  deleteCheckIssueById,
   deleteCustomer,
   deleteEmployee,
   deleteMotocycle,
@@ -70,6 +71,8 @@ const DataTable = (props) => {
       deleteProductById(id, props.accessToken, props.dispatch, toast);
     } else if (props.slug === "categoryIssue") {
       deleteCategoryIssue(id, props.accessToken, props.dispatch, toast);
+    } else if (props.slug === "checkIssue") {
+      deleteCheckIssueById(id, props.accessToken, props.dispatch, toast);
     }
   }
 

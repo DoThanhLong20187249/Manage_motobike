@@ -7,7 +7,7 @@ const categoryIssueController = require("../controller/categoryIssueController")
 router.route("/").get(categoryIssueController.getAllCategoryIssues);
 router
   .route("/add")
-  .post(upload.none(), categoryIssueController.addNewCategoryIssue);
+  .post(upload.none(), categoryIssueController.addNewCategoryIssue)
 
 router
   .route("/:id")

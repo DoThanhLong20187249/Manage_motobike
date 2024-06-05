@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       Motocycle.hasMany(models.ShopMotocycle, {
         foreignKey: 'motocycle_id',
       })
+      Motocycle.hasMany(models.CheckIssue, {
+        foreignKey: 'motocycle_id',
+      })
 
     }
   }

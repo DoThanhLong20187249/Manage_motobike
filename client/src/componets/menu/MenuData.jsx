@@ -68,6 +68,12 @@ export const menuData = [
         url: "/categoryIssue",
         icon: "src/assets/issue.svg",
       },
+      {
+        id: 8,
+        title: "Biên bản sự cố",
+        url: "/checkIssue",
+        icon: "src/assets/report.svg",
+      },
       
     ],
   },

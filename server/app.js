@@ -8,6 +8,7 @@ const motocycleRouter = require('./router/motocycleRouter')
 const categoryProdcutRouter = require('./router/categoryProductRouter')
 const productRouter = require('./router/productRouter')
 const categoryIssueRouter = require('./router/categoryIssueRouter')
+const checkIssueRouter = require('./router/checkIssueRouter')
 
 const cors = require('cors')
 
@@ -24,6 +25,7 @@ app.use('/motocycle', motocycleRouter)
 app.use('/CategoryProduct', categoryProdcutRouter)
 app.use('/products', productRouter)
 app.use('/categoryIssue', categoryIssueRouter)
+app.use('/checkIssue', checkIssueRouter)
 
 
 

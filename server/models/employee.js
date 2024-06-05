@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       Employee.hasOne(models.AccountEmployee, {
         foreignKey: "employee_id",
       });
+      Employee.hasMany(models.CheckIssue, {
+        foreignKey: "employee_id",
+      });
     }
   }
   Employee.init({
