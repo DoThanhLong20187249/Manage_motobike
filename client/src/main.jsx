@@ -30,6 +30,7 @@ import CategoryIssueForm from "./componets/addForm/categoryIssueForm/CategoryIss
 import SingleCategoryIssue from "./componets/SinglePage/singleCategoryIssue/SingleCategoryIssue.jsx";
 import IncidentReport from "./page/IncidentReport/IncidentReport.jsx";
 import CheckIssueForm from "./componets/addForm/reportForm/CheckIssueForm.jsx";
+import SingleCheckIssue from "./componets/SinglePage/singleCheckIssue/SingleCheckIssue.jsx";
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: "/checkIssue/add",
         element: <CheckIssueForm/>
+      },
+      {
+        path: "/checkIssue/:id",
+        element: <SingleCheckIssue/>
       }
     ],
   },
