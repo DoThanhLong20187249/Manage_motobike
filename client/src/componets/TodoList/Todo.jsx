@@ -3,13 +3,14 @@ import "./todo.scss";
 const Todo = ({ task, deleteTodo,editTodo }) => {
   return (
     <div className="Todo">
-      <p>{task.acction}</p>
+      <p>{task.action}</p>
       <div>
         <input
           className="edit-status"
           type="checkbox"
           name="status"
           id="status"
+          checked={task.status}
           onChange={(e) => {
             editTodo(task.id, e.target.checked);
           }}

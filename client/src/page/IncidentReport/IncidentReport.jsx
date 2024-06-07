@@ -31,6 +31,12 @@ const columns = [
     width: 150,
     type: "string",
   },
+  {
+    field: "status",
+    headerName: "Trạng thái",
+    width: 100,
+    type: "boolean",
+  }
   
 ];
 

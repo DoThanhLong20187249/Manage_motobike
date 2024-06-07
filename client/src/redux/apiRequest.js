@@ -106,6 +106,9 @@ import {
   deleteCheckIssueStart,
   deleteCheckIssueSuccess,
   deleteCheckIssueFailure,
+  getSingReportStart,
+  getSingReportSuccess,
+  getSingReportFailure,
 } from "./checkIssueSlice";
 
 import { toast } from "react-toastify";
@@ -724,7 +727,7 @@ export const getInformationByID = async (
         },
       }
     );
-    setIsSearch(false)
+    setIsSearch(false);
     dispatch(getInformationByIDSuccess(res.data));
   } catch (error) {
     toast.error("Không tìm thấy thông tin");
@@ -754,7 +757,12 @@ export const addNewReport = async (
   }
 };
 
-export const deleteCheckIssueById = async (id, accessToken, dispatch, toast) => {
+export const deleteCheckIssueById = async (
+  id,
+  accessToken,
+  dispatch,
+  toast
+) => {
   dispatch(deleteCheckIssueStart());
   try {
     await axios.delete(`http://localhost:3000/checkIssue/${id}`, {
@@ -768,4 +776,39 @@ export const deleteCheckIssueById = async (id, accessToken, dispatch, toast) => 
     dispatch(deleteCheckIssueFailure());
     console.log(error);
   }
-}
+};
+export const getSingleReportById = async (id, accessToken, dispatch) => {
+  dispatch(getSingReportStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/checkIssue/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingReportSuccess(res.data));
+  } catch (error) {
+    dispatch(getSingReportFailure());
+  }
+};
+
+export const updateSingleReportById = async (
+  id,
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  try {
+    await axios.put(`http://localhost:3000/checkIssue/${id}`, data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Cập nhật biên bản thành công");
+    setIsLoading(false);
+    navigate("/checkIssue");
+  } catch (error) {
+    console.log(error);
+  }
+};

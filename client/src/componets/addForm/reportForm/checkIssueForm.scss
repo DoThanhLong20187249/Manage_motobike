@@ -24,6 +24,27 @@
         font-size: 1rem;
         margin-bottom: 520;
       }
+      .react-select__control {
+        border: 1px solid $main-color;
+        outline: none;
+        padding: 5px;
+        background-color: transparent;
+        color: white
+
+      }
+      .react-select__option {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        color: black
+      }
+      .react-select__single-value {
+        color: white;
+      }
+      .react-select__input {
+        color: white !important;
+      }
+
       .input-field {
         width: 100%;
         padding: 10px;

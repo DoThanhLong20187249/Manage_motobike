@@ -17,6 +17,7 @@ import {
   getEmployeeById,
   getMotocycleById,
   getProductById,
+  getSingleReportById,
 } from "../../redux/apiRequest";
 
 import { toast } from "react-toastify";
@@ -57,6 +58,8 @@ const DataTable = (props) => {
       getProductById(id, props.accessToken, props.dispatch);
     } else if (props.slug === "categoryIssue") {
       getCategoryIssueById(id, props.accessToken, props.dispatch);
+    } else if (props.slug === "checkIssue") {
+      getSingleReportById(id, props.accessToken, props.dispatch);
     }
   }
 

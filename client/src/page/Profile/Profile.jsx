@@ -14,19 +14,19 @@ const Profile = () => {
                 <div className="profile-info">
                     <div className="info-item">
                         <span className="label ">Tên cửa hàng:</span>
-                        <span>{user.info.shop_name}</span>
+                        <span>{user.shop_name}</span>
                     </div>
                     <div className="info-item">
                         <span className="label ">Chủ cửa hàng:</span>
-                        <span>{user.info.shop_owner_name}</span>
+                        <span>{user.shop_owner_name}</span>
                     </div>
                     <div className="info-item">
                         <span className="label ">Địa chỉ:</span>
-                        <span>{user.info.shop_address}</span>
+                        <span>{user.shop_address}</span>
                     </div>
                     <div className="info-item">
                         <span className="label ">Số điện thoại:</span>
-                        <span>{user.info.hotline}</span>
+                        <span>{user.hotline}</span>
                     </div>
                     <div className="info-item">
                         <span className="label ">Email:</span>

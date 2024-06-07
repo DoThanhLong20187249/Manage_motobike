@@ -63,6 +63,7 @@ const getAllcheckIssues = async (req, res) => {
         Motocycle_name: checkIssue.Motocycle.motocycle_name,
         Customer_name: checkIssue.Motocycle.Customer.customer_name,
         Category_issue_name: checkIssue.CategoryIssue.category_issue_name,
+        status: checkIssue.status,
       };
     });
     return res.status(200).json(data);
@@ -127,7 +128,7 @@ const addCheckIssue = async (req, res) => {
     await dbCheckList.bulkCreate(
       todos.map((todo) => {
         return {
-          action: todo.acction,
+          action: todo.action,
           status: todo.status,
           check_issue_id: checkIssue.id,
         };
@@ -165,9 +166,144 @@ const deleteCheckIssue = async (req, res) => {
     return res.status(500).json(error);
   }
 };
+const getCheckIssueByID = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const checkIssue = await dbCheckIssue.findOne({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: dbMotocycle,
+          attributes: ["motocycle_name", "motocycle_number", "customer_id"],
+          include: {
+            model: dbCustomer,
+            attributes: ["customer_name"],
+          },
+        },
+        {
+          model: dbEmployee,
+          attributes: ["name_employee"],
+        },
+        {
+          model: dbCategoryIssue,
+          attributes: ["category_issue_name"],
+        },
+      ],
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    const data = checkIssue.toJSON();
+    const checkIssueData = {
+      id: data.id,
+      shop_id: data.shop_id,
+      motocycle_id: data.motocycle_id,
+      employee_id: data.employee_id,
+      customer_id: data.Motocycle.customer_id,
+      cateogry_issue_id: data.cateogry_issue_id,
+      employee_name: data.Employee.name_employee,
+      motocycle_name: data.Motocycle.motocycle_name,
+      motocycle_number: data.Motocycle.motocycle_number,
+      customer_name: data.Motocycle.Customer.customer_name,
+      category_issue_name: data.CategoryIssue.category_issue_name,
+      status: data.status,
+    };
+    const checkList = await dbCheckList.findAll({
+      where: {
+        check_issue_id: checkIssueData.id,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+
+    return res.status(200).json({ checkIssueData, checkList });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
+const updateCheckIssue = async (req, res) => {
+  const id = req.params.id;
+  const data = req.body;
+  try {
+    await dbMotocycle.update(
+      {
+        motocycle_name: data.motocycle_name,
+        motocycle_number: data.motocycle_number,
+      },
+      {
+        where: {
+          id: data.motocycle_id,
+        },
+      }
+    );
+    await dbEmployee.update(
+      {
+        name_employee: data.employee_name,
+      },
+      {
+        where: {
+          id: data.employee_id,
+        },
+      }
+    );
+    await dbCheckIssue.update(
+      {
+        cateogry_issue_id: data.category_issue_id,
+        status: data.status,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+    await dbCustomer.update(
+      {
+        customer_name: data.customer_name,
+      },
+      {
+        where: {
+          id: data.customer_id,
+        },
+      }
+    );
+    const todos = JSON.parse(data.todos);
+    await dbCheckList.destroy({
+      where: {
+        check_issue_id: id,
+      },
+    });
+    if (todos.length === 0) {
+      await dbCheckList.create({
+        action: "Không có công việc",
+        status: null,
+        check_issue_id: id,
+      });
+    }
+    await dbCheckList.bulkCreate(
+      todos.map((todo) => {
+        return {
+          action: todo.action,
+          status: todo.status,
+          check_issue_id: id,
+        };
+      })
+    );
+    return res.status(200).json("Cập nhật thành công");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
 module.exports = {
   getAllcheckIssues,
   getInformationByID,
   addCheckIssue,
   deleteCheckIssue,
+  getCheckIssueByID,
+  updateCheckIssue,
 };

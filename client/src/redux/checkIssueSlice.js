@@ -13,6 +13,11 @@ const checkIssueSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    singleReport: {
+      data: null,
+      isFetching: false,
+      error: false,
+    },
   },
   reducers: {
     getAllReportStart: (state) => {
@@ -59,6 +64,19 @@ const checkIssueSlice = createSlice({
       state.reports.isFetching = false;
       state.reports.error = true;
     },
+    getSingReportStart: (state) => {
+      state.singleReport.isFetching = true;
+      state.singleReport.error = false;
+    },
+    getSingReportSuccess: (state, action) => {
+      state.singleReport.isFetching = false;
+      state.singleReport.data = action.payload;
+      state.singleReport.error = false;
+    },
+    getSingReportFailure: (state) => {
+      state.singleReport.isFetching = false;
+      state.singleReport.error = true;
+    },
   },
 });
 
@@ -73,5 +91,8 @@ export const {
   deleteCheckIssueStart,
   deleteCheckIssueSuccess,
   deleteCheckIssueFailure,
+  getSingReportStart,
+  getSingReportSuccess,
+  getSingReportFailure,
 } = checkIssueSlice.actions;
 export default checkIssueSlice.reducer;

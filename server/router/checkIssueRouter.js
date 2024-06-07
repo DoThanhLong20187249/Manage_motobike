@@ -11,6 +11,10 @@ router
   .get(checkIssueController.getInformationByID)
   .post(checkIssueController.addCheckIssue);
 
-router.route("/:id").delete(checkIssueController.deleteCheckIssue);
+router
+  .route("/:id")
+  .delete(checkIssueController.deleteCheckIssue)
+  .get(checkIssueController.getCheckIssueByID)
+  .put(upload.none(), checkIssueController.updateCheckIssue);
 
 module.exports = router;
