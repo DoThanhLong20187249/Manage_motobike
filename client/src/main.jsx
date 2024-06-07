@@ -124,6 +124,10 @@ const router = createBrowserRouter([
       {
         path: "/checkIssue/:id",
         element: <SingleCheckIssue/>
+      },
+      {
+        path:"/order/add/:id",
+        element: <CheckIssueForm/>
       }
     ],
   },

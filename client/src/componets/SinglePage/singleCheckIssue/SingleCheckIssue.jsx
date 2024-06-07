@@ -13,11 +13,13 @@ import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Loading/Loading";
+import { setInformationReportDetals } from "../../../redux/informationReportDetalsSlice";
 
 const SingleCheckIssue = () => {
   //general data
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [todos, setTodos] = useState([]);
+  const [dataInfor, setDataInfor] = useState({});// lấy thông tin biên bản sự cố từ redux-store
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ const SingleCheckIssue = () => {
         category_issue_id: dataReport.checkIssueData.cateogry_issue_id,
       });
       setTodos(dataReport.checkList);
+      setDataInfor(dataReport)
     }
   }, [dataReport]);
   const formik = useFormik({
@@ -119,6 +122,11 @@ const SingleCheckIssue = () => {
         formik.handleSubmit();
       }
     });
+  };
+  // truy xuất hóa đơn
+  const handleGetOrder = () => {
+    navigate(`/order/add/${dataReport.checkIssueData.id}`);
+    dispatch(setInformationReportDetals(dataInfor))
   };
   return (
     <>
@@ -242,6 +250,8 @@ const SingleCheckIssue = () => {
               <button className="btn-cancer">
                 <Link to="/checkIssue">Quay lại</Link>
               </button>
+              <button className="btn-get-order" onClick={handleGetOrder}> Truy xuất hóa đơn </button> 
+      
             </div>
           </div>
         </div>
