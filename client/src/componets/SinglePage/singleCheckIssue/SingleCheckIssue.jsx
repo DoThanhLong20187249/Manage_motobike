@@ -19,7 +19,7 @@ const SingleCheckIssue = () => {
   //general data
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [todos, setTodos] = useState([]);
-  const [dataInfor, setDataInfor] = useState({});// lấy thông tin biên bản sự cố từ redux-store
+  // const [dataInfor, setDataInfor] = useState({});
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -46,7 +46,6 @@ const SingleCheckIssue = () => {
         category_issue_id: dataReport.checkIssueData.cateogry_issue_id,
       });
       setTodos(dataReport.checkList);
-      setDataInfor(dataReport)
     }
   }, [dataReport]);
   const formik = useFormik({
@@ -100,6 +99,20 @@ const SingleCheckIssue = () => {
       );
     },
   });
+
+  useEffect(() => {
+    // lưu data formik và danh sách công việc vào redux-store
+    const selectedCategory = dataCategoryIssues.find(
+      (category) => category.id === parseInt(formik.values.category_issue_id)
+    );
+    dispatch(setInformationReportDetals({
+      checkIssueData: {
+        ...formik.values,
+        cateogry_issue_name: selectedCategory? selectedCategory.category_issue_name : "",
+      },
+      checkList: todos,
+    }));
+  }, [formik.values, todos, dispatch]);
   // xử lý danh sách công việc
   const addTodo = (todo) => {
     setTodos([...todos, { id: uuidv4(), action: todo, status: false }]);
@@ -126,7 +139,7 @@ const SingleCheckIssue = () => {
   // truy xuất hóa đơn
   const handleGetOrder = () => {
     navigate(`/order/add/${dataReport.checkIssueData.id}`);
-    dispatch(setInformationReportDetals(dataInfor))
+    // dispatch(setInformationReportDetals(dataInfor));
   };
   return (
     <>
@@ -250,8 +263,10 @@ const SingleCheckIssue = () => {
               <button className="btn-cancer">
                 <Link to="/checkIssue">Quay lại</Link>
               </button>
-              <button className="btn-get-order" onClick={handleGetOrder}> Truy xuất hóa đơn </button> 
-      
+              <button className="btn-get-order" onClick={handleGetOrder}>
+                {" "}
+                Truy xuất hóa đơn{" "}
+              </button>
             </div>
           </div>
         </div>

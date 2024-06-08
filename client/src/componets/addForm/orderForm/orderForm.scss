@@ -1,0 +1,41 @@
+@import "../../../varibales.scss";
+
+.order-form-container {
+  height: 100%;
+  width: 100%;
+
+  .order-form-container-main {
+    margin-top: 10px;
+    display: flex;
+    width: 60%;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 40%;
+      position: relative;
+
+      label {
+        margin-top: 5px;
+        color: $main-color;
+        font-size: 1rem;
+        margin-bottom: 520;
+      }
+      .input-field {
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        border: 1px solid $main-color;
+        outline: none;
+        border-radius: 5px;
+        color: white;
+        option {
+          color: black;
+        }
+      }
+    }
+  }
+}
