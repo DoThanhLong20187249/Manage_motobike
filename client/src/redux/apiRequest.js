@@ -812,3 +812,20 @@ export const updateSingleReportById = async (
     console.log(error);
   }
 };
+
+// CRUD API order 
+
+export const addNewOrder = async( check_issue_id,data, accessToken, navigate, toast, setIsLoading) => {
+  try {
+    await axios.post(`http://localhost:3000/order/add/${check_issue_id}`, data, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Tạo đơn hàng thành công");
+    setIsLoading(false);
+    navigate("/orders");
+  } catch (error) {
+    console.log(error);
+  }
+}

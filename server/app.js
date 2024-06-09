@@ -9,6 +9,7 @@ const categoryProdcutRouter = require('./router/categoryProductRouter')
 const productRouter = require('./router/productRouter')
 const categoryIssueRouter = require('./router/categoryIssueRouter')
 const checkIssueRouter = require('./router/checkIssueRouter')
+const orderRouter = require('./router/orderRouter')
 
 const cors = require('cors')
 
@@ -26,6 +27,7 @@ app.use('/CategoryProduct', categoryProdcutRouter)
 app.use('/products', productRouter)
 app.use('/categoryIssue', categoryIssueRouter)
 app.use('/checkIssue', checkIssueRouter)
+app.use('/order', orderRouter)
 
 
 

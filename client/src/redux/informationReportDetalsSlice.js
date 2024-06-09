@@ -9,6 +9,7 @@ const informationReportDetalsSlice = createSlice({
         setInformationReportDetals: (state, action) => {
             state.data = action.payload;
         },
+        
     },
 });
 

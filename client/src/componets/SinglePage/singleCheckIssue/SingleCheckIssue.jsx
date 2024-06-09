@@ -116,7 +116,7 @@ const SingleCheckIssue = () => {
   }, [formik.values, todos, dispatch]);
   // xử lý danh sách công việc
   const addTodo = (todo) => {
-    setTodos([...todos, { id: uuidv4(), action: todo, status: false }]);
+    setTodos([...todos, { id: uuidv4(), action: todo, status: false, action_price: "0"}]);
   };
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));

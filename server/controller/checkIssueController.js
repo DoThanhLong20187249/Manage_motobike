@@ -131,6 +131,7 @@ const addCheckIssue = async (req, res) => {
           action: todo.action,
           status: todo.status,
           check_issue_id: checkIssue.id,
+          action_price: todo.action_price,
         };
       })
     );
@@ -212,12 +213,11 @@ const getCheckIssueByID = async (req, res) => {
     };
     const checkList = await dbCheckList.findAll({
       where: {
-        check_issue_id: checkIssueData.id,
+        check_issue_id: id,
       },
-      attributes: {
-        exclude: ["createdAt", "updatedAt"],
-      },
+      attributes: ["id", "action", "status", "action_price"]
     });
+
 
     return res.status(200).json({ checkIssueData, checkList });
   } catch (error) {
@@ -290,6 +290,7 @@ const updateCheckIssue = async (req, res) => {
           action: todo.action,
           status: todo.status,
           check_issue_id: id,
+          action_price: todo.action_price,
         };
       })
     );
