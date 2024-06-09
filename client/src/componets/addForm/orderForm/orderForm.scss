@@ -7,10 +7,11 @@
   .order-form-container-main {
     margin-top: 10px;
     display: flex;
-    width: 60%;
-    align-items: center;
-    gap: 10px;
+    width: 80%;
     flex-wrap: wrap;
+
+    gap: 10px;
+
     .form-group {
       display: flex;
       flex-direction: column;
@@ -31,6 +32,211 @@
         border: 1px solid $main-color;
         outline: none;
         border-radius: 5px;
+        color: white;
+        option {
+          color: black;
+        }
+      }
+    }
+  }
+  .order-action-container {
+    width: 60%;
+    h3 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+      }
+
+      th {
+        background-color: $main-bg;
+      }
+
+      tr {
+        border-bottom: 1px solid white;
+      }
+
+      .table-group-divider tr:last-child {
+        border-bottom: none; /* Remove border for the last row */
+      }
+      td:last-child {
+        width: 150px; /* Đặt độ rộng cụ thể cho cột cuối cùng */
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: white;
+        option {
+          color: black;
+        }
+      }
+    }
+  }
+  .product-list-container {
+    width: 80%;
+
+    .product-input-form {
+      margin-top: 10px;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      gap: 10px;
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 40%;
+        position: relative;
+
+        label {
+          margin-top: 5px;
+          color: $main-color;
+          font-size: 1rem;
+          margin-bottom: 520;
+        }
+        .react-select__control {
+          border: 1px solid $main-color;
+          outline: none;
+          background-color: transparent;
+          color: white;
+        }
+        .react-select__option {
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          color: black;
+        }
+        .react-select__single-value {
+          color: white;
+        }
+        .react-select__input {
+          color: white !important;
+        }
+
+        .input-field {
+          padding: 10px;
+          background-color: transparent;
+          border: 1px solid $main-color;
+          outline: none;
+          border-radius: 5px;
+          color: white;
+          option {
+            color: black;
+          }
+        }
+        .error-msg {
+          color: red;
+          font-size: 0.7rem;
+          position: absolute; // Absolute positioning
+          bottom: -20px; // Position below the input field
+          left: 0;
+        }
+
+        
+      }
+
+      .form-group-input{
+        
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        position: relative;
+
+        label {
+          margin-top: 5px;
+          color: $main-color;
+          font-size: 1rem;
+          margin-bottom: 520;
+        }
+  
+        .input-field {
+          padding: 10px;
+          background-color: transparent;
+          border: 1px solid $main-color;
+          outline: none;
+          border-radius: 5px;
+          color: white;
+          option {
+            color: black;
+          }
+        }
+        .error-msg {
+          color: red;
+          font-size: 0.7rem;
+          position: absolute; // Absolute positioning
+          bottom: -20px; // Position below the input field
+          left: 0;
+        }
+
+        
+      }
+      .btn-submit {
+        margin-top: 30px;
+        padding: 10px 20px;
+        background-color: rgb(112, 223, 112);
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        .icon {
+          font-size: 1.2rem;
+        }
+      }
+      .btn-search:hover {
+        background-color: rgb(7, 164, 75);
+        color: black;
+      }
+    }
+    .table-product {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      text-align: center;
+
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+      }
+
+      th {
+        background-color: $main-bg;
+      }
+
+      tr {
+        border-bottom: 1px solid white;
+      }
+
+      .table-product-group-divider tr:last-child {
+        border-bottom: none; /* Remove border for the last row */
+      }
+      td:last-child {
+        width: 200px; /* Đặt độ rộng cụ thể cho cột cuối cùng */
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        border: none;
+        outline: none;
         color: white;
         option {
           color: black;

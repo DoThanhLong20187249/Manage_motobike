@@ -72,7 +72,8 @@ const SingleCheckIssue = () => {
         .required("Trạng thái không được bỏ trống"),
       category_issue_id: Yup.number()
         .oneOf(dataCategoryIssues.map((categoryIssue) => categoryIssue.id))
-        .required("Danh mục sự cố không được bỏ trống"),
+        .required("Danh mục sự cố không được bỏ trống")
+        .typeError("Danh mục sự cố không được bỏ trống")
     }),
     onSubmit: (values) => {
       const data = new FormData();

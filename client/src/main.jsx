@@ -3,6 +3,7 @@ import App from "./App.jsx";
 import "./global.scss";
 import { Provider } from "react-redux";
 
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./page/Home.jsx";
 import Products from "./page/Products.jsx";
