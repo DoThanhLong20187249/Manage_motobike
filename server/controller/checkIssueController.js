@@ -149,6 +149,8 @@ const addCheckIssue = async (req, res) => {
 const deleteCheckIssue = async (req, res) => {
   const id = req.params.id;
   try {
+    await 
+
     await dbOrder.destroy({
       where: {
         check_issue_id: id,

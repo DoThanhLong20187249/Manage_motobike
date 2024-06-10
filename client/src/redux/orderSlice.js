@@ -23,9 +23,18 @@ const orderSlice = createSlice({
       state.orders.isFeching = false;
       state.orders.error = true;
     },
+    deleteOrder: (state, action) => {
+      state.orders.data = state.orders.data.filter(
+        (order) => order.id !== action.payload
+      );
+    },
   },
 });
 
-export const { getAllOrderStart, getAllOrderSuccess, getAllOrderFailure } =
-  orderSlice.actions;
+export const {
+  getAllOrderStart,
+  getAllOrderSuccess,
+  getAllOrderFailure,
+  deleteOrder,
+} = orderSlice.actions;
 export default orderSlice.reducer;

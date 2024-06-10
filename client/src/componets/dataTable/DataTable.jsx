@@ -10,6 +10,7 @@ import {
   deleteCustomer,
   deleteEmployee,
   deleteMotocycle,
+  deleteOrderById,
   deleteProductById,
   getCategoryIssueById,
   getCategoryProductById,
@@ -40,7 +41,7 @@ const DataTable = (props) => {
           <div className="delete" onClick={() => handleDelete(params.row.id)}>
             <img src="src/assets/delete.svg" alt="delete-icon" />
           </div>
-          { props.slug === "order" && (
+          {props.slug === "order" && (
             <Link to={`/order/print/${params.row.id}`}>
               <img src="src/assets/print.svg" alt="print-icon" />
             </Link>
@@ -81,6 +82,8 @@ const DataTable = (props) => {
       deleteCategoryIssue(id, props.accessToken, props.dispatch, toast);
     } else if (props.slug === "checkIssue") {
       deleteCheckIssueById(id, props.accessToken, props.dispatch, toast);
+    } else if (props.slug === "order") {
+      deleteOrderById(id, props.accessToken, props.dispatch, toast);
     }
   }
 

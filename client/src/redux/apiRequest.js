@@ -115,6 +115,7 @@ import {
   getAllOrderStart,
   getAllOrderSuccess,
   getAllOrderFailure,
+  deleteOrder,
 } from "./orderSlice";
 
 import { toast } from "react-toastify";
@@ -819,22 +820,33 @@ export const updateSingleReportById = async (
   }
 };
 
-// CRUD API order 
+// CRUD API order
 
-export const addNewOrder = async( check_issue_id,data, accessToken, navigate, toast, setIsLoading) => {
+export const addNewOrder = async (
+  check_issue_id,
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
   try {
-    await axios.post(`http://localhost:3000/order/add/${check_issue_id}`, data, {
-      headers: {
-        token: `Bearer ${accessToken}`,
-      },
-    });
+    await axios.post(
+      `http://localhost:3000/order/add/${check_issue_id}`,
+      data,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
     toast.success("Tạo đơn hàng thành công");
     setIsLoading(false);
-    navigate('/order');
+    navigate("/order");
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const getAllOrder = async (shopId, accessToken, dispatch) => {
   dispatch(getAllOrderStart());
@@ -850,5 +862,19 @@ export const getAllOrder = async (shopId, accessToken, dispatch) => {
     dispatch(getAllOrderSuccess(res.data));
   } catch (error) {
     dispatch(getAllOrderFailure());
+  }
+};
+
+export const deleteOrderById = async (id, accessToken, dispatch, toast) => {
+  try {
+    await axios.delete(`http://localhost:3000/order/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(deleteOrder(id));
+    toast.success("Xóa đơn hàng thành công");
+  } catch (error) {
+    console.log(error);
   }
 };

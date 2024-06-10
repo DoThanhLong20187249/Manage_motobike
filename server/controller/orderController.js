@@ -13,7 +13,7 @@ const dbMotocycle = db.Motocycle;
 const dbCustomer = db.Customer;
 const dbCategoryIssue = db.CategoryIssue;
 
-// associate 
+// associate
 dbOrder.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
 dbCheckIssue.hasMany(dbOrder, { foreignKey: "check_issue_id" });
 
@@ -34,8 +34,6 @@ dbCheckList.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
 dbCheckIssue.hasMany(dbCheckList, { foreignKey: "check_issue_id" });
 dbCheckIssue.hasMany(dbOrder, { foreignKey: "check_issue_id" });
 dbOrder.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
-
-
 
 const addNewOrder = async (req, res) => {
   try {
@@ -80,50 +78,57 @@ const addNewOrder = async (req, res) => {
     console.log(error);
     return res.status(500).json(error);
   }
-  
 };
 function formatDate(isoString) {
   const date = new Date(isoString);
-  
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // getUTCMonth() trả về tháng từ 0-11, nên cần cộng thêm 1
+
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // getUTCMonth() trả về tháng từ 0-11, nên cần cộng thêm 1
   const year = date.getUTCFullYear();
 
   return `${day}/${month}/${year}`;
 }
 
-
 const getAllOrder = async (req, res) => {
   const { shop_id } = req.query;
   try {
-    const order = await dbOrder.findAll({
-      include:{
-        model: dbCheckIssue,
-        include: [
-          {
-            model: dbMotocycle,
-            attributes: ["motocycle_name", "motocycle_number"],
-            include: {
-              model: dbCustomer,
-              attributes: ["customer_name"],
+    const order = await dbOrder.findAll(
+      {
+        include: {
+          model: dbCheckIssue,
+          include: [
+            {
+              model: dbMotocycle,
+              attributes: ["motocycle_name", "motocycle_number"],
+              include: {
+                model: dbCustomer,
+                attributes: ["customer_name"],
+              },
             },
-          },
-          {
-            model: dbEmployee,
-            attributes: ["name_employee"],
-          },
-          {
-            model: dbCategoryIssue,
-            attributes: ["category_issue_name"],
-          },
+            {
+              model: dbEmployee,
+              attributes: ["name_employee"],
+            },
+            {
+              model: dbCategoryIssue,
+              attributes: ["category_issue_name"],
+            },
+          ],
+        },
+        attributes: [
+          "id",
+          "order_total_price",
+          "order_code",
+          "payment_method",
+          "createdAt",
         ],
       },
-      attributes: ["id","order_total_price", "order_code", "payment_method","createdAt"] 
-    },{
-      where: {
-        shop_id: shop_id,
-      },
-    });
+      {
+        where: {
+          shop_id: shop_id,
+        },
+      }
+    );
     const data = order.map((item) => {
       return {
         id: item.id,
@@ -136,16 +141,37 @@ const getAllOrder = async (req, res) => {
         customer_name: item.CheckIssue.Motocycle.Customer.customer_name,
         employee_name: item.CheckIssue.Employee.name_employee,
         category_issue_name: item.CheckIssue.CategoryIssue.category_issue_name,
-      }
-    })
+      };
+    });
     return res.status(200).json(data);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};
+
+const deleteOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await dbOrderDetail.destroy({
+      where: {
+        order_id: id,
+      },
+    });
+    await dbOrder.destroy({
+      where: {
+        id: id,
+      },
+    });
+    return res.status(200).json("Xóa thành công");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
 
 module.exports = {
   addNewOrder,
-  getAllOrder
+  getAllOrder,
+  deleteOrder,
 };
