@@ -47,7 +47,7 @@ export const menuData = [
       {
         id: 4,
         title: "Hóa đơn",
-        url: "/orders",
+        url: "/order",
         icon: "src/assets/order.svg",
       },
       {

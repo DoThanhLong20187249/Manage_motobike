@@ -111,6 +111,12 @@ import {
   getSingReportFailure,
 } from "./checkIssueSlice";
 
+import {
+  getAllOrderStart,
+  getAllOrderSuccess,
+  getAllOrderFailure,
+} from "./orderSlice";
+
 import { toast } from "react-toastify";
 
 //login
@@ -824,8 +830,25 @@ export const addNewOrder = async( check_issue_id,data, accessToken, navigate, to
     });
     toast.success("Tạo đơn hàng thành công");
     setIsLoading(false);
-    navigate("/orders");
+    navigate('/order');
   } catch (error) {
     console.log(error);
   }
 }
+
+export const getAllOrder = async (shopId, accessToken, dispatch) => {
+  dispatch(getAllOrderStart());
+  try {
+    const res = await axios.get(
+      `http://localhost:3000/order?shop_id=${shopId}`,
+      {
+        headers: {
+          token: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    dispatch(getAllOrderSuccess(res.data));
+  } catch (error) {
+    dispatch(getAllOrderFailure());
+  }
+};

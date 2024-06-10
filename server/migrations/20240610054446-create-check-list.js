@@ -14,22 +14,22 @@ module.exports = {
       },
       check_issue_id: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"CheckIssues",
-          key:"id"
+        references: {
+          model: 'CheckIssues',
+          key: 'id'
         }
-
       },
       status: {
         type: Sequelize.BOOLEAN
       },
+      action_price: {
+        type: Sequelize.STRING
+      },
       createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       },
       updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       }
     });
   },

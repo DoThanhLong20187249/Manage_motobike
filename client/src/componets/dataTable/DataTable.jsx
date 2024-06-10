@@ -40,6 +40,11 @@ const DataTable = (props) => {
           <div className="delete" onClick={() => handleDelete(params.row.id)}>
             <img src="src/assets/delete.svg" alt="delete-icon" />
           </div>
+          { props.slug === "order" && (
+            <Link to={`/order/print/${params.row.id}`}>
+              <img src="src/assets/print.svg" alt="print-icon" />
+            </Link>
+          )}
         </div>
       );
     },

@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       CheckIssue.hasMany(models.CheckList, {
         foreignKey: "check_issue_id",
       });
+      CheckIssue.hasMany(models.Order, {
+        foreignKey: "check_issue_id",
+      });
     }
   }
   CheckIssue.init(

@@ -7,6 +7,7 @@ const dbMotocycle = db.Motocycle;
 const dbCustomer = db.Customer;
 const dbCategoryIssue = db.CategoryIssue;
 const dbCheckList = db.CheckList;
+const dbOrder = db.Order;
 
 // accsociate table
 dbCheckIssue.belongsTo(dbShop, { foreignKey: "shop_id" });
@@ -21,6 +22,8 @@ dbMotocycle.hasMany(dbCheckIssue, { foreignKey: "motocycle_id" });
 dbCategoryIssue.hasMany(dbCheckIssue, { foreignKey: "cateogry_issue_id" });
 dbCheckList.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
 dbCheckIssue.hasMany(dbCheckList, { foreignKey: "check_issue_id" });
+dbCheckIssue.hasMany(dbOrder, { foreignKey: "check_issue_id" });
+dbOrder.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
 
 const getAllcheckIssues = async (req, res) => {
   const shop_id = req.query.shop_id;
@@ -123,6 +126,7 @@ const addCheckIssue = async (req, res) => {
         action: "Không có công việc",
         status: null,
         check_issue_id: checkIssue.id,
+        action_price: "0"
       });
     }
     await dbCheckList.bulkCreate(
@@ -145,6 +149,11 @@ const addCheckIssue = async (req, res) => {
 const deleteCheckIssue = async (req, res) => {
   const id = req.params.id;
   try {
+    await dbOrder.destroy({
+      where: {
+        check_issue_id: id,
+      },
+    });
     const checkIssue = await dbCheckIssue.findOne({
       where: {
         id: id,
@@ -161,6 +170,7 @@ const deleteCheckIssue = async (req, res) => {
         id: id,
       },
     });
+
     return res.status(200).json("Xóa thành công");
   } catch (error) {
     console.log(error);
@@ -215,9 +225,8 @@ const getCheckIssueByID = async (req, res) => {
       where: {
         check_issue_id: id,
       },
-      attributes: ["id", "action", "status", "action_price"]
+      attributes: ["id", "action", "status", "action_price"],
     });
-
 
     return res.status(200).json({ checkIssueData, checkList });
   } catch (error) {
@@ -282,6 +291,7 @@ const updateCheckIssue = async (req, res) => {
         action: "Không có công việc",
         status: null,
         check_issue_id: id,
+        action_price: "0"
       });
     }
     await dbCheckList.bulkCreate(

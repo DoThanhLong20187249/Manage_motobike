@@ -60,5 +60,7 @@ db.Product = require("./products")(sequelize, Sequelize);
 db.CategoryIssue = require("./categoryissue")(sequelize, Sequelize);
 db.CheckIssue = require("./checkissue")(sequelize, Sequelize);
 db.CheckList = require("./checklist")(sequelize, Sequelize);
+db.Order = require("./order")(sequelize, Sequelize);
+db.OrderDetail = require("./orderdetail")(sequelize, Sequelize);
 
 module.exports = db;

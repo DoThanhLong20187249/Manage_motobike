@@ -8,6 +8,7 @@ import productReducer from "./productSlice";
 import categoryIssueReducer from "./categoryIssueSlice";
 import reportReducer from "./checkIssueSlice"
 import informationReportReducer from "./informationReportDetalsSlice"
+import orderReducer from "./orderSlice";
 // import {
 //   persistStore,
 //   persistReducer,
@@ -55,5 +56,6 @@ export const store = configureStore({
     categoryIssue: categoryIssueReducer,
     report: reportReducer, 
     informationReportDetals: informationReportReducer,
+    order: orderReducer,
   },
 });
