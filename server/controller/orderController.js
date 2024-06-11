@@ -1,6 +1,6 @@
-const { where } = require("sequelize");
-const checklist = require("../models/checklist");
+
 const db = require("../models/index");
+
 
 const dbOrder = db.Order;
 const dbOrderDetail = db.OrderDetail;
@@ -12,6 +12,7 @@ const dbEmployee = db.Employee;
 const dbMotocycle = db.Motocycle;
 const dbCustomer = db.Customer;
 const dbCategoryIssue = db.CategoryIssue;
+const dbProduct = db.Product;
 
 // associate
 dbOrder.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
@@ -34,6 +35,9 @@ dbCheckList.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
 dbCheckIssue.hasMany(dbCheckList, { foreignKey: "check_issue_id" });
 dbCheckIssue.hasMany(dbOrder, { foreignKey: "check_issue_id" });
 dbOrder.belongsTo(dbCheckIssue, { foreignKey: "check_issue_id" });
+
+dbOrderDetail.belongsTo(dbProduct, { foreignKey: "product_id" });
+dbProduct.hasMany(dbOrderDetail, { foreignKey: "product_id" });
 
 const addNewOrder = async (req, res) => {
   try {
@@ -169,9 +173,105 @@ const deleteOrder = async (req, res) => {
     return res.status(500).json(error);
   }
 };
+const getOrderByID = async (req, res) => {
+  try {
+    const order_id = req.params.id;
+    const order = await dbOrder.findOne({
+      where: {
+        id: order_id,
+      },
+      include: {
+        model: dbCheckIssue,
+        include: [
+          {
+            model: dbMotocycle,
+            attributes: ["motocycle_name", "motocycle_number"],
+            include: {
+              model: dbCustomer,
+              attributes: [
+                "id",
+                "customer_name",
+                "customer_phone",
+                "customer_address",
+              ],
+            },
+          },
+          {
+            model: dbEmployee,
+            attributes: ["name_employee"],
+          },
+          {
+            model: dbCategoryIssue,
+            attributes: ["category_issue_name"],
+          },
+        ],
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "id"],
+        },
+      },
+      attributes: {
+        exclude: ["updatedAt"],
+      },
+    });
+    const newOrder = {
+      id: order.id,
+      motocycle_id: order.CheckIssue.motocycle_id,
+      employee_id: order.CheckIssue.employee_id,
+      customer_id: order.CheckIssue.Motocycle.Customer.id,
+      category_issue_id: order.CheckIssue.cateogry_issue_id,
+      order_code: order.order_code,
+      order_total_price: order.order_total_price,
+      payment_method: order.payment_method,
+      createdAt: formatDate(order.createdAt),
+      motocycle_name: order.CheckIssue.Motocycle.motocycle_name,
+      motocycle_number: order.CheckIssue.Motocycle.motocycle_number,
+      customer_name: order.CheckIssue.Motocycle.Customer.customer_name,
+      customer_phone: order.CheckIssue.Motocycle.Customer.customer_phone,
+      customer_address: order.CheckIssue.Motocycle.Customer.customer_address,
+      employee_name: order.CheckIssue.Employee.name_employee,
+      category_issue_name: order.CheckIssue.CategoryIssue.category_issue_name,
+      status: order.CheckIssue.status,
+    };
+
+    const orderDetail = await dbOrderDetail.findAll({
+      where: {
+        order_id: order_id,
+      },
+      include: {
+        model: dbProduct,
+        attributes: ["product_name"],
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    const newOrderDetail = orderDetail.map((item) => {
+      return {
+        id: item.id,
+        product_id: item.product_id,
+        product_name: item.Product.product_name,
+        price: item.price,
+        quantiy: item.quantiy,
+      };
+    });
+    const action_list = await dbCheckList.findAll({
+      where: {
+        check_issue_id: order.check_issue_id,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    return res.status(200).json({  newOrder, newOrderDetail, action_list });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
 
 module.exports = {
   addNewOrder,
   getAllOrder,
   deleteOrder,
+  getOrderByID,
 };

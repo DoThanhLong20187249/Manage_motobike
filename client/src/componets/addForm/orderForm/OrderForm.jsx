@@ -82,7 +82,7 @@ const OrderForm = () => {
       product_id: Yup.number().required("Vui lòng chọn sản phẩm"),
       product_quantity: Yup.number()
         .required("Vui lòng nhập số lượng")
-        .min(1, "Số lượng phải lớn hơn 0")
+        .min(0, "Số lượng phải lớn hơn 0")
         .max(total_quantity, "Số lượng sản phẩm không đủ"),
     }),
   });

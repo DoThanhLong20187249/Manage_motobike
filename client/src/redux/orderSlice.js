@@ -8,6 +8,11 @@ const orderSlice = createSlice({
       isFeching: false,
       error: false,
     },
+    singleOrder: {
+      data: null,
+      isFeching: false,
+      error: false,
+    },
   },
   reducers: {
     getAllOrderStart: (state) => {
@@ -28,6 +33,19 @@ const orderSlice = createSlice({
         (order) => order.id !== action.payload
       );
     },
+    getSingleOrderStart: (state) => {
+      state.singleOrder.isFeching = true;
+      state.singleOrder.error = false;
+    },
+    getSingleOrderSuccess: (state, action) => {
+      state.singleOrder.data = action.payload;
+      state.singleOrder.isFeching = false;
+      state.singleOrder.error = false;
+    },
+    getSingleOrderFailure: (state) => {
+      state.singleOrder.isFeching = false;
+      state.singleOrder.error = true;
+    },
   },
 });
 
@@ -36,5 +54,8 @@ export const {
   getAllOrderSuccess,
   getAllOrderFailure,
   deleteOrder,
+  getSingleOrderStart,
+  getSingleOrderSuccess,
+  getSingleOrderFailure,
 } = orderSlice.actions;
 export default orderSlice.reducer;

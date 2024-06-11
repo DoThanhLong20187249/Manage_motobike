@@ -17,6 +17,7 @@ import {
   getCustomerById,
   getEmployeeById,
   getMotocycleById,
+  getOrderByID,
   getProductById,
   getSingleReportById,
 } from "../../redux/apiRequest";
@@ -66,6 +67,8 @@ const DataTable = (props) => {
       getCategoryIssueById(id, props.accessToken, props.dispatch);
     } else if (props.slug === "checkIssue") {
       getSingleReportById(id, props.accessToken, props.dispatch);
+    } else if (props.slug === "order") {
+      getOrderByID(id, props.accessToken, props.dispatch);
     }
   }
 

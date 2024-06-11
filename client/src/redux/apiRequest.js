@@ -116,6 +116,9 @@ import {
   getAllOrderSuccess,
   getAllOrderFailure,
   deleteOrder,
+  getSingleOrderStart,
+  getSingleOrderSuccess,
+  getSingleOrderFailure,
 } from "./orderSlice";
 
 import { toast } from "react-toastify";
@@ -878,3 +881,17 @@ export const deleteOrderById = async (id, accessToken, dispatch, toast) => {
     console.log(error);
   }
 };
+
+export const getOrderByID = async (id, accessToken, dispatch) => {
+  dispatch(getSingleOrderStart());
+  try {
+    const res = await axios.get(`http://localhost:3000/order/${id}`, {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getSingleOrderSuccess(res.data));
+  } catch (error) {
+    dispatch(getSingleOrderFailure());
+  }
+}
