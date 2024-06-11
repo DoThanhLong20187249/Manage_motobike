@@ -44,7 +44,7 @@ const DataTable = (props) => {
           </div>
           {props.slug === "order" && (
             <Link to={`/order/print/${params.row.id}`}>
-              <img src="src/assets/print.svg" alt="print-icon" />
+              <img src="src/assets/print.svg" alt="print-icon"  onClick={() => handlePrint(params.row.id)}/>
             </Link>
           )}
         </div>
@@ -87,6 +87,12 @@ const DataTable = (props) => {
       deleteCheckIssueById(id, props.accessToken, props.dispatch, toast);
     } else if (props.slug === "order") {
       deleteOrderById(id, props.accessToken, props.dispatch, toast);
+    }
+  }
+
+  function handlePrint(id) {
+    if (props.slug === "order") {
+      getOrderByID(id, props.accessToken, props.dispatch);
     }
   }
 

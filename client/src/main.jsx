@@ -35,6 +35,7 @@ import SingleCheckIssue from "./componets/SinglePage/singleCheckIssue/SingleChec
 import OrderForm from "./componets/addForm/orderForm/OrderForm.jsx";
 import Order from "./page/order/Order.jsx";
 import SingleOrderPage from "./componets/SinglePage/singleOrder/SingleOrderPage.jsx";
+import OrderPrintPage from "./componets/print/OrderPrintPage.jsx";
 // import { PersistGate } from "redux-persist/integration/react";
 const router = createBrowserRouter([
   {
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
       {
         path: "/order/:id",
         element: <SingleOrderPage/>
+      },
+      {
+        path: "order/print/:id",
+        element: <OrderPrintPage/>
       }
     ],
   },

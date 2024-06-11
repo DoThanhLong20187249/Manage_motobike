@@ -13,6 +13,9 @@ const orderSlice = createSlice({
       isFeching: false,
       error: false,
     },
+    printOrder: {
+      data: null,
+    }
   },
   reducers: {
     getAllOrderStart: (state) => {
@@ -46,6 +49,9 @@ const orderSlice = createSlice({
       state.singleOrder.isFeching = false;
       state.singleOrder.error = true;
     },
+    getDataPrintOrder: (state, action) => {
+      state.printOrder.data = action.payload;
+    }
   },
 });
 
