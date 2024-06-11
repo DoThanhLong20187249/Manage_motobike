@@ -8,7 +8,8 @@ router.get("/", orderController.getAllOrder);
 
 router
   .delete("/:id", orderController.deleteOrder)
-  .get("/:id", orderController.getOrderByID);
+  .get("/:id", orderController.getOrderByID)
+  .put("/:id", orderController.updateOrderById);
 
 router.post("/add/:id", orderController.addNewOrder);
 

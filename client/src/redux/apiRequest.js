@@ -894,4 +894,26 @@ export const getOrderByID = async (id, accessToken, dispatch) => {
   } catch (error) {
     dispatch(getSingleOrderFailure());
   }
-}
+};
+
+export const updateOrderById = async (
+  id,
+  data,
+  accessToken,
+  navigate,
+  toast,
+  setIsLoading
+) => {
+  try {
+    await axios.put(`http://localhost:3000/order/${id}`,  data , {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    });
+    toast.success("Cập nhật đơn hàng thành công");
+    setIsLoading(false);
+    navigate("/order");
+  } catch (error) {
+    console.log(error);
+  }
+};

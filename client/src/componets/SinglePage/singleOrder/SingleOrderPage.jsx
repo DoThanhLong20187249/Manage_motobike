@@ -3,14 +3,21 @@ import "./singleOrderPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { getAllCategoryIssue, getAllProduct } from "../../../redux/apiRequest";
+import {
+  getAllCategoryIssue,
+  getAllProduct,
+  updateOrderById,
+} from "../../../redux/apiRequest";
 import Select from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import Loading from "../../Loading/Loading";
 
 const stringToInt = (str) => {
   // Loại bỏ dấu chấm phân cách hàng nghìn
-  const cleanedStr = str.replace(/\./g, "");
+  console.log(str);
+  const cleanedStr = str.includes(".") ? str.replace(/\./g, "") : str;
   // Chuyển chuỗi đã được làm sạch thành số nguyên
   const number = parseInt(cleanedStr, 10);
   return isNaN(number) ? 0 : number;
@@ -30,6 +37,8 @@ const SingleOrderPage = () => {
   const [actionList, setActionList] = useState([]);
   const [newOrderDetail, setNewOrderDetail] = useState([]);
   const [total_quantity, setTotalQuantity] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
@@ -75,6 +84,7 @@ const SingleOrderPage = () => {
       setNewOrderDetail(dataOrderDetail);
       formik.setValues({
         id: singleOrder.newOrder.id,
+        check_issue_id: singleOrder.newOrder.check_issue_id,
         motocycle_id: singleOrder.newOrder.motocycle_id,
         employee_id: singleOrder.newOrder.employee_id,
         customer_id: singleOrder.newOrder.customer_id,
@@ -129,10 +139,6 @@ const SingleOrderPage = () => {
       status: Yup.string()
         .oneOf(["true", "false"])
         .required("Trạng thái không được bỏ trống"),
-      category_issue_id: Yup.number()
-        .oneOf(dataCategoryIssues.map((categoryIssue) => categoryIssue.id))
-        .required("Danh mục sự cố không được bỏ trống")
-        .typeError("Danh mục sự cố không được bỏ trống"),
       product_quantity: Yup.number()
         .min(0, "Số lượng phải lớn hơn 0")
         .max(total_quantity, "Số lượng sản phẩm không đủ"),
@@ -215,288 +221,309 @@ const SingleOrderPage = () => {
 
   const handleSubmitData = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const data = {
       information: {
         ...formik.values,
       },
       product_list: newOrderDetail,
       action_list: actionList,
-      order_total_price: totalOrderPrice,
-    }
-    console.log(data);
-  }
+      order_total_price: intToString(totalOrderPrice),
+    };
+    updateOrderById(
+      data.information.id,
+      data,
+      user.token,
+      navigate,
+      toast,
+      setIsLoading
+    );
+  };
 
   return (
     <>
-      <div>
-        <div className="order-container-header">
-          <h1>Thông tin hóa đơn</h1>
-        </div>
-        <div style={{ marginTop: 20 }} className="order-container-body-header">
-          <h3>Mã hóa đơn:</h3>
-          <span>{formik.values.order_code}</span>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div>
+          <div className="order-container-header">
+            <h1>Thông tin hóa đơn</h1>
+          </div>
+          <div
+            style={{ marginTop: 20 }}
+            className="order-container-body-header"
+          >
+            <h3>Mã hóa đơn:</h3>
+            <span>{formik.values.order_code}</span>
 
-          <h3>Phương thức thanh toán :</h3>
-          <span>{formik.values.payment_method}</span>
+            <h3>Phương thức thanh toán :</h3>
+            <span>{formik.values.payment_method}</span>
 
-          <h3>Ngày: </h3>
-          <span>{formik.values.createAt}</span>
-        </div>
-        <div className="order-container-body">
-          <form className="order-container-body-main">
-            <div className="form-group">
-              <label htmlFor="customer_name">Tên khách hàng</label>
-              <input
-                className="input-field"
-                type="text"
-                id="customer_name"
-                name="customer_name"
-                onChange={formik.handleChange}
-                value={formik.values.customer_name}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="customer_address">Địa chỉ </label>
-              <input
-                className="input-field"
-                type="text"
-                id="customer_address"
-                name="customer_address"
-                onChange={formik.handleChange}
-                value={formik.values.customer_address}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="customer_phone">Số Điện Thoại </label>
-              <input
-                className="input-field"
-                type="text"
-                id="customer_phone"
-                name="customer_phone"
-                onChange={formik.handleChange}
-                value={formik.values.customer_phone}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="motocycle_name">Xe máy</label>
-              <input
-                className="input-field"
-                type="text"
-                id="motocycle_name"
-                name="motocycle_name"
-                onChange={formik.handleChange}
-                value={formik.values.motocycle_name}
-              />
-            </div>
+            <h3>Ngày: </h3>
+            <span>{formik.values.createAt}</span>
+          </div>
+          <div className="order-container-body">
+            <form className="order-container-body-main">
+              <div className="form-group">
+                <label htmlFor="customer_name">Tên khách hàng</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  id="customer_name"
+                  name="customer_name"
+                  onChange={formik.handleChange}
+                  value={formik.values.customer_name}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="customer_address">Địa chỉ </label>
+                <input
+                  className="input-field"
+                  type="text"
+                  id="customer_address"
+                  name="customer_address"
+                  onChange={formik.handleChange}
+                  value={formik.values.customer_address}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="customer_phone">Số Điện Thoại </label>
+                <input
+                  className="input-field"
+                  type="text"
+                  id="customer_phone"
+                  name="customer_phone"
+                  onChange={formik.handleChange}
+                  value={formik.values.customer_phone}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="motocycle_name">Xe máy</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  id="motocycle_name"
+                  name="motocycle_name"
+                  onChange={formik.handleChange}
+                  value={formik.values.motocycle_name}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="motocycle_number">Biển số xe</label>
-              <input
-                className="input-field"
-                type="text"
-                id="motocycle_number"
-                name="motocycle_number"
-                onChange={formik.handleChange}
-                value={formik.values.motocycle_number}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="employee_name">Thợ sửa chữa </label>
-              <input
-                className="input-field"
-                type="text"
-                id="employee_name"
-                name="employee_name"
-                onChange={formik.handleChange}
-                value={formik.values.employee_name}
-              />
-            </div>
+              <div className="form-group">
+                <label htmlFor="motocycle_number">Biển số xe</label>
+                <input
+                  className="input-field"
+                  type="text"
+                  id="motocycle_number"
+                  name="motocycle_number"
+                  onChange={formik.handleChange}
+                  value={formik.values.motocycle_number}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="employee_name">Thợ sửa chữa </label>
+                <input
+                  className="input-field"
+                  type="text"
+                  id="employee_name"
+                  name="employee_name"
+                  onChange={formik.handleChange}
+                  value={formik.values.employee_name}
+                />
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="cost">Trạng thái</label>
-              <select
-                name="status"
-                id="status"
-                className="input-field"
-                onChange={formik.handleChange}
-                value={formik.values.status}
-              >
-                <option value="">Chọn trạng thái</option>
-                <option value={true}>Xác nhận</option>
-                <option value={false}>Chưa xác nhận</option>
-              </select>
-              {formik.errors.status && (
-                <p className="error-msg">{formik.errors.status}</p>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="time">Danh mục sự cố</label>
-              <select
-                name="category_issue_id"
-                id="category_issue_id"
-                className="input-field"
-                onChange={formik.handleChange}
-                value={formik.values.category_issue_id}
-              >
-                <option value="">Chọn danh mục sự cố</option>
-                {dataCategoryIssues.map((categoryIssue) => {
-                  return (
-                    <option key={categoryIssue.id} value={categoryIssue.id}>
-                      {categoryIssue.category_issue_name}
-                    </option>
-                  );
-                })}
-              </select>
-              {formik.errors.category_issue_id && (
-                <p className="error-msg">{formik.errors.category_issue_id}</p>
-              )}
-            </div>
-          </form>
-          <div className="order-action-container" style={{ marginTop: 20 }}>
-            <h3>Công sửa chữa bảo dưỡng</h3>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">STT</th>
-                  <th scope="col">Nội dung công việc</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Tiền công</th>
-                </tr>
-              </thead>
-              {actionList && (
-                <tbody className="table-group-divider">
-                  {actionList.map((item, index) => {
+              <div className="form-group">
+                <label htmlFor="cost">Trạng thái</label>
+                <select
+                  name="status"
+                  id="status"
+                  className="input-field"
+                  onChange={formik.handleChange}
+                  value={formik.values.status}
+                >
+                  <option value="">Chọn trạng thái</option>
+                  <option value={true}>Xác nhận</option>
+                  <option value={false}>Chưa xác nhận</option>
+                </select>
+                {formik.errors.status && (
+                  <p className="error-msg">{formik.errors.status}</p>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="time">Danh mục sự cố</label>
+                <select
+                  name="category_issue_id"
+                  id="category_issue_id"
+                  className="input-field"
+                  onChange={formik.handleChange}
+                  value={formik.values.category_issue_id}
+                >
+                  <option value="">Chọn danh mục sự cố</option>
+                  {dataCategoryIssues.map((categoryIssue) => {
                     return (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td>{item.action}</td>
-                        <td>
-                          {item.status === true
-                            ? "Đã kiểm tra"
-                            : "Chưa kiểm tra"}
-                        </td>
-                        <td>
-                          {item.status === true && (
+                      <option key={categoryIssue.id} value={categoryIssue.id}>
+                        {categoryIssue.category_issue_name}
+                      </option>
+                    );
+                  })}
+                </select>
+                {formik.errors.category_issue_id && (
+                  <p className="error-msg">{formik.errors.category_issue_id}</p>
+                )}
+              </div>
+            </form>
+            <div className="order-action-container" style={{ marginTop: 20 }}>
+              <h3>Công sửa chữa bảo dưỡng</h3>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Nội dung công việc</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Tiền công</th>
+                  </tr>
+                </thead>
+                {actionList && (
+                  <tbody className="table-group-divider">
+                    {actionList.map((item, index) => {
+                      return (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
+                          <td>{item.action}</td>
+                          <td>
+                            {item.status === true
+                              ? "Đã kiểm tra"
+                              : "Chưa kiểm tra"}
+                          </td>
+                          <td>
+                            {item.status === true && (
+                              <input
+                                type="text"
+                                className="input-field"
+                                placeholder="Nhập tiền công"
+                                defaultValue={item.action_price}
+                                onChange={(e) =>
+                                  handleChangePriceAction(e, item.id)
+                                }
+                              />
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                )}
+              </table>
+            </div>
+            <div className="product-list-container">
+              <h2>Sản phẩm kèm theo </h2>
+              <div className="product-input-form">
+                <div className="form-group">
+                  <label htmlFor="product_id">Nhập tên sản phẩm</label>
+                  <Select
+                    id="product_id"
+                    name="product_id"
+                    placeholder="Nhập tên sản phẩm"
+                    options={options}
+                    classNamePrefix="react-select"
+                    onChange={handleChangeProduct}
+                  />
+                  {formik.errors.product_id && (
+                    <p className="error-msg">{formik.errors.product_id}</p>
+                  )}
+                </div>
+                <div className="form-group-input">
+                  <label htmlFor="product_quantity">Nhập số lượng</label>
+                  <input
+                    type="number"
+                    name="product_quantity"
+                    id="product_quantity"
+                    className="input-field"
+                    defaultValue={0}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.product_quantity && (
+                    <p className="error-msg">
+                      {formik.errors.product_quantity}
+                    </p>
+                  )}
+                </div>
+                <button className="btn-submit" onClick={handleAddProduct}>
+                  Thêm sản phẩm{" "}
+                </button>
+              </div>
+              <table className="table-product">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Giá tiền một sản phẩm</th>
+                  </tr>
+                </thead>
+                {newOrderDetail && (
+                  <tbody className="table-product-group-divider">
+                    {newOrderDetail.map((item, index) => {
+                      return (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
+                          <td style={{ width: 400 }}>{item.product_name}</td>
+                          <td style={{ marginLeft: 50 }}>
+                            <input
+                              type="number"
+                              className="input-field"
+                              defaultValue={item.quantiy}
+                              placeholder="Nhập số lượng"
+                              onChange={(e) => handleChangeQuantity(e, item.id)}
+                            />
+                          </td>
+                          <td>
                             <input
                               type="text"
                               className="input-field"
-                              placeholder="Nhập tiền công"
-                              defaultValue={item.action_price}
-                              onChange={(e) =>
-                                handleChangePriceAction(e, item.id)
-                              }
+                              defaultValue={item.price}
+                              placeholder="Nhập giá tiền"
+                              onChange={(e) => handleChangePrice(e, item.id)}
                             />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              )}
-            </table>
-          </div>
-          <div className="product-list-container">
-            <h2>Sản phẩm kèm theo </h2>
-            <div className="product-input-form">
-              <div className="form-group">
-                <label htmlFor="product_id">Nhập tên sản phẩm</label>
-                <Select
-                  id="product_id"
-                  name="product_id"
-                  placeholder="Nhập tên sản phẩm"
-                  options={options}
-                  classNamePrefix="react-select"
-                  onChange={handleChangeProduct}
-                />
-                {formik.errors.product_id && (
-                  <p className="error-msg">{formik.errors.product_id}</p>
+                          </td>
+                          <td>
+                            <img
+                              src="/src/assets/delete.svg"
+                              alt="delete-icon"
+                              onClick={() => handleDeleteProduct(item.id)}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
                 )}
-              </div>
-              <div className="form-group-input">
-                <label htmlFor="product_quantity">Nhập số lượng</label>
-                <input
-                  type="number"
-                  name="product_quantity"
-                  id="product_quantity"
-                  className="input-field"
-                  defaultValue={0}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.product_quantity && (
-                  <p className="error-msg">{formik.errors.product_quantity}</p>
-                )}
-              </div>
-              <button className="btn-submit" onClick={handleAddProduct}>
-                Thêm sản phẩm{" "}
+              </table>
+            </div>
+            <div className="total-price">
+              <h3>Tổng tiền sản phẩm : </h3>
+              <p>{intToString(totalProductPrice)} VNĐ</p>
+              <h3>Tổng tiền công : </h3>
+              <p>{intToString(totalActionPrice)} VNĐ</p>
+              <h3>Tổng tiền hóa đơn : </h3>
+              <p>{intToString(totalOrderPrice)} VNĐ</p>
+            </div>
+
+            <div className="button-group">
+              <button
+                className="btn-submit"
+                type="submit"
+                onClick={(e) => handleSubmitData(e)}
+              >
+                Cập nhật thông tin
+              </button>
+              <button className="btn-cancer">
+                <Link to="/order">Quay lại</Link>
               </button>
             </div>
-            <table className="table-product">
-              <thead>
-                <tr>
-                  <th scope="col">STT</th>
-                  <th scope="col">Tên sản phẩm</th>
-                  <th scope="col">Số lượng</th>
-                  <th scope="col">Giá tiền một sản phẩm</th>
-                </tr>
-              </thead>
-              {newOrderDetail && (
-                <tbody className="table-product-group-divider">
-                  {newOrderDetail.map((item, index) => {
-                    return (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td style={{ width: 400 }}>{item.product_name}</td>
-                        <td style={{ marginLeft: 50 }}>
-                          <input
-                            type="number"
-                            className="input-field"
-                            defaultValue={item.quantiy}
-                            placeholder="Nhập số lượng"
-                            onChange={(e) => handleChangeQuantity(e, item.id)}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            className="input-field"
-                            defaultValue={item.price}
-                            placeholder="Nhập giá tiền"
-                            onChange={(e) => handleChangePrice(e, item.id)}
-                          />
-                        </td>
-                        <td>
-                          <img
-                            src="/src/assets/delete.svg"
-                            alt="delete-icon"
-                            onClick={() => handleDeleteProduct(item.id)}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              )}
-            </table>
-          </div>
-          <div className="total-price">
-            <h3>Tổng tiền sản phẩm : </h3>
-            <p>{intToString(totalProductPrice)} VNĐ</p>
-            <h3>Tổng tiền công : </h3>
-            <p>{intToString(totalActionPrice)} VNĐ</p>
-            <h3>Tổng tiền hóa đơn : </h3>
-            <p>{intToString(totalOrderPrice)} VNĐ</p>
-          </div>
-
-          <div className="button-group">
-            <button className="btn-submit" type="submit" onClick={(e) => handleSubmitData(e)}>
-              Cập nhật thông tin
-            </button>
-            <button className="btn-cancer">
-              <Link to="/order">Quay lại</Link>
-            </button>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

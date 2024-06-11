@@ -1,6 +1,4 @@
-
 const db = require("../models/index");
-
 
 const dbOrder = db.Order;
 const dbOrderDetail = db.OrderDetail;
@@ -215,6 +213,7 @@ const getOrderByID = async (req, res) => {
     });
     const newOrder = {
       id: order.id,
+      check_issue_id: order.check_issue_id,
       motocycle_id: order.CheckIssue.motocycle_id,
       employee_id: order.CheckIssue.employee_id,
       customer_id: order.CheckIssue.Motocycle.Customer.id,
@@ -262,7 +261,100 @@ const getOrderByID = async (req, res) => {
         exclude: ["createdAt", "updatedAt"],
       },
     });
-    return res.status(200).json({  newOrder, newOrderDetail, action_list });
+    return res.status(200).json({ newOrder, newOrderDetail, action_list });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
+
+const updateOrderById = async (req, res) => {
+  try {
+    const order_id = req.params.id;
+    const { action_list, information, order_total_price, product_list } =
+      req.body;
+    await dbCustomer.update(
+      {
+        customer_name: information.customer_name,
+        customer_phone: information.customer_phone,
+        customer_address: information.customer_address,
+      },
+      {
+        where: {
+          id: information.customer_id,
+        },
+      }
+    );
+
+    await dbMotocycle.update(
+      {
+        motocycle_name: information.motocycle_name,
+        motocycle_number: information.motocycle_number,
+      },
+      {
+        where: {
+          id: information.motocycle_id,
+        },
+      }
+    );
+
+    await dbCheckIssue.update(
+      {
+        cateogry_issue_id: information.category_issue_id,
+        status: information.status,
+      },
+      {
+        where: {
+          id: information.check_issue_id,
+        },
+      }
+    );
+
+    await dbOrder.update(
+      {
+        order_total_price: order_total_price,
+      },
+      {
+        where: {
+          id: order_id,
+        },
+      }
+    );
+
+    await dbOrderDetail.destroy({
+      where: {
+        order_id: order_id,
+      },
+    });
+
+    await dbOrderDetail.bulkCreate(
+      product_list.map((product) => {
+        return {
+          product_id: product.product_id,
+          order_id: order_id,
+          price: product.price,
+          quantiy: product.quantiy,
+        };
+      })
+    );
+    console.log(product_list)
+
+    action_list.forEach(async (item) => {
+      await dbCheckList.update(
+        {
+          action: item.action,
+          status: item.status,
+          action_price: item.action_price,
+        },
+        {
+          where: {
+            id: item.id,
+          },
+        }
+      );
+    });
+
+    return res.status(200).json("Cập nhật thành công");
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -274,4 +366,5 @@ module.exports = {
   getAllOrder,
   deleteOrder,
   getOrderByID,
+  updateOrderById,
 };
