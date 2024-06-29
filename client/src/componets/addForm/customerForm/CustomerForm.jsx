@@ -82,7 +82,7 @@ const CustomerForm = () => {
       ) : (
         <div className="customer-registration-container">
           <div className="customer-registration-main">
-            <h1>Đăng ký khách hàng</h1>
+            <h1>Thêm mới khách hàng</h1>
             <form
               onSubmit={handleSubmit}
               className="form-customer-registration"
@@ -254,7 +254,7 @@ const CustomerForm = () => {
               </div>
               <div className="button-group">
                 <button className="btn-submit" type="submit">
-                  Đăng kí
+                  Tạo mới
                 </button>
               </div>
             </form>

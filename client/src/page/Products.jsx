@@ -81,7 +81,7 @@ const Products = () => {
   return (
     <div className="products-container">
       <div className="infor">
-        <h1>Products</h1>
+        <h1>Danh sách sản phẩm</h1>
         <button className="btn">
           <Link to="/products/add">Thêm sản phẩm mới</Link>
         </button>

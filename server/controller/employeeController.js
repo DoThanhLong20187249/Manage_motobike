@@ -143,6 +143,7 @@ const updateEmployeeById = async (req, res) => {
       password_employee,
       age_employee,
       gender_employee,
+      role_account
     } = req.body;
     const employee = await dbEmployee.findOne({ where: { id: id } });
 
@@ -166,6 +167,7 @@ const updateEmployeeById = async (req, res) => {
       {
         email_employee: email_employee,
         password_employee: password_employee,
+        role_account: role_account,
       },
       {
         where: {

@@ -101,49 +101,56 @@ export const topDealUsers = [
   {
     id: 1,
     img: "https://images.pexels.com/photos/8405873/pexels-photo-8405873.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
-    username: "Elva McDonald",
+    username: "Nhật Hưng",
     email: "elva@gmail.com",
-    amount: "3.668",
+    amount: "500,000",
   },
   {
     id: 2,
     img: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    username: "Linnie Nelson",
+    username: "Minh Long",
     email: "linnie@gmail.com",
     amount: "3.256",
   },
   {
     id: 3,
     img: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    username: "Brent Reeves",
+    username: "Trần Khánh",
     email: "brent@gmail.com",
     amount: "2.998",
   },
   {
     id: 4,
     img: "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    username: "Adeline Watson",
+    username: "Nhật Nam",
     email: "adeline@gmail.com",
     amount: "2.512",
   },
   {
     id: 5,
     img: "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    username: "Juan Harrington",
+    username: "Tuấn Hưng",
     email: "juan@gmail.com",
     amount: "2.134",
   },
   {
     id: 6,
     img: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    username: "Augusta McGee",
+    username: "Hưng thịnh",
     email: "augusta@gmail.com",
     amount: "1.932",
   },
   {
     id: 7,
     img: "https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    username: "Angel Thomas",
+    username: "Hồng Hưng",
+    email: "angel@gmail.com",
+    amount: "1.560",
+  },
+  {
+    id: 7,
+    img: "https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    username: "Nhật Khánh",
     email: "angel@gmail.com",
     amount: "1.560",
   },
@@ -153,8 +160,8 @@ export const topDealUsers = [
 export const chartBoxUser = {
   color: "#8884d8",
   img: "src/assets/userIcon.svg",
-  title: "Total Users",
-  number: "11.238",
+  title: "Số lượng khách hàng",
+  number: "50",
   dataKey: "users",
   percentage: 45,
   dataChart: [
@@ -171,8 +178,8 @@ export const chartBoxUser = {
 export const chartBoxProduct = {
   color: "skyblue",
   img: "src/assets/productIcon.svg",
-  title: "Total Products",
-  number: "238",
+  title: "Tổng số sản phẩm",
+  number: "300",
   dataKey: "products",
   percentage: 21,
   dataChart: [
@@ -188,8 +195,8 @@ export const chartBoxProduct = {
 export const chartBoxRevenue = {
   color: "teal",
   img: "src/assets/revenueIcon.svg",
-  title: "Total Revenue",
-  number: "$56.432",
+  title: "Danh thu",
+  number: "1,600,800",
   dataKey: "revenue",
   percentage: -12,
   dataChart: [
@@ -205,8 +212,8 @@ export const chartBoxRevenue = {
 export const chartBoxConversion = {
   color: "gold",
   img: "src/assets/conversionIcon.svg",
-  title: "Total Ratio",
-  number: "2.6",
+  title: "Tỷ lệ tăng trưởng",
+  number: "12%",
   dataKey: "ratio",
   percentage: 12,
   dataChart: [
@@ -222,7 +229,7 @@ export const chartBoxConversion = {
 
 
 export const barChartBoxRevenue = {
-  title: "Profit Earned",
+  title: "Doanh thu",
   color: "#8884d8",
   dataKey: "profit",
   chartData: [
@@ -258,7 +265,7 @@ export const barChartBoxRevenue = {
 };
 
 export const barChartBoxVisit = {
-  title: "Total Visit",
+  title: "Lượng truy cập",
   color: "#FF8042",
   dataKey: "visit",
   chartData: [

@@ -2,16 +2,16 @@ import "../../styles/pieChartBox.scss";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const data = [
-  { name: "moblie", value: 400, color: "#0088FE" },
-  { name: "desktop", value: 300, color: "#00C49F" },
-  { name: "tablet", value: 300, color: "#FFBB28" },
-  { name: "other", value: 200, color: "#FF8042" },
+  { name: "Săm xe", value: 400, color: "#0088FE" },
+  { name: "Dầu", value: 300, color: "#00C49F" },
+  { name: "Nhớt", value: 300, color: "#FFBB28" },
+  { name: "Lốp xe", value: 200, color: "#FF8042" },
 ];
 
 const PieChartBox = () => {
   return (
     <div className="pie-chart-box">
-      <h1 className="pie-chart-title">Lead By Source</h1>
+      <h1 className="pie-chart-title">Top Sản phẩm</h1>
       <div className="chart">
         <ResponsiveContainer width="100%" height={300}>
           <PieChart width={800}>

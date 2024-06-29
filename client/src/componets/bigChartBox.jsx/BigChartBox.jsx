@@ -49,7 +49,7 @@ const data = [
 const BigChartBox = () => {
   return (
     <div className="area-chart-container">
-      <h1>Title</h1>
+      <h1></h1>
       <div className="chart">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart

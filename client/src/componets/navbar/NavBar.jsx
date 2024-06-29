@@ -1,4 +1,4 @@
-import logo from "../../assets/logo.png";
+
 import avatar from "../../assets/avatar.jpg";
 import "../../styles/navbar.scss";
 import { IoIosSearch, IoIosNotificationsOutline } from "react-icons/io";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const NavBar = () => {
   const nameUser = useSelector((state) => state.auth.login?.currentUser);
 
+
   const navagate = useNavigate();
 
   const handleLogOut = () => {
@@ -16,8 +17,8 @@ const NavBar = () => {
   return (
     <div className="navbar">
       <div className="logo-content">
-        <img className="logo" src={logo} alt="logo-hust" />
-        <span>HUST-SOICT</span>
+        <img className="logo" src="/src/assets/logo_moto.jpg" alt="logo-hust" />
+        <span>{nameUser.shop_name}</span>
       </div>
       <div className="icons">
         <IoIosSearch className="icon" />

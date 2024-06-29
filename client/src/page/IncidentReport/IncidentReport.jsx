@@ -64,14 +64,12 @@ const IncidentReport = () => {
     <div className="users-container">
       <div className="infor">
         <h1>Danh sách biên bản sự cố</h1>
-        {user?.role_account === "manager" && (
           <>
             {" "}
             <button>
               <Link to={"/checkIssue/add"}>Tạo mới biên bản sự cố</Link>
             </button>
           </>
-        )}
       </div>
       {newData && (
         <DataTable

@@ -75,8 +75,10 @@ const SingleEmployee = () => {
       employeeData.append("address_employee", values.address_employee);
       if (values.position_employee === "receptionist") {
         employeeData.append("position_employee", "Lễ tân");
+        employeeData.append("role_account", "receptionist");
       } else if (values.position_employee === "staff") {
         employeeData.append("position_employee", "Thợ sửa chữa");
+        employeeData.append("role_account", "staff");
       }
       employeeData.append("email_employee", values.email_employee);
       employeeData.append("password_employee", values.password_employee);
@@ -98,7 +100,7 @@ const SingleEmployee = () => {
   const toggleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  console.log(formik.values.position_employee);
+  
 
   const handleSumbit = (e) => {
     e.preventDefault();
@@ -108,6 +110,7 @@ const SingleEmployee = () => {
         return;
       } else {
         formik.handleSubmit();
+        // console.log(formik.values)
       }
     });
   };
@@ -187,7 +190,7 @@ const SingleEmployee = () => {
                             name="position_employee"
                             className="input-field"
                             onChange={formik.handleChange}
-                            value={formik.values.position_employee}
+                            value={formik.values.position_employee == "Lễ tân" ? "receptionist" : "staff"}
                           >
                             <option value="">lựa chọn</option>
                             <option value="receptionist">Lễ tân</option>

@@ -74,25 +74,27 @@ const Users = () => {
 
   return (
     <div className="users-container">
-      <div className="infor">
-        <h1>Danh sách Nhân viên</h1>
-        {user?.role_account === "manager" && (
-          <>
-            {" "}
-            <button>
-              <Link to={"/employee/add"}>Thêm mới nhân viên</Link>
-            </button>
-          </>
-        )}
-      </div>
-      {newData && (
-        <DataTable
-          slug={"employee"}
-          columns={columns}
-          rows={newData}
-          accessToken={user?.token}
-          dispatch={dispatch}
-        />
+      {user?.role_account === "manager"  && (
+        <>
+          <div className="infor">
+            <h1>Danh sách Nhân viên</h1>
+            <>
+              {" "}
+              <button>
+                <Link to={"/employee/add"}>Thêm mới nhân viên</Link>
+              </button>
+            </>
+          </div>
+          {newData && (
+            <DataTable
+              slug={"employee"}
+              columns={columns}
+              rows={newData}
+              accessToken={user?.token}
+              dispatch={dispatch}
+            />
+          )}
+        </>
       )}
     </div>
   );

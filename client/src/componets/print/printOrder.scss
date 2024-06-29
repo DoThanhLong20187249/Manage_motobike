@@ -1,0 +1,145 @@
+@import "../../varibales.scss";
+.print {
+  .order-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .information-header {
+    margin-top: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    gap: 10px;
+    p {
+      margin-top: 2px;
+    }
+  }
+  .information-body {
+    .information-body-main {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      width: 70%;
+      gap: 10px;
+      .text-group {
+        display: flex;
+        width: fit-content;
+        gap: 20px;
+        font-size: 0.9rem;
+        p {
+          margin-top: 2px;
+        }
+      }
+    }
+    .information-action-container {
+      width: 60%;
+      h3 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          padding: 5px;
+          text-align: left;
+        }
+
+        tr {
+          border-bottom: 1px solid rgb(240, 236, 236);
+        }
+
+        .table-group-divider tr:last-child {
+          border-bottom: none; /* Remove border for the last row */
+        }
+        td:last-child {
+          width: 150px; /* Đặt độ rộng cụ thể cho cột cuối cùng */
+        }
+      }
+    }
+    .product-list-container {
+      margin-top: 20px;
+      width: 70%;
+      .table-product {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        margin-top: 10px;
+
+        th,
+        td {
+          padding: 5px;
+          text-align: left;
+        }
+
+        tr {
+          border-bottom: 1px solid white;
+        }
+
+        .table-product-group-divider tr:last-child {
+          border-bottom: none; /* Remove border for the last row */
+        }
+        td:last-child {
+          width: 200px; /* Đặt độ rộng cụ thể cho cột cuối cùng */
+        }
+      }
+    }
+  }
+  .information-footer {
+    display: flex;
+    justify-content: end;
+    margin-right: 100px;
+    p {
+        margin-top: 3px;
+        margin-left: 2px;
+    }
+  }
+}
+.button-group {
+  display: flex;
+  margin-top: 1rem;
+  margin-bottom: 120m;
+  gap: 10px;
+  .btn-submit {
+    padding: 10px 20px;
+    background-color: rgb(112, 223, 112);
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    gap: 5px;
+    &:hover {
+      background-color: rgb(0, 255, 0);
+      color: black;
+    }
+  }
+  .btn-cancer {
+    padding: 10px 20px;
+    background-color: rgb(224, 70, 70);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    .icon {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media print {
+  body {
+    width: 100%;
+  }
+}

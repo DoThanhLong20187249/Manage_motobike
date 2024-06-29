@@ -4,7 +4,7 @@ import { topDealUsers } from '../menu/MenuData';
 const TopBox = () => {
     return (
         <div className='topBox'>
-            <h1>Top Deals</h1>
+            <h1>Khách hàng</h1>
             <div className="list">
             {topDealUsers.map((user) => (
                 <div className="listItems" key={user.id}>
@@ -15,7 +15,7 @@ const TopBox = () => {
                         <span className='email'>{user.email}</span>
                     </div>
                   </div>
-                  <span className='amount'>${user.amount}</span>
+                  {/* <span className='amount'>{user.amount} VND</span> */}
                 </div>
             ))}
             </div>
