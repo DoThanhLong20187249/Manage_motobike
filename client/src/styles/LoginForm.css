@@ -58,7 +58,7 @@
     display: flex;
     justify-content: space-around;
     font-size: 14.5px;
-    margin: -15px 0 15px;
+    margin: -3px 0 15px;
 }
 
 .remember-forgot label input {
@@ -101,4 +101,13 @@
 }
 .register-link a:hover {
     text-decoration: underline;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+    position: absolute;
+    bottom: -25px;
+    left: 20px;
 }

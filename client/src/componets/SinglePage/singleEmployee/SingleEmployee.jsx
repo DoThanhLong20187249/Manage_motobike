@@ -21,12 +21,20 @@ const SingleEmployee = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (singleEmployeeData && singleEmployeeData.data) {
+        const position = singleEmployeeData.data.position_employee;
+        let position_employee = "";
+        if (position === "Lễ tân") {
+          position_employee = "receptionist";
+        } else if (position === "Thợ sửa chữa") {
+          position_employee = "staff";
+        }
+
       formik.setValues({
         id: singleEmployeeData.data.employee_id || "",
         name_employee: singleEmployeeData.data.name_employee || "",
         phone_employee: singleEmployeeData.data.phone_employee || "",
         address_employee: singleEmployeeData.data.address_employee || "",
-        position_employee: singleEmployeeData.data.position_employee || "",
+        position_employee: position_employee || "",
         email_employee: singleEmployeeData.data.email_employee || "",
         password_employee: singleEmployeeData.data.password_employee || "",
         age_employee: singleEmployeeData.data.age_employee || "",
@@ -110,7 +118,7 @@ const SingleEmployee = () => {
         return;
       } else {
         formik.handleSubmit();
-        // console.log(formik.values)
+
       }
     });
   };
@@ -190,7 +198,7 @@ const SingleEmployee = () => {
                             name="position_employee"
                             className="input-field"
                             onChange={formik.handleChange}
-                            value={formik.values.position_employee == "Lễ tân" ? "receptionist" : "staff"}
+                            value={formik.values.position_employee}
                           >
                             <option value="">lựa chọn</option>
                             <option value="receptionist">Lễ tân</option>

@@ -57,11 +57,11 @@ const CategoryProductForm = () => {
             </div>
             <div className="-category-product-content">
               <div className="-category-product-image">
-                <h2>{user.shop_name}</h2>
                 {selectedImage ? (
                   <img src={selectedImage} alt="Selected" />
                 ) : (
-                  <img src="../src/assets/avatar.jpg" alt="Default" />
+                  // <img src="../src/assets/avatar.jpg" alt="Default" />
+                  <></>
                 )}
 
                 <input type="file" name="image" onChange={handleImageChange} />

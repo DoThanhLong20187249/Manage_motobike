@@ -92,7 +92,8 @@ function formatDate(isoString) {
 }
 
 const getAllOrder = async (req, res) => {
-  const { shop_id } = req.query;
+  const shop_id  = req.query;
+  console.log(shop_id)
   try {
     const order = await dbOrder.findAll(
       {

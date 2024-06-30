@@ -8,13 +8,13 @@ const middlewareController = require("../middleware/middlewareController");
 router
   .route("/")
   .get(
-    middlewareController.verifyTokenAdmin,
+
     employeeController.getAllEmployee
   );
 router
   .route("/add")
   .post(
-    middlewareController.verifyTokenAdmin,
+    // middlewareController.verifyTokenAdmin,
     upload.none(),
     employeeController.addEmployee
   );

@@ -104,19 +104,27 @@ const loginUser = async (req, res) => {
     if (isEmployee) {
       dbEmployee.hasOne(dbAcountEmployee, { foreignKey: "employee_id" });
       dbAcountEmployee.belongsTo(dbEmployee, { foreignKey: "employee_id" });
+      dbEmployee.belongsTo(dbShop, { foreignKey: "shop_id" });
+      dbShop.hasMany(dbEmployee, { foreignKey: "shop_id" });
       const employee = await dbAcountEmployee.findOne({
         where: { email_employee: req.body.email },
         include: [
           {
             model: dbEmployee,
             attributes: { exclude: ["id","createdAt","updatedAt"] },
+            include: [
+              {
+                model: dbShop,
+                attributes: ["shop_name"],
+              },
+            ],
           },
         ],
         attributes: { exclude: ["createdAt","updatedAt"] },
       });
       const employeeData = employee.toJSON();
       const newEmmployee = {...employeeData ,...employeeData.Employee};
-      delete newEmmployee.Employee;
+      delete newEmmployee.Employee ;
       if (!employee) {
         return res.status(400).json({
           status: "failed",
@@ -146,7 +154,7 @@ const loginUser = async (req, res) => {
           sameSite: "strict",
         });
         return res.status(200).json({
-          ...data,token
+          ...data,...data.Shop,token
         });
       }
     } else {

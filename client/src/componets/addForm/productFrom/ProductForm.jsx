@@ -120,9 +120,10 @@ const ProductForm = () => {
               {selectedImage ? (
                 <img src={selectedImage} alt="Selected" />
               ) : (
-                <img src="../src/assets/avatar.jpg" alt="Default" />
+                // <img src="../src/assets/avatar.jpg" alt="Default" />
+                <div></div>
               )}
-              <div>
+              <div className="input-image">
                 <input type="file" name="image" onChange={handleImageChange} />
               </div>
             </div>

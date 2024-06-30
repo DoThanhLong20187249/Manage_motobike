@@ -4,6 +4,7 @@ import "../styles/products.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct } from "../redux/apiRequest";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -63,6 +64,27 @@ const Products = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [dataProduct, setDataProduct] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isToastShown, setIsToastShown] = useState(false);
+  const [isManagerOrReceptionist, setIsManagerOrReceptionist] = useState(false);
+
+  useEffect(() => {
+    if (
+      user?.role_account === "manager" ||
+      user?.role_account === "receptionist"
+    ) {
+      setIsManagerOrReceptionist(true);
+      setIsToastShown(false);
+    } else {
+      setIsManagerOrReceptionist(false);
+      setIsToastShown(true);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (isToastShown == true) {
+      toast.error("Bạn không thể thực hiện chức năng này");
+    }
+  }, [isToastShown]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -79,23 +101,27 @@ const Products = () => {
     }
   }, [products]);
   return (
-    <div className="products-container">
-      <div className="infor">
-        <h1>Danh sách sản phẩm</h1>
-        <button className="btn">
-          <Link to="/products/add">Thêm sản phẩm mới</Link>
-        </button>
-      </div>
-      {isDataLoaded && (
-        <DataTable
-          slug={"products"}
-          rows={dataProduct}
-          columns={columns}
-          accessToken={user.token}
-          dispatch={dispatch}
-        />
+    <>
+      {isManagerOrReceptionist && (
+        <div className="products-container">
+          <div className="infor">
+            <h1>Danh sách sản phẩm</h1>
+            <button className="btn">
+              <Link to="/products/add">Thêm sản phẩm mới</Link>
+            </button>
+          </div>
+          {isDataLoaded && (
+            <DataTable
+              slug={"products"}
+              rows={dataProduct}
+              columns={columns}
+              accessToken={user.token}
+              dispatch={dispatch}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getAllEmployee } from "../redux/apiRequest";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -58,11 +59,33 @@ const columns = [
 const Users = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [newData, setNewData] = useState([]);
+  const [isToastShown, setIsToastShown] = useState(false);
   const dispatch = useDispatch();
+  const [isManagerOrReceptionist, setIsManagerOrReceptionist] = useState(false);
 
-  console.log(user?.id);
+
   useEffect(() => {
-    getAllEmployee(user?.id, user?.token, dispatch);
+    if (
+      user?.role_account === "manager" || 
+      user?.role_account === "receptionist"
+    ) {
+      setIsManagerOrReceptionist(true);
+      setIsToastShown(false);
+    }else{
+      setIsManagerOrReceptionist(false);
+      setIsToastShown(true);
+    }
+
+  }, [user]);
+
+  useEffect(() => {
+    if (isToastShown == true) {
+      toast.error("Bạn không thể thực hiện chức năng này");
+    }
+  }, [isToastShown]);
+
+  useEffect(() => {
+    getAllEmployee(user?.shop_id, user?.token, dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const dataEmployee = useSelector(
@@ -74,7 +97,7 @@ const Users = () => {
 
   return (
     <div className="users-container">
-      {user?.role_account === "manager"  && (
+      {isManagerOrReceptionist  && (
         <>
           <div className="infor">
             <h1>Danh sách Nhân viên</h1>
