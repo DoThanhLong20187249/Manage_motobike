@@ -4,6 +4,7 @@ import "./customer.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllCustomers } from "../../redux/apiRequest";
+import { toast } from "react-toastify";
 
 // định nghĩa columns cho bảng dữ liệu khách hàng
 const columns = [
@@ -50,10 +51,24 @@ const Customer = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
+  const [isAdmin, setIsAdmin] = useState(false);
   // call api to get all customers
   useEffect(() => {
-    getAllCustomers(user?.shop_id, user?.token, dispatch);
-  }, []);
+    if (
+      user.role_account === "manager" ||
+      user.role_account === "receptionist"
+    ) {
+      getAllCustomers(user?.shop_id, user?.token, dispatch);
+      console.log("user", user.role_account);
+      setIsAdmin(true);
+    } else {
+      toast.error("Bạn không có quyền truy cập vào trang này");
+      console.log("user", user.role_account);
+      setIsAdmin(false);
+    }
+
+    // getAllCustomers(user?.shop_id, user?.token, dispatch);
+  }, [user]);
   const customers = useSelector(
     (state) => state.customer.customers?.allCustomers
   );
@@ -62,24 +77,28 @@ const Customer = () => {
   }, [customers]);
 
   return (
-    <div className="customer-container">
-      <div className="infor">
-        <h1>Danh sách khách hàng</h1>
-        <button>
-          <Link to="/customer/add">Thêm khách hàng</Link>
-        </button>
-      </div>
+    <>
+      {isAdmin ? (
+        <div className="customer-container">
+          <div className="infor">
+            <h1>Danh sách khách hàng</h1>
+            <button>
+              <Link to="/customer/add">Thêm khách hàng</Link>
+            </button>
+          </div>
 
-      {data && data.length > 0 && (
-        <DataTable
-          slug={"customer"}
-          columns={columns}
-          rows={data}
-          accessToken={user?.token}
-          dispatch={dispatch}
-        />
-      )}
-    </div>
+          {data && data.length > 0 && (
+            <DataTable
+              slug={"customer"}
+              columns={columns}
+              rows={data}
+              accessToken={user?.token}
+              dispatch={dispatch}
+            />
+          )}
+        </div>
+      ) : null}
+    </>
   );
 };
 

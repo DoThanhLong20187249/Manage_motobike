@@ -8,7 +8,7 @@ const middlewareController = require("../middleware/middlewareController");
 router
   .route("/")
   .get(
-
+    // middlewareController.verifyTokenAdmin,
     employeeController.getAllEmployee
   );
 router

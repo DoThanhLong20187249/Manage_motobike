@@ -7,7 +7,6 @@ const uploadCloud = require("../middleware/uploadImage");
 
 router.get(
   "/",
-  middlewareController.verifyToken,
   categoryProductController.getAllCategoryProduct
 );
 

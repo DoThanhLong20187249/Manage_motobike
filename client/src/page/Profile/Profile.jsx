@@ -24,7 +24,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (isToastShown == true) {
-      toast.error("Bạn không thể thực hiện chức năng này");
+      toast.error("Bạn không có quyền truy cập vào trang này");
     }
   }, [isToastShown]);
 

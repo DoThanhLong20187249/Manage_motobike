@@ -36,27 +36,26 @@ const columns = [
     headerName: "Trạng thái",
     width: 100,
     type: "boolean",
-  }
-  
+  },
 ];
 
 const IncidentReport = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [newData, setNewData] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   //Gọi API để lấy dữ liệu từ server
   useEffect(() => {
-    getAllReports(user.shop_id,user.token,dispatch)
-  },[]) 
+    getAllReports(user.shop_id, user.token, dispatch);
+  }, []);
   // lấy dữ liệu từ store
-  const dataReports = useSelector((state) => state.report.reports.data)
+  const dataReports = useSelector((state) => state.report.reports.data);
 
   //Nhận dữ liệu từ store để hiển thị lên giao diện
 
   useEffect(() => {
-    if(dataReports) {
-      setNewData(dataReports)
+    if (dataReports) {
+      setNewData(dataReports);
     }
   }, [dataReports]);
 
@@ -64,12 +63,12 @@ const IncidentReport = () => {
     <div className="users-container">
       <div className="infor">
         <h1>Danh sách biên bản sự cố</h1>
-          <>
-            {" "}
-            <button>
-              <Link to={"/checkIssue/add"}>Tạo mới biên bản sự cố</Link>
-            </button>
-          </>
+        <>
+          {" "}
+          <button>
+            <Link to={"/checkIssue/add"}>Tạo mới biên bản sự cố</Link>
+          </button>
+        </>
       </div>
       {newData && (
         <DataTable

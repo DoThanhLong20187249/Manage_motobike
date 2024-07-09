@@ -4,6 +4,7 @@ import "./categoryProduct.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllCategoryProduct } from "../../redux/apiRequest";
+import { toast } from "react-toastify";
 
 // định nghĩa columns cho bảng bảng danh mục sản phẩm
 const columns = [
@@ -39,11 +40,23 @@ const columns = [
 const CategoryProduct = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getAllCategoryProduct(user?.shop_id, user?.token, dispatch);
-  }, []);
+    if (
+      user.role_account === "manager" ||
+      user.role_account === "receptionist"
+    ) {
+      getAllCategoryProduct(user?.shop_id, user?.token, dispatch);
+      console.log("user", user.role_account);
+      setIsAdmin(true);
+    } else {
+      toast.error("Bạn không có quyền truy cập vào trang này");
+      console.log("user", user.role_account);
+      setIsAdmin(false);
+    }
+  }, [user, dispatch]);
 
   const categoryProduct = useSelector(
     (state) => state.categoryProduct.categoryProducts.data
@@ -55,33 +68,39 @@ const CategoryProduct = () => {
     }
   }, [categoryProduct]);
 
+  console.log(categoryProduct);
+
   return (
-    <div className="category-product-container">
-      <div className="infor">
-        <h1>Danh Mục Sản Phẩm</h1>
-        <button>
-          <Link to="/CategoryProduct/add">Tạo danh mục sản phẩm mới</Link>
-        </button>
-      </div>
-      {isDataLoaded ? (
-        <>
-          <DataTable
-            slug={"CategoryProduct"}
-            columns={columns}
-            rows={categoryProduct}
-            accessToken={user?.token}
-            dispatch={dispatch}
-          />
-        </>
-      ) : (
-        <>
-          {" "}
-          <div>
-            <h1>Loading...</h1>
-          </div>{" "}
-        </>
-      )}
-    </div>
+    <>
+      {isAdmin ? (
+        <div className="category-product-container">
+          <div className="infor">
+            <h1>Danh Mục Sản Phẩm</h1>
+            <button>
+              <Link to="/CategoryProduct/add">Tạo danh mục sản phẩm mới</Link>
+            </button>
+          </div>
+          {isDataLoaded ? (
+            <>
+              <DataTable
+                slug={"CategoryProduct"}
+                columns={columns}
+                rows={categoryProduct}
+                accessToken={user?.token}
+                dispatch={dispatch}
+              />
+            </>
+          ) : (
+            <>
+              {" "}
+              <div>
+                <h1>Loading...</h1>
+              </div>{" "}
+            </>
+          )}
+        </div>
+      ) : null}
+    </>
   );
 };
 

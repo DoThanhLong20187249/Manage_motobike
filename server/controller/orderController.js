@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const db = require("../models/index");
 
 const dbOrder = db.Order;
@@ -92,11 +93,14 @@ function formatDate(isoString) {
 }
 
 const getAllOrder = async (req, res) => {
-  const shop_id  = req.query;
+  const shop_id  = req.query.shop_id;
   console.log(shop_id)
   try {
     const order = await dbOrder.findAll(
       {
+        where: {
+          shop_id: shop_id
+        },
         include: {
           model: dbCheckIssue,
           include: [
@@ -126,11 +130,6 @@ const getAllOrder = async (req, res) => {
           "createdAt",
         ],
       },
-      {
-        where: {
-          shop_id: shop_id,
-        },
-      }
     );
     const data = order.map((item) => {
       return {
@@ -172,6 +171,7 @@ const deleteOrder = async (req, res) => {
     return res.status(500).json(error);
   }
 };
+
 const getOrderByID = async (req, res) => {
   try {
     const order_id = req.params.id;

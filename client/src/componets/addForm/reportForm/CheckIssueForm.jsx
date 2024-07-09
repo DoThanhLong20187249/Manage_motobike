@@ -33,7 +33,7 @@ const CheckIssueForm = () => {
   useEffect(() => {
     getAllCategoryIssue(user.shop_id, user.token, dispatch); // lấy danh mục sự cố
     getAllMotocycles(user?.shop_id, user?.token, dispatch); // lấy danh sách xe máy
-    getAllEmployee(user?.id, user?.token, dispatch); // lấy danh sách thợ sửa chữa
+    getAllEmployee(user?.shop_id, user?.token, dispatch); // lấy danh sách thợ sửa chữa
   }, []);
   // lấy data  redux-store
   const dataCategoryIssues = useSelector(

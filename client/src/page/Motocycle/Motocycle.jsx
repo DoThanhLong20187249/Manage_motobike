@@ -4,6 +4,7 @@ import DataTable from "../../componets/dataTable/DataTable";
 import { useEffect, useState } from "react";
 import Loading from "../../componets/Loading/Loading";
 import { getAllMotocycles } from "../../redux/apiRequest";
+import { toast } from "react-toastify";
 
 /// define motocycle colum
 const columns = [
@@ -49,12 +50,28 @@ const Motocycle = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    getAllMotocycles(user?.shop_id, user?.token, dispatch);
-  }, []);
-  const motocycles = useSelector((state) => state.motocycle.motocycles.allMotocycles);
+    if (
+      user.role_account === "manager" ||
+      user.role_account === "receptionist"
+    ) {
+      getAllMotocycles(user?.shop_id, user?.token, dispatch);
+      console.log("user", user.role_account);
+      setIsAdmin(true);
+    } else {
+      toast.error("Bạn không có quyền truy cập vào trang này");
+      console.log("user", user.role_account);
+      setIsAdmin(false);
+    }
+    // getAllMotocycles(user?.shop_id, user?.token, dispatch);
+  }, [user]);
+  const motocycles = useSelector(
+    (state) => state.motocycle.motocycles.allMotocycles
+  );
 
   useEffect(() => {
     if (motocycles) {
@@ -64,23 +81,27 @@ const Motocycle = () => {
   }, [motocycles]);
 
   return (
-    <div className="motocycle-container">
-      <div className="infor">
-        <h1>Danh sách xe máy</h1>
-      </div>
+    <>
+      {isAdmin ? (
+        <div className="motocycle-container">
+          <div className="infor">
+            <h1>Danh sách xe máy</h1>
+          </div>
 
-      {isDataLoaded ? (
-        <DataTable
-          slug={"motocycle"}
-          columns={columns}
-          rows={data}
-          accessToken={user?.token}
-          dispatch={dispatch}
-        />
-      ) : (
-        <Loading />
-      )}
-    </div>
+          {isDataLoaded ? (
+            <DataTable
+              slug={"motocycle"}
+              columns={columns}
+              rows={data}
+              accessToken={user?.token}
+              dispatch={dispatch}
+            />
+          ) : (
+            <Loading />
+          )}
+        </div>
+      ) : null}
+    </>
   );
 };
 

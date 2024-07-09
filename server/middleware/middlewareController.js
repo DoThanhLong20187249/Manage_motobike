@@ -28,6 +28,7 @@ const middlewareController = {
       if (req.user.role === "manager") {
         next();
       } else {
+        console.log("User role is not manager:", req.user.role);
         return res.status(403).json({
           status: "failed",
           message: "Forbidden",

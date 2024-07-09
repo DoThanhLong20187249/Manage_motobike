@@ -3,6 +3,7 @@ import "./order.scss";
 import DataTable from "../../componets/dataTable/DataTable";
 import { getAllOrder } from "../../redux/apiRequest";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -49,11 +50,25 @@ const Order = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [dataOrder, setDataOrder] = useState(null);
   const dispatch = useDispatch();
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // gọi API lấy toàn bộ hóa đơn
   useEffect(() => {
-    getAllOrder(user.shop_id, user.token, dispatch);
-  }, []);
+    if (
+      user.role_account === "manager" ||
+      user.role_account === "receptionist"
+    ) {
+      getAllOrder(user.shop_id, user.token, dispatch);
+      console.log("user", user.role_account);
+      setIsAdmin(true);
+    } else {
+      toast.error("Bạn không có quyền truy cập vào trang này");
+      console.log("user", user.role_account);
+      setIsAdmin(false);
+    }
+
+    // getAllOrder(user.shop_id, user.token, dispatch);
+  }, [user]);
 
   // lấy data từ redux-store
   const listOrder = useSelector((state) => state.order.orders.data);
@@ -64,20 +79,24 @@ const Order = () => {
   }, [listOrder]);
   console.log(dataOrder);
   return (
-    <div className="order-container">
-      <div className="infor">
-        <h1>Danh sách hóa đơn</h1>
-      </div>
-      {dataOrder && (
-        <DataTable
-          slug={"order"}
-          columns={columns}
-          rows={dataOrder}
-          accessToken={user?.token}
-          dispatch={dispatch}
-        />
-      )}
-    </div>
+    <>
+      {isAdmin ? (
+        <div className="order-container">
+          <div className="infor">
+            <h1>Danh sách hóa đơn</h1>
+          </div>
+          {dataOrder && (
+            <DataTable
+              slug={"order"}
+              columns={columns}
+              rows={dataOrder}
+              accessToken={user?.token}
+              dispatch={dispatch}
+            />
+          )}
+        </div>
+      ) : null}
+    </>
   );
 };
 
